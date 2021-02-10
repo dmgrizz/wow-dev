@@ -1,0 +1,146 @@
+<%- include('partials/header') %>
+<div class="profile-body">
+  <div class="header">
+  <h1 id="wow-title">Wow Dashboard</h1>
+  <form class="" action="/" method="post">
+    <label class="gold-text"for="playerName">Player Name:</label>
+    <input id="playerName" type="text" name="playerName" value="">
+    <label class="gold-text" for="realmName">Realm Name:</label>
+    <input id="realmName" type="text" name="realmName" value="">
+    <button type="submit" name="button">Go</button>
+
+  </form>
+  </div>
+    <div class="container-info">
+      <div class="avatar-container">
+        <div class="avatar-img">
+        <% if(avatar){%>
+            <img src="<%=avatar %>" alt="">
+        <% }%>
+        </div>
+        <div class="top-info">   <!-- Avatar info DIV -->
+            <h2 class="top-text gold-text"><%=characterName%></h2>
+          <%if(guild){%>
+              <h5 class="top-text text-indent gold-text"><%=guild%></h5>
+          <%}%>
+              <h5 class="top-text text-indent gold-text"><%=realm%></h5>
+        </div>
+      </div>
+      <hr>
+      <h4>Faction: <%=faction%></h4>
+      <h4>Race: <%=race%></h4>
+      <h4>Class: <%=characterClass%></h4>
+      <h4>Spec: <%=spec%></h4>
+      <h4>Level: <%=level%></h4>
+      <!-- <img src="https://render-us.worldofwarcraft.com/icons/56/inv_sword_39.jpg" alt=""> -->
+      <h4>Achievement Points: <%=points%></h4>
+      <h4>Item Level: <%=itemLevel%></h4>
+      <h4>Talents:
+          <%if(contextTalents){%>
+            <%= contextTalents.splice(0, 7).join(', ')%>
+          <%}%>
+      </h4>
+    <hr>
+      <h2 class="gold-text">PVP Rating</h2>
+      <div class="pvp">
+        <div class="pvp-type">
+          <h3 class="pvp-titles">Type</h3>
+          <h4 class="">2v2: <%=twoCr%> cr</h4>
+          <h4 class="">3v3: <%=threeRating%> cr</h4>
+          <h4 class="">rbg: <%=rbgCr%> cr</h4>
+        </div>
+        <div class="pvp-matches">
+          <h3 class="pvp-titles">Matches</h3>
+          <h4 class="pvp-scores"><%=twoMatches%></h4>
+          <h4 class="pvp-scores"><%=threeMatches%></h4>
+          <h4 class="pvp-scores"><%=rbgMatches%></h4>
+        </div>
+        <div class="pvp-won">
+          <h3 class="pvp-titles">Won</h3>
+          <h4 class="pvp-scores"><%=twoWins%></h4>
+          <h4 class="pvp-scores"><%=threeWins%></h4>
+          <h4 class="pvp-scores"><%=rbgWins%></h4>
+        </div>
+        <div class="pvp-loss">
+            <h3 class="pvp-titles">Lost</h3>
+            <h4 class="pvp-scores"><%=twoLost%></h4>
+            <h4 class="pvp-scores"><%=threeLost%></h4>
+            <h4 class="pvp-scores"><%=rbgLost%></h4>
+        </div>
+        <div class="pvp-winrate">
+          <h3 class="pvp-titles">Win Rate</h3>
+          <%if(twoWinRate >= 50){%>
+            <h4 class="pvp-scores" style="color:green"><%=twoWinRate%>%</h4>
+          <%} else {%>
+            <h4 class="pvp-scores" style="color:red"><%=twoWinRate%>%</h4>
+          <%}%>
+          <%if(threeWinRate >= 50){%>
+            <h4 class="pvp-scores" style="color:green"><%=threeWinRate%>%</h4>
+          <%} else  {%>
+            <h4 class="pvp-scores" style="color:red"><%=threeWinRate%>%</h4>
+          <%}%>
+          <%if(rbgWinRate >= 50){%>
+          <h4 class="pvp-scores" style="color:green"><%=rbgWinRate%>%</h4>
+          <%} else {%>
+            <h4 class="pvp-scores" style="color:red"><%=rbgWinRate%>%</h4>
+          <%}%>
+        </div>
+
+      </div>
+      <br>
+      <div class="scores">
+      </div>
+    <hr>
+    <br>
+    </div>
+
+  <section class="profile-info">
+  <%if(guild){%>
+        <div onmouseover="onMouseOver()" onmouseout="onMouseOut()" class="guild">
+        <h3 class="gold-text">Guild - <%=guild%> </h3>
+          <div class="guild-info">
+            <h6> Members: <%=guildMembers%> </h6>
+            <h6 class="text-indent"> AP: <%=guildPoints%></h6>
+          </div>
+          <div id="scroll-arrow" class="arrow">
+                <span></span>
+                <span></span>
+                <span></span>
+          </div>
+          <div class="roster">
+        <%for (var i = 0; i < guildRoster.length; i++) { %>
+        <h6> <%= guildRoster[i] %></h6>
+        <%}%>
+
+          </div>
+        </div>
+    <%}%>
+
+        <%for(var i=0; i < equipmentSlot.length; i++){%>
+          <div class="equipment">
+            <h4 class="gold-text">Equipment</h4>
+            <div class="row">
+            <%for(var i=0; i < equipmentSlot.length; i++){%>
+              <%for(var i=0; i < equipmentSlot.length; i++){%>
+            <div class="col-md-3">
+              <div class="item-header">
+                <h5><%=equipmentSlot[i]%> - </h5>
+                  <p class="quality"><%=equipmentQuality[i]%></p>
+              </div>
+              <br>
+              <div class="item-media">
+                <a class="q3" data-wowhead="" href=<%=equipmentImages[i]%> >Item image</a>
+                </div>
+              </div>
+                <%}%>
+              <%}%>
+              </div>
+            </div>
+          <%}%>
+
+  </section>
+</div>
+
+
+
+<%- include('partials/footer') %>

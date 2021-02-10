@@ -1,0 +1,40 @@
+
+
+</body>
+<br>
+<footer class="footer" id="footer">
+<div class="container-fluid">
+  <i class="footer-icons fab fa-twitter-square fa-2x"></i>
+  <i class="footer-icons fab fa-facebook-f fa-2x"></i>
+  <i class="footer-icons fab fa-instagram fa-2x"></i>
+  <i class="footer-icons fas fa-envelope fa-2x"></i>
+
+</div>
+</footer>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+
+
+  function onMouseOver(){
+
+    document.getElementById("scroll-arrow").style.visibility = 'visible';
+
+  }
+  function onMouseOut(){
+    document.getElementById("scroll-arrow").style.visibility = 'hidden';
+  }
+
+  $(window).on('scroll', function() {
+    if ($(window).scrollTop() >= $(
+        '.roster').offset().top + $('.roster').
+        outerHeight() - window.innerHeight) {
+            // alert('You reached the end of the DIV');
+
+        }
+});
+
+
+</script>
+</html>

@@ -1,0 +1,237 @@
+.header {
+  margin-left: 20px;
+  padding: 5px 5px 5px 8px;
+  background: url("https://assets.worldofwarcraft.com/static/components/SiteNav/sitenav-bar-bg.1fce1b9a3f4b7c90fb331726baa8c3ed.jpg");
+  box-shadow: 0px 2px 12px 5px #000000;
+}
+body {
+  /* background-color: #1d2d50; */
+  background: url("https://assets.worldofwarcraft.com/static/components/Box/Box-leather-grey-dark.0477a49460ddf3f97294112a1b372a06.jpg");
+  /* background-color: #1b262c; */
+  /* background-color: #222831; */
+  color: #f8f1f1;
+  font-family: Open Sans,Arial,Helvetica,sans-serif;
+
+}
+.home-body {
+  background-color: #20252c;
+  padding: 10px 15px;
+}
+
+/* HOME PAGE CSS */
+.sign-in {
+
+ display: inline-block;
+ padding: 10% 15%;
+}
+.login-labels {
+  padding-bottom: 1px;
+}
+.form-control {
+  color: #ece2e1;
+  background-color: #5b5b5b;
+  border: 0px;
+  border-radius: 2px;
+  margin-bottom: 2px;
+}
+input {
+  background-color: #5b5b5b;
+  border: 0px;
+  border-radius: 2px;
+
+}
+
+/* PROFILE CSS  */
+#wow-title{
+    color:#f8b700;
+    font-weight: bold;
+    /* background-image: -webkit-linear-gradient(top,#ffbf00,#e2a233 19%,#f0c328 30%,#ffe13e 43%,#ffe13e 50%); */
+    background: -webkit-linear-gradient(top, #fbff2d 0%,#ffd015 77%);
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+}
+.gold-text{
+  color:#f8b700;
+  font-weight: bold;
+  background: -webkit-linear-gradient(top, #fbff2d 0%,#ffd015 77%);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+}
+hr {
+  background-color: white;
+  border-top: .5px solid #8c8b8b;
+  margin: 12px 0px 12px 0;
+}
+.container-info {
+  padding: 15px;
+  margin-left:100px;
+  margin-right: 100px;
+}
+section {
+  margin-left:100px;
+  margin-right: 100px;
+}
+.profile-info {
+  display: inline-flex;
+  height:auto;
+  padding: 2% 5%;
+
+}
+.equipment {
+  height:30%;
+  width:80%;
+  padding: 5px;
+  border:15px solid;
+  border-image: url("https://assets.worldofwarcraft.com/static/components/SiteNav/sitenav-bar-subscribe-bg.162c5eb038c3052183669edced8e349a.jpg");
+  border-image-slice: 21 52 47 78;
+  border-image-repeat: stretch;
+  box-shadow: 0px 2px 12px 5px #000000;
+  float: right;
+}
+.item-header {
+  display: inline-flex;
+}
+.quality {
+  margin-left: 5px;
+}
+.pvp {
+  display: inline-flex;
+}
+.pvp-titles{
+    margin-left: 50px;
+    margin-right: 50px;
+    text-decoration: underline;
+}
+.scores {
+  display: inline-flex;
+}
+.pvp-won{
+  display: inline-block;
+}
+.pvp-scores{
+  margin-left: 50px;
+  margin-right: 50px;
+  text-align: center;
+}
+
+.guild {
+  width:30%;
+  max-height: 600px;
+  position: relative;
+  align-items: flex-start;
+  overflow: auto;
+  float:left;
+  margin-right:20px;
+  border: 15px solid;
+  border-image: url("https://assets.worldofwarcraft.com/static/components/SiteNav/sitenav-bar-subscribe-bg.162c5eb038c3052183669edced8e349a.jpg");
+  /* border-image: url("https://assets.worldofwarcraft.com/static/components/Box/Box-leather-grey-dark.0477a49460ddf3f97294112a1b372a06.jpg"); */
+  border-image-slice: 21 78 47 50;
+  border-image-repeat: stretch;
+  padding: 5px;
+  box-shadow: 0px 2px 12px 5px #000000;
+  margin-bottom:100px;
+}
+.guild::-webkit-scrollbar {
+    display: none;
+}
+.guild-info {
+  display: inline-flex;
+}
+.profile-body  {
+  height: auto;
+  margin-bottom: 100px;
+  padding: 2% 2%;
+}
+
+.avatar-container {
+  display: inline-flex;
+}
+.avatar-img {
+  margin-top: 12px;
+  width:30%;
+  float:left;
+}
+.top-info {
+  margin-left: 8px;
+  width:80%;
+  clear: both;
+}
+.top-text {
+  margin: 5px;
+}
+.text-indent {
+  margin-left: 12px;
+}
+.footer {
+  height: 20%;
+  background-color: gray;
+  text-align: center;
+}
+.container-fluid {
+  padding: 7% 15%;
+}
+footer {
+  padding: 2%;
+  clear:both;
+}
+#scroll-arrow {
+  visibility: hidden;
+}
+.arrow{
+  float: right;
+  width: 10%;
+  margin-right: 20px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 29rem;
+
+    /* transform: translate(-50%,-50%); */
+}
+.arrow span{
+    display: block;
+    width: 30px;
+    height: 30px;
+    border-bottom: 5px solid #06A8FF;
+    border-right: 5px solid #06A8FF;
+    transform: rotate(45deg);
+    margin: -10px;
+    animation: animate 2s infinite;
+}
+.arrow span:nth-child(2){
+    animation-delay: -0.2s;
+}
+.arrow span:nth-child(3){
+    animation-delay: -0.4s;
+}
+@keyframes animate {
+    0%{
+        opacity: 0;
+        transform: rotate(45deg) translate(-20px,-20px);
+    }
+    50%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+        transform: rotate(45deg) translate(20px,20px);
+    }
+}
+@keyframes animateUp {
+    0%{
+        opacity: 0;
+        transform: rotate(225deg) translate(-20px,-20px);
+    }
+    50%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+        transform: rotate(225deg) translate(20px,20px);
+    }
+}
