@@ -68,81 +68,82 @@ var contextTalents = {};
 
 app.get('/', function(req, res){
 
-  var url = "https://us.api.blizzard.com/profile/wow/character/tichondrius/oledeepo?namespace=profile-us&locale=en_US&access_token=" + token;
-  var equipmentSlot = {};
-  var equipmentName = {};
-  var equipmentQuality = {};
-  request(url, function(error, response, body){
-    var profile = JSON.parse(body);
-
-    var characterName = '';
-    var faction = '';
-    var race = ' ';
-    var characterClass = '';
-    var spec = '';
-    var realm = '';
-    var guild = '';
-    var level = '';
-    var achievementPoints = '';
-    var equippedItemLevel = '';
-    var specializations = '';
-    var contextTalents = '';
-    var equipSlot = [];
-    var equipName = [];
-    var equipQuality = [];
-    var playerAvatar = [];
-    var twoCr = '';
-    var threeRating = '';
-    var rbgCr = '';
-    var twoMatches = '';
-    var threeMatches = '';
-    var rbgMatches = '';
-    var twoWins = '';
-    var threeWins = '';
-    var rbgWins = '';
-    var twoLost = '';
-    var threeLost = '';
-    var rbgLost = '';
-
-
-    // console.log(profile);
-    res.render('dashboard',
-    {
-        characterName: characterName,
-        faction: faction,
-        race: race,
-        characterClass: characterClass,
-        spec: spec,
-        realm: realm,
-        guild: guild,
-        level: level,
-        points: achievementPoints,
-        itemLevel: equippedItemLevel,
-        talents: specializations,
-        contextTalents: contextTalents,
-        contextTalents: contextTalents,
-        equipmentSlot: equipmentSlot,
-        equipmentName: equipmentName,
-        equipmentQuality: equipmentQuality,
-        avatar: playerAvatar,
-        threeRating: threeRating,
-        twoCr: twoCr,
-        rbgCr: rbgCr,
-        twoMatches: twoMatches,
-        twoWins: twoWins,
-        twoLost: twoLost,
-        threeMatches: threeMatches,
-        threeWins: threeWins,
-        threeLost: threeLost,
-        rbgMatches: rbgMatches,
-        rbgWins: rbgWins,
-        rbgLost: rbgLost,
-        twoWinRate: '',
-        threeWinRate: '',
-        rbgWinRate: ''
-
-      });
-  });
+  // var url = "https://us.api.blizzard.com/profile/wow/character/tichondrius/oledeepo?namespace=profile-us&locale=en_US&access_token=" + token;
+  // var equipmentSlot = {};
+  // var equipmentName = {};
+  // var equipmentQuality = {};
+  // request(url, function(error, response, body){
+  //   var profile = JSON.parse(body);
+  //
+  //   var characterName = '';
+  //   var faction = '';
+  //   var race = ' ';
+  //   var characterClass = '';
+  //   var spec = '';
+  //   var realm = '';
+  //   var guild = '';
+  //   var level = '';
+  //   var achievementPoints = '';
+  //   var equippedItemLevel = '';
+  //   var specializations = '';
+  //   var contextTalents = '';
+  //   var equipSlot = [];
+  //   var equipName = [];
+  //   var equipQuality = [];
+  //   var playerAvatar = [];
+  //   var twoCr = '';
+  //   var threeRating = '';
+  //   var rbgCr = '';
+  //   var twoMatches = '';
+  //   var threeMatches = '';
+  //   var rbgMatches = '';
+  //   var twoWins = '';
+  //   var threeWins = '';
+  //   var rbgWins = '';
+  //   var twoLost = '';
+  //   var threeLost = '';
+  //   var rbgLost = '';
+  //
+  //
+  //   // console.log(profile);
+  //   res.render('dashboard',
+  //   {
+  //       characterName: characterName,
+  //       faction: faction,
+  //       race: race,
+  //       characterClass: characterClass,
+  //       spec: spec,
+  //       realm: realm,
+  //       guild: guild,
+  //       level: level,
+  //       points: achievementPoints,
+  //       itemLevel: equippedItemLevel,
+  //       talents: specializations,
+  //       contextTalents: contextTalents,
+  //       contextTalents: contextTalents,
+  //       equipmentSlot: equipmentSlot,
+  //       equipmentName: equipmentName,
+  //       equipmentQuality: equipmentQuality,
+  //       avatar: playerAvatar,
+  //       threeRating: threeRating,
+  //       twoCr: twoCr,
+  //       rbgCr: rbgCr,
+  //       twoMatches: twoMatches,
+  //       twoWins: twoWins,
+  //       twoLost: twoLost,
+  //       threeMatches: threeMatches,
+  //       threeWins: threeWins,
+  //       threeLost: threeLost,
+  //       rbgMatches: rbgMatches,
+  //       rbgWins: rbgWins,
+  //       rbgLost: rbgLost,
+  //       twoWinRate: '',
+  //       threeWinRate: '',
+  //       rbgWinRate: ''
+  //
+  //     });
+  // });
+  res.render("home");
 
 });
 
