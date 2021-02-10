@@ -7,7 +7,7 @@ const request = require('request');
 const fetch = require('node-fetch');
 var _ = require('lodash');
 const passport = require('passport');
-var BnetStrategy = require('passport-bnet').Strategy;
+// var BnetStrategy = require('passport-bnet').Strategy;
 
 // const getData = require('./modules/fetchMod');
 
@@ -26,14 +26,14 @@ var BNET_ID = process.env.CLIENT_ID;
 var BNET_SECRET = process.env.CLIENT_SECRET;
 var token = process.env.TOKEN;
 
-passport.use(new BnetStrategy({
-    clientID: BNET_ID,
-    clientSecret: BNET_SECRET,
-    callbackURL: "https://localhost:3000/auth/bnet/callback",
-    region: "us"
-}, function(accessToken, refreshToken, profile, done) {
-    return done(null, profile);
-}));
+// passport.use(new BnetStrategy({
+//     clientID: BNET_ID,
+//     clientSecret: BNET_SECRET,
+//     callbackURL: "https://localhost:3000/auth/bnet/callback",
+//     region: "us"
+// }, function(accessToken, refreshToken, profile, done) {
+//     return done(null, profile);
+// }));
 
 
 app.get('/spec', function(req, res){
@@ -213,24 +213,24 @@ app.get('/', function(req, res){
 //       });
 //
 // });
-app.get('/auth/bnet',
-    passport.authenticate('bnet'));
+// app.get('/auth/bnet',
+//     passport.authenticate('bnet'));
 
-app.get('/auth/bnet/callback',
-    passport.authenticate('bnet', { failureRedirect: '/home' }),
-    function(req, res){
-        res.redirect('/');
-    });
+// app.get('/auth/bnet/callback',
+//     passport.authenticate('bnet', { failureRedirect: '/home' }),
+//     function(req, res){
+//         res.redirect('/');
+//     });
 app.get("/home", function(req, res){
 
   res.render("home");
 });
 
-app.post("/auth/bnet/callback",
-  passport.authenticate('bnet', { failureRedirect: '/home' }),
-  function(req, res){
-      res.redirect('/');
-});
+// app.post("/auth/bnet/callback",
+//   passport.authenticate('bnet', { failureRedirect: '/home' }),
+//   function(req, res){
+//       res.redirect('/');
+// });
 
 
 
