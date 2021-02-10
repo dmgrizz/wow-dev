@@ -36,35 +36,35 @@ var token = process.env.TOKEN;
 // }));
 
 
-app.get('/spec', function(req, res){
-var specUrl = "https://us.api.blizzard.com/profile/wow/character/tichondrius/oledeepo/specializations?namespace=profile-us&locale=en_US&access_token=US3ZTYQAe8chSKLT7PUl6vDIldIxYYt71V";
-var contextTalents = {};
-
-  request(specUrl, function(error, response, body){
-    var specInfo = JSON.parse(body);
-    var pickedTalents = [];
-
-    for (var i = 0; i < specInfo.specializations.length; i++) {
-        // console.log(specInfo.specializations[0].talents[i]);
-        var specName = specInfo.active_specialization.name;
-        var character = specInfo.character.name;
-        console.log(character);
-          // specInfo.specializations.forEach((t) => {
-          //   console.log(t.specialization.name);
-          // });
-              // console.log(specInfo.specializations);
-          for (var x = 0; x < specInfo.specializations[0].talents.length; x++) {
-            // console.log(specInfo.specializations[0].talents[x].talent.name);
-            var picked = specInfo.specializations[0].talents[x].talent.name;
-            pickedTalents.push(picked);
-            // console.log(picked);
-          }
-        var picked2 = specInfo.specializations[1].talents[i].talent.name; // this is giviing me vengeance talents
-    }
-    contextTalents = pickedTalents
-    res.render('spec', {contextTalents: contextTalents, specName: specName, character: character});
-  });
-});
+// app.get('/spec', function(req, res){
+// var specUrl = "https://us.api.blizzard.com/profile/wow/character/tichondrius/oledeepo/specializations?namespace=profile-us&locale=en_US&access_token=US3ZTYQAe8chSKLT7PUl6vDIldIxYYt71V";
+// var contextTalents = {};
+//
+//   request(specUrl, function(error, response, body){
+//     var specInfo = JSON.parse(body);
+//     var pickedTalents = [];
+//
+//     for (var i = 0; i < specInfo.specializations.length; i++) {
+//         // console.log(specInfo.specializations[0].talents[i]);
+//         var specName = specInfo.active_specialization.name;
+//         var character = specInfo.character.name;
+//         console.log(character);
+//           // specInfo.specializations.forEach((t) => {
+//           //   console.log(t.specialization.name);
+//           // });
+//               // console.log(specInfo.specializations);
+//           for (var x = 0; x < specInfo.specializations[0].talents.length; x++) {
+//             // console.log(specInfo.specializations[0].talents[x].talent.name);
+//             var picked = specInfo.specializations[0].talents[x].talent.name;
+//             pickedTalents.push(picked);
+//             // console.log(picked);
+//           }
+//         var picked2 = specInfo.specializations[1].talents[i].talent.name; // this is giviing me vengeance talents
+//     }
+//     contextTalents = pickedTalents
+//     res.render('spec', {contextTalents: contextTalents, specName: specName, character: character});
+//   });
+// });
 
 app.get('/', function(req, res){
 
