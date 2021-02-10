@@ -507,8 +507,8 @@ var pvpRating = "https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/
   });
 });
 
+const PORT = process.env.PORT || 3000;
 
-
-app.listen(3000, function(){
+app.listen(PORT, function(){
   console.log('wow server started on 3000');
 });
