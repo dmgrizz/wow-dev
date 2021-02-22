@@ -2,14 +2,21 @@
 <div class="profile-body">
   <div class="header">
   <h1 id="wow-title">Wow Dashboard</h1>
-  <form class="" action="/" method="post">
-    <label class="gold-text"for="playerName">Player Name:</label>
-    <input id="playerName" type="text" name="playerName" value="">
-    <label class="gold-text" for="realmName">Realm Name:</label>
-    <input id="realmName" type="text" name="realmName" value="">
-    <button type="submit" name="button">Go</button>
+  <h6 class="gold-text">Player Search</h6>
+  <div class="dropdown">
+    <form class="" action="/" method="post">
+    <input id="playerName" name="playerName" autocomplete="off" type="text" placeholder="Search.." oninput="myFunction()" onkeydown="filterFunction()" onkeyup="playerSearch()" >
+    <div  id="myDropdown" class="dropdown-content">
+      <!-- <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()"> -->
+      <div class="dp-list">
+        <h6 id="playerObj"></h6>
+      </div>
+    </div>
+    <button class="btn btn-dark" type="submit" name="button">Go</button>
+    </form>
 
-  </form>
+  </div>
+  <button class="gold-text back-btn" type="button" name="button"><a href="/">Go Back</a></button>
   </div>
     <div class="container-info">
       <div class="avatar-container">
@@ -29,7 +36,10 @@
       <hr>
       <h4>Faction: <%=faction%></h4>
       <h4>Race: <%=race%></h4>
-      <h4>Class: <%=characterClass%></h4>
+      <div class="char-div">
+        <h4>Class: </h4> <h4 id="char"class="char-class"><%=characterClass%></h4>
+      </div>
+
       <h4>Spec: <%=spec%></h4>
       <h4>Level: <%=level%></h4>
       <!-- <img src="https://render-us.worldofwarcraft.com/icons/56/inv_sword_39.jpg" alt=""> -->

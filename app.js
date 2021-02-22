@@ -7,11 +7,9 @@ const request = require('request');
 const fetch = require('node-fetch');
 var _ = require('lodash');
 const passport = require('passport');
-// var BnetStrategy = require('passport-bnet').Strategy;
+var BnetStrategy = require('passport-bnet').Strategy;
 
 // const getData = require('./modules/fetchMod');
-
-
 const app = express();
 
 app.use(express.static("public"));
@@ -25,214 +23,111 @@ app.use(bodyParser.urlencoded({extended: true}));
 var BNET_ID = process.env.CLIENT_ID;
 var BNET_SECRET = process.env.CLIENT_SECRET;
 var token = process.env.TOKEN;
+var wcToken = process.env.WCLOG_TOKEN;
 
-// passport.use(new BnetStrategy({
-//     clientID: BNET_ID,
-//     clientSecret: BNET_SECRET,
-//     callbackURL: "https://localhost:3000/auth/bnet/callback",
-//     region: "us"
-// }, function(accessToken, refreshToken, profile, done) {
-//     return done(null, profile);
-// }));
+passport.use(new BnetStrategy({
+    clientID: BNET_ID,
+    clientSecret: BNET_SECRET,
+    callbackURL: "https://localhost:3000/auth/bnet/callback",
+    region: "us"
+}, function(accessToken, refreshToken, profile, done) {
+    return done(null, profile);
+}));
 
-
-// app.get('/spec', function(req, res){
-// var specUrl = "https://us.api.blizzard.com/profile/wow/character/tichondrius/oledeepo/specializations?namespace=profile-us&locale=en_US&access_token=US3ZTYQAe8chSKLT7PUl6vDIldIxYYt71V";
-// var contextTalents = {};
-//
-//   request(specUrl, function(error, response, body){
-//     var specInfo = JSON.parse(body);
-//     var pickedTalents = [];
-//
-//     for (var i = 0; i < specInfo.specializations.length; i++) {
-//         // console.log(specInfo.specializations[0].talents[i]);
-//         var specName = specInfo.active_specialization.name;
-//         var character = specInfo.character.name;
-//         console.log(character);
-//           // specInfo.specializations.forEach((t) => {
-//           //   console.log(t.specialization.name);
-//           // });
-//               // console.log(specInfo.specializations);
-//           for (var x = 0; x < specInfo.specializations[0].talents.length; x++) {
-//             // console.log(specInfo.specializations[0].talents[x].talent.name);
-//             var picked = specInfo.specializations[0].talents[x].talent.name;
-//             pickedTalents.push(picked);
-//             // console.log(picked);
-//           }
-//         var picked2 = specInfo.specializations[1].talents[i].talent.name; // this is giviing me vengeance talents
-//     }
-//     contextTalents = pickedTalents
-//     res.render('spec', {contextTalents: contextTalents, specName: specName, character: character});
-//   });
-// });
 
 app.get('/', function(req, res){
-
-  // var url = "https://us.api.blizzard.com/profile/wow/character/tichondrius/oledeepo?namespace=profile-us&locale=en_US&access_token=" + token;
-  // var equipmentSlot = {};
-  // var equipmentName = {};
-  // var equipmentQuality = {};
-  // request(url, function(error, response, body){
-  //   var profile = JSON.parse(body);
-  //
-  //   var characterName = '';
-  //   var faction = '';
-  //   var race = ' ';
-  //   var characterClass = '';
-  //   var spec = '';
-  //   var realm = '';
-  //   var guild = '';
-  //   var level = '';
-  //   var achievementPoints = '';
-  //   var equippedItemLevel = '';
-  //   var specializations = '';
-  //   var contextTalents = '';
-  //   var equipSlot = [];
-  //   var equipName = [];
-  //   var equipQuality = [];
-  //   var playerAvatar = [];
-  //   var twoCr = '';
-  //   var threeRating = '';
-  //   var rbgCr = '';
-  //   var twoMatches = '';
-  //   var threeMatches = '';
-  //   var rbgMatches = '';
-  //   var twoWins = '';
-  //   var threeWins = '';
-  //   var rbgWins = '';
-  //   var twoLost = '';
-  //   var threeLost = '';
-  //   var rbgLost = '';
-  //
-  //
-  //   // console.log(profile);
-  //   res.render('dashboard',
-  //   {
-  //       characterName: characterName,
-  //       faction: faction,
-  //       race: race,
-  //       characterClass: characterClass,
-  //       spec: spec,
-  //       realm: realm,
-  //       guild: guild,
-  //       level: level,
-  //       points: achievementPoints,
-  //       itemLevel: equippedItemLevel,
-  //       talents: specializations,
-  //       contextTalents: contextTalents,
-  //       contextTalents: contextTalents,
-  //       equipmentSlot: equipmentSlot,
-  //       equipmentName: equipmentName,
-  //       equipmentQuality: equipmentQuality,
-  //       avatar: playerAvatar,
-  //       threeRating: threeRating,
-  //       twoCr: twoCr,
-  //       rbgCr: rbgCr,
-  //       twoMatches: twoMatches,
-  //       twoWins: twoWins,
-  //       twoLost: twoLost,
-  //       threeMatches: threeMatches,
-  //       threeWins: threeWins,
-  //       threeLost: threeLost,
-  //       rbgMatches: rbgMatches,
-  //       rbgWins: rbgWins,
-  //       rbgLost: rbgLost,
-  //       twoWinRate: '',
-  //       threeWinRate: '',
-  //       rbgWinRate: ''
-  //
-  //     });
-  // });
-  res.render("home");
-
+  var playerObj = ''
+  res.render("home", {playerObj: playerObj});
 });
 
-// app.get("/items", function(req, res){
-//     let equipmentIds = {};
-//     // var playerName = _.lowerCase(req.body.playerName);
-//     // var newName = playerName.replace(/\s/g, '');
-//     // var realmName = _.lowerCase(req.body.realmName);
-//     // var newRealm = realmName.replace(/\s/g, '');
-//       // console.log(mediaLink);
-//       let equipImages = [];
-//       let equippedIds = [];
-//       let equipmentRenders = {};
-//       // <a class="epic" href="//www.wowhead.com/item=180106" rel="pcs=180106:183040:180920:183033:178795:175883:178832:183005:178819:178731:178871:178870:184052:175884:182407:179328&amp;spec=577&amp;ilvl=184&amp;transmog=112883&amp;bonus=6807:6652:6935:1498:6646&amp;gems=173129:&amp;">
-//       // Vicious Surge Faceguard
-//       // </a>
-//
-//     fetch("https://us.api.blizzard.com/profile/wow/character/tichondrius/oledeepo/equipment?namespace=profile-us&locale=en_US&access_token=USiHuTIJ086HaF5AhUrtVmzgAB8tQxBHpa")
-//     .then(response => response.json())
-//     .then(dataItem => {
-//         var equipment = dataItem.equipped_items;
-//         // // console.log(equipment);
-//         //
-//         //   for (var i = 0; i < equipment.length; i++) {
-//         //     var itemId = equipment[i].item.id;
-//             // equipImages.push(dataItem);
-//           // }
-//           // var equipment = equipImages[0].equipped_items;
-//           // console.log(equipment.item);
-//
-//            for (var i = 0; i < equipment.length; i++) {
-//              var itemId = equipment[i].item.id;
-//
-//              equippedIds.push(itemId);
-//           }
-//            // console.log(equippedIds);
-//            equipmentIds = equippedIds;
-//            console.log(equipmentIds);
-//              let urls = [];
-//            for (var i = 0; i < equipment.length; i++) {
-//
-//                 var itemImage = "https://us.api.blizzard.com/data/wow/media/item/"+ equipmentIds[i] +"?namespace=static-us&locale=en_US&access_token=USiHuTIJ086HaF5AhUrtVmzgAB8tQxBHpa";
-//                 renderImages = itemImage;
-//                   // console.log(renderImages);
-//                 equipmentImages = renderImages;
-//
-//
-//                 fetch("https://us.api.blizzard.com/data/wow/media/item/"+ equipmentIds[i] +"?namespace=static-us&locale=en_US&access_token=USiHuTIJ086HaF5AhUrtVmzgAB8tQxBHpa")
-//                   .then(response => response.json())
-//                   .then(dataItem => {
-//
-//                     var newItem = dataItem.assets[0].value;
-//                     urls.push(newItem);
-//                     // console.log(urls);
-//                     equipmentRenders = urls;
-//                   })
-//                   // console.log(equipmentRenders);
-//
-//
-//             }
-//             res.render("items", {equipmentR: urls});
-//
-//
-//     }).catch(function(error){
-//           console.log(error);
-//           res.send("<h2>Name is not found!! please check if the name is correct and the realm</h2>");
-//       });
-//
-// });
-// app.get('/auth/bnet',
-//     passport.authenticate('bnet'));
 
-// app.get('/auth/bnet/callback',
-//     passport.authenticate('bnet', { failureRedirect: '/home' }),
-//     function(req, res){
-//         res.redirect('/');
-//     });
-app.get("/home", function(req, res){
+app.post("/playerSearch", function(req, res){
 
-  res.render("home");
+  let allRealms = {};
+  let whyTF = {};
+  var playerName = _.lowerCase(req.body.playerName);
+
+  var newName = playerName.replace(/\s/g, '');
+
+    let anotherOne = "https://us.api.blizzard.com/data/wow/realm/index?namespace=dynamic-us&locale=en_US&access_token=" + token;
+    let allPlayerRealms = {};
+    const getRealms = async anotherOne => {
+      try {
+          const response = await fetch(anotherOne);
+          const json = await response.json();
+          // console.log(json);
+          var realmArray = [];
+          let newPlayerUrls = [];
+
+          var realmList = json.realms;
+          for (var i = 0; i < json.realms.length; i++) {
+            var realms = json.realms[i].name;
+            realmArray.push(realms);
+            allRealms = realmArray;
+
+            var lowerCaseRealms = _.lowerCase(allRealms[i]);
+            var newRealm = lowerCaseRealms.replace(/\s/g, '');
+            let realmUrls = "https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"?namespace=profile-us&locale=en_US&access_token=" + token;
+
+            newPlayerUrls.push(realmUrls);
+          }
+           allPlayerRealms = newPlayerUrls;
+
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getRealms(anotherOne);
+
+    const newRealmInfo = async () => {
+      await getRealms(anotherOne);
+      let requests = allPlayerRealms.map(allPlayerRealm => fetch(allPlayerRealm));
+      Promise.all(requests)
+      .then(responses => {
+        let gRes = [];
+          for (var i = 0; i < responses.length; i++) {
+            if(responses[i].status === 200){
+              gRes = responses[i].url;
+              const getMoreRealms = async gRes => {
+                try {
+                    var dropDown = [];
+                    const response = await fetch(gRes);
+                    const json = await response.json();
+                    dropDown = json;
+
+                    var playerObj = {
+                      name: dropDown.name,
+                      realm: dropDown.realm.name,
+                    }
+
+                } catch (error) {
+                  console.log(error);
+                }
+              };
+              getMoreRealms(gRes);
+            }
+        }
+        return responses;
+      })
+    }
+    res.render("home");
+    newRealmInfo();
 });
 
-// app.post("/auth/bnet/callback",
-//   passport.authenticate('bnet', { failureRedirect: '/home' }),
-//   function(req, res){
-//       res.redirect('/');
-// });
+app.get('/auth/bnet',
+    passport.authenticate('bnet'));
 
+app.get('/auth/bnet/callback',
+    passport.authenticate('bnet', { failureRedirect: '/home' }),
+    function(req, res){
+        res.redirect('/');
+    });
 
+app.post("/auth/bnet/callback",
+  passport.authenticate('bnet', { failureRedirect: '/home' }),
+  function(req, res){
+      res.redirect('/');
+});
 
 app.post ('/', function(req, res){
 
@@ -246,9 +141,10 @@ app.post ('/', function(req, res){
   let equipmentSocket = {};
 
   var playerName = _.lowerCase(req.body.playerName);
-  var newName = playerName.replace(/\s/g, '');
-  var realmName = _.lowerCase(req.body.realmName);
-  var newRealm = realmName.replace(/\s/g, '');
+  var newS = playerName.split(' ');
+  var newName = newS[0];
+  var newRealm = newS[1];
+  console.log(newS);
 
   Promise.all([
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/specializations?namespace=profile-us&locale=en_US&access_token=" + token),
@@ -262,10 +158,15 @@ app.post ('/', function(req, res){
     }));
   }).then(function(data){
     //log the data to console would do something with both sets of data here
+    // var playerName = _.lowerCase(req.body.playerName);
+    // var newName = playerName.replace(/\s/g, '');
+    // var realmName = _.lowerCase(req.body.realmName);
+    // var newRealm = realmName.replace(/\s/g, '');
     var playerName = _.lowerCase(req.body.playerName);
-    var newName = playerName.replace(/\s/g, '');
-    var realmName = _.lowerCase(req.body.realmName);
-    var newRealm = realmName.replace(/\s/g, '');
+    var newS = playerName.split(' ');
+    var newName = newS[0];
+    var newRealm = newS[1];
+
 
     var equipment = data[2].equipped_items;
     var equipSlot = [];
@@ -287,7 +188,6 @@ app.post ('/', function(req, res){
       if(socket){
       var socketSlot = "&gems=" + socket[0].item.id;
           socketEquip.push(socketSlot);
-
       }
       equipSlot.push(slot);
       equipName.push(itemName);

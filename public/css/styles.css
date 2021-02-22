@@ -17,6 +17,21 @@ body {
   background-color: #20252c;
   padding: 10px 15px;
 }
+.dp {
+
+}
+.dp-list {
+  display: inline-block;
+}
+.back-btn {
+  float: right;
+}
+.char-div {
+  display: inline-flex;
+}
+.char-class{
+  margin-left: 5px;
+}
 
 /* HOME PAGE CSS */
 .sign-in {
@@ -234,4 +249,88 @@ footer {
         opacity: 0;
         transform: rotate(225deg) translate(20px,20px);
     }
+}
+
+
+/* DROP DOWN LIST  */
+
+/* Dropdown Button */
+.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #3e8e41;
+}
+
+/* The search field */
+#myInput {
+  box-sizing: border-box;
+  background-image: url('searchicon.png');
+  background-position: 14px 12px;
+  background-repeat: no-repeat;
+  font-size: 16px;
+  padding: 14px 20px 12px 45px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+/* The search field when it gets focus/clicked on */
+#myInput:focus {outline: 3px solid #ddd;}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f6f6f6;
+  min-width: 230px;
+  border: 1px solid #ddd;
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 2px 2px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
+
+
+/* special character */
+.long-press-popup li {
+	display:inline-block;
+	list-style: none;
+	padding: 10px 34px;
+	margin-right: 20px;
+	margin-bottom: 20px;
+	background: #000000;
+	cursor:pointer;
+	color: white;
+	border: solid 4px black;
+	border-radius: 12px;
+}
+.long-press-popup .selected {
+	border-color: white;
+	-webkit-box-shadow: 0 0 18px rgba(255, 255, 255, 0.75);
+	-moz-box-shadow:    0 0 18px rgba(255, 255, 255, 0.75);
+	box-shadow:         0 0 18px rgba(255, 255, 255, 0.75);
 }

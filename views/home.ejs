@@ -4,14 +4,20 @@
 
 <div class="header">
 <h1 id="wow-title">Wow Dashboard</h1>
-<form class="" action="/" method="post">
-  <label class="gold-text"for="playerName">Player Name:</label>
-  <input id="playerName" type="text" name="playerName" value="">
-  <label class="gold-text" for="realmName">Realm Name:</label>
-  <input id="realmName" type="text" name="realmName" value="">
+<h6 class="gold-text">Player Search</h6>
+<div class="dropdown">
+  <form class="" action="/" method="post">
+  <input id="playerName" name="playerName" autocomplete="off" type="text" placeholder="Search.." oninput="myFunction()" onkeydown="filterFunction()" onkeyup="playerSearch()" >
+  <div id="myDropdown" class="dropdown-content">
+    <!-- <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()"> -->
+    <div class="dp-list">
+      <div id="playerObj"></div>
+    </div>
+  </div>
   <button class="btn btn-dark" type="submit" name="button">Go</button>
+  </form>
 
-</form>
+</div>
 </div>
 
 
@@ -33,4 +39,17 @@
 
 
 </div>
+
+<script type="text/javascript">
+  // $('#autocomplete').autocomplete({
+  //     serviceUrl: 'https://us.api.blizzard.com/data/wow/realm/index?namespace=dynamic-us&locale=en_US&access_token=USKQzyyZqskrj6obRTuz3PAwtb4FuR0QNF',
+  //     onSelect: function (suggestion) {
+  //         alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
+  //     }
+  // });
+  // document.querySelectorAll("realm").addEventListener("mouseover", mouseOver);
+
+
+</script>
+
 <%- include('partials/footer') %>
