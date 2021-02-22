@@ -250,6 +250,7 @@ app.post ('/', function(req, res){
           const response = await fetch(guildUrl);
           const json = await response.json();
           guildShit = json;
+          console.log(guildShit);
       } catch (error) {
         console.log(error);
       }
@@ -261,6 +262,7 @@ app.post ('/', function(req, res){
           const response = await fetch(guildRoster);
           const json = await response.json();
           gRoster = json;
+
       } catch (error) {
         console.log(error);
       }
@@ -323,12 +325,18 @@ var pvpRating = "https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/
       let roster = [];
       let guildMembers = guildShit.member_count;
       let guildPoints = guildShit.achievement_points;
+      console.log(guildMembers);
+        if(guildMembers > 1) {
+          for (var i = 0, l = gRoster.members.length; i < l; i++) {
+            var rosterNames = gRoster.members[i];
+            let memberNames = rosterNames.character.name;
+            roster.push(memberNames);
+          }
+        }
 
-      for (var i = 0, l = gRoster.members.length; i < l; i++) {
-        var rosterNames = gRoster.members[i];
-        let memberNames = rosterNames.character.name;
-        roster.push(memberNames);
-      }
+
+
+
       newGuildRoster = roster;
       // console.log(newGuildRoster);
       let threeRating = rating.rating;

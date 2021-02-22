@@ -1,13 +1,13 @@
 function onPlayerInput(){
     var input = document.getElementById("playerName").value;
-    // console.log(input.toLowerCase());
 }
 
-$("#myDropdown").click(function(e) {
+$(".dp-list").click(function(e) {
   // var input = document.getElementById("playerName").value;
   e.preventDefault();
-  console.log(e.target.innerHTML);
-  var value = e.target.innerHTML;
+  // var dropTarget = $('#playerA');
+  // console.log(dropTarget);
+  var value = e.target.innerText;
   var input = $('#playerName');
   input.val(value);
   document.getElementById("myDropdown").classList.remove("show");
