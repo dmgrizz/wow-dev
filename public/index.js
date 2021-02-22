@@ -38,7 +38,7 @@ function playerSearch() {
     let allRealms = {};
     var name = input.toLowerCase();
     var newName = name.replace(/\s/g, '');
-    let anotherOne = "https://us.api.blizzard.com/data/wow/realm/index?namespace=dynamic-us&locale=en_US&access_token=US3UGbTh6EEcouw5ZbJPFqfXMvArcncuiB";
+    let anotherOne = "https://us.api.blizzard.com/data/wow/realm/index?namespace=dynamic-us&locale=en_US&access_token=USpTe5buDjWE1mW51FrZqOXqtWfLJO5fix";
 
       const getRealms = async anotherOne => {
         try {
