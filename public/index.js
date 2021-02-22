@@ -103,9 +103,9 @@ function playerSearch() {
                           name: json[i].name,
                           realm: json[i].realm
                         }
-
-                        // console.log(playerObj);
-                         document.getElementById('playerObj').innerHTML += '<a href="#" id="playerA" class="dp-name">' +  playerObj.name + "-" + playerObj.realm; + '</a>'
+                        var playerRegion = json[i].region;
+                        console.log(playerRegion);
+                         document.getElementById('playerObj').innerHTML += '<a href="#" id="playerA" class="dp-name">' +  playerObj.name + "-" + playerObj.realm + "-" + playerRegion + '</a>'
 
 
                   } catch (error) {
