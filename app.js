@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
@@ -8,7 +8,9 @@ const fetch = require('node-fetch');
 var _ = require('lodash');
 const passport = require('passport');
 var BnetStrategy = require('passport-bnet').Strategy;
-
+const refresh = require('./routes/token');
+// const guildMod = require('./routes/guild');
+// const getToken = require('./routes/getToken');
 // const getData = require('./modules/fetchMod');
 const app = express();
 
@@ -20,10 +22,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 // app.use(passport.initialize());
 // app.use(passport.session());
 // app.use(session({ }));
-var BNET_ID = process.env.CLIENT_ID;
-var BNET_SECRET = process.env.CLIENT_SECRET;
-var token = process.env.TOKEN;
+const BNET_ID = process.env.CLIENT_ID;
+const BNET_SECRET = process.env.CLIENT_SECRET;
+// var token = process.env.TOKEN;
 var wcToken = process.env.WCLOG_TOKEN;
+
 
 passport.use(new BnetStrategy({
     clientID: BNET_ID,
@@ -31,100 +34,43 @@ passport.use(new BnetStrategy({
     callbackURL: "https://localhost:3000/auth/bnet/callback",
     region: "us"
 }, function(accessToken, refreshToken, profile, done) {
+
     return done(null, profile);
 }));
+// console.log(BnetStrategy);
 
+var clientToken = '';
+const getToken = async () => {
+try {
+  const response = refresh.createAccessToken();
+  const json = await response;
+   // console.log(json);
+   clientToken = json;
+
+} catch(error) {
+  console.log(error);
+  }
+}
+getToken();
 
 app.get('/', function(req, res){
-  var playerObj = ''
+
+  var playerObj = '';
   res.render("home", {playerObj: playerObj});
-});
-
-
-app.post("/playerSearch", function(req, res){
-
-  let allRealms = {};
-  let whyTF = {};
-  var playerName = _.lowerCase(req.body.playerName);
-
-  var newName = playerName.replace(/\s/g, '');
-
-    let anotherOne = "https://us.api.blizzard.com/data/wow/realm/index?namespace=dynamic-us&locale=en_US&access_token=" + token;
-    let allPlayerRealms = {};
-    const getRealms = async anotherOne => {
-      try {
-          const response = await fetch(anotherOne);
-          const json = await response.json();
-          // console.log(json);
-          var realmArray = [];
-          let newPlayerUrls = [];
-
-          var realmList = json.realms;
-          for (var i = 0; i < json.realms.length; i++) {
-            var realms = json.realms[i].name;
-            realmArray.push(realms);
-            allRealms = realmArray;
-
-            var lowerCaseRealms = _.lowerCase(allRealms[i]);
-            var newRealm = lowerCaseRealms.replace(/\s/g, '');
-            let realmUrls = "https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"?namespace=profile-us&locale=en_US&access_token=" + token;
-
-            newPlayerUrls.push(realmUrls);
-          }
-           allPlayerRealms = newPlayerUrls;
-
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getRealms(anotherOne);
-
-    const newRealmInfo = async () => {
-      await getRealms(anotherOne);
-      let requests = allPlayerRealms.map(allPlayerRealm => fetch(allPlayerRealm));
-      Promise.all(requests)
-      .then(responses => {
-        let gRes = [];
-          for (var i = 0; i < responses.length; i++) {
-            if(responses[i].status === 200){
-              gRes = responses[i].url;
-              const getMoreRealms = async gRes => {
-                try {
-                    var dropDown = [];
-                    const response = await fetch(gRes);
-                    const json = await response.json();
-                    dropDown = json;
-
-                    var playerObj = {
-                      name: dropDown.name,
-                      realm: dropDown.realm.name,
-                    }
-
-                } catch (error) {
-                  console.log(error);
-                }
-              };
-              getMoreRealms(gRes);
-            }
-        }
-        return responses;
-      })
-    }
-    res.render("home");
-    newRealmInfo();
 });
 
 app.get('/auth/bnet',
     passport.authenticate('bnet'));
 
 app.get('/auth/bnet/callback',
-    passport.authenticate('bnet', { failureRedirect: '/home' }),
+    passport.authenticate('bnet', { failureRedirect: '/' }),
     function(req, res){
+        console.log(accessToken);
         res.redirect('/');
     });
 
 app.post("/auth/bnet/callback",
-  passport.authenticate('bnet', { failureRedirect: '/home' }),
+  passport.authenticate('bnet', { failureRedirect: '/' }),
   function(req, res){
       res.redirect('/');
 });
@@ -144,30 +90,33 @@ app.post ('/', function(req, res){
   var newS = playerName.split(' ');
   var newName = newS[0];
   var newRealm = newS[1];
-  console.log(newS);
+  // console.log(newS);
+
+  const exportToken = async () => { // hopefully this is going to refresh my token each day for client
+
+    await getToken();
+    // not sure if i should put an if statement
+    var token;
+    console.log(clientToken.access_token);
+    token = clientToken.access_token;
 
   Promise.all([
-    fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/specializations?namespace=profile-us&locale=en_US&access_token=" + token),
-    fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"?namespace=profile-us&locale=en_US&access_token=" + token),
-    fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/equipment?namespace=profile-us&locale=en_US&access_token=" + token),
-    fetch("https://us.api.blizzard.com/data/wow/media/item/"+equipmentIds+"?namespace=static-us&locale=en_US&access_token=" + token),
-    fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/character-media?namespace=profile-us&locale=en_US&access_token=" + token)
+    fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/specializations?namespace=profile-us&locale=en_US&access_token=" + token), // TO GET PLAYER SPECILIZATION INFO TALENTS ETC.
+    fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"?namespace=profile-us&locale=en_US&access_token=" + token), //TO GET PLAYER PROFILE INFO
+    fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/equipment?namespace=profile-us&locale=en_US&access_token=" + token), // TO GET PLAYER EQUIPMENT INFO
+    fetch("https://us.api.blizzard.com/data/wow/media/item/"+equipmentIds+"?namespace=static-us&locale=en_US&access_token=" + token), // FOR PLAYER EQUIPEMENT MEDIA PICTURES?? MIGHT NOT ACTUALLY BE USING THIS
+    fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/character-media?namespace=profile-us&locale=en_US&access_token=" + token) //THIS IS FOR PLAYER AVATAR PICTURE
   ]).then(function(responses){
     return Promise.all(responses.map(function(response){
       return response.json();
     }));
   }).then(function(data){
-    //log the data to console would do something with both sets of data here
-    // var playerName = _.lowerCase(req.body.playerName);
-    // var newName = playerName.replace(/\s/g, '');
-    // var realmName = _.lowerCase(req.body.realmName);
-    // var newRealm = realmName.replace(/\s/g, '');
     var playerName = _.lowerCase(req.body.playerName);
     var newS = playerName.split(' ');
     var newName = newS[0];
     var newRealm = newS[1];
 
-
+    // PLAYER EQUIPMENT
     var equipment = data[2].equipped_items;
     var equipSlot = [];
     var equipName = [];
@@ -250,7 +199,7 @@ app.post ('/', function(req, res){
           const response = await fetch(guildUrl);
           const json = await response.json();
           guildShit = json;
-          console.log(guildShit);
+          // console.log(guildShit);
       } catch (error) {
         console.log(error);
       }
@@ -278,7 +227,7 @@ const getTwoRating = async twoRating => {
     const response = await fetch(twoRating);
     const json = await response.json();
      ratingTwo = json;
-     console.log(ratingTwo);
+     // console.log(ratingTwo);
   } catch(error) {
     console.log(error);
   }
@@ -325,7 +274,7 @@ var pvpRating = "https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/
       let roster = [];
       let guildMembers = guildShit.member_count;
       let guildPoints = guildShit.achievement_points;
-      console.log(guildMembers);
+      // console.log(guildMembers);
         if(guildMembers > 1) {
           for (var i = 0, l = gRoster.members.length; i < l; i++) {
             var rosterNames = gRoster.members[i];
@@ -333,12 +282,10 @@ var pvpRating = "https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/
             roster.push(memberNames);
           }
         }
-
-
-
-
       newGuildRoster = roster;
       // console.log(newGuildRoster);
+
+      //PVP RATING WIN PERCENTAGE VARIABLES
       let threeRating = rating.rating;
       let twoCr = ratingTwo.rating;
       let rbgCr = ratingRbg.rating;
@@ -348,23 +295,22 @@ var pvpRating = "https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/
       let twoLost = ratingTwo.season_match_statistics.lost;
       let twoWinRate = (twoWins / twoMatches) * 100;
       let roundedTwos = _.round(twoWinRate, 1);
-      console.log(roundedTwos);
+      // console.log(roundedTwos);
 
       let threeMatches = rating.season_match_statistics.played;
       let threeWins = rating.season_match_statistics.won;
       let threeLost = rating.season_match_statistics.lost;
       let threeWinRate = (threeWins / threeMatches) * 100;
       let roundedThrees = _.round(threeWinRate, 1)
-      console.log(roundedThrees);
+      // console.log(roundedThrees);
 
       let rbgMatches = ratingRbg.season_match_statistics.played;
       let rbgWins = ratingRbg.season_match_statistics.won;
       let rbgLost = ratingRbg.season_match_statistics.lost;
       let rbgWinRate = (rbgWins / rbgMatches) * 100;
       let roundedRbgs = _.round(rbgWinRate, 1);
-      console.log(roundedRbgs);
+      // console.log(roundedRbgs);
 
-      // console.log(twoMatches);
       res.render("dashboard", {
                 characterName: data[1].name,
                 faction: data[1].faction.name,
@@ -405,7 +351,6 @@ var pvpRating = "https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/
 
       });
     }
-
     guildInfo();
 
   })
@@ -413,6 +358,8 @@ var pvpRating = "https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/
       console.log(error);
       res.send("<h2>Name is not found!! please check if the name is correct and the realm</h2>");
   });
+}
+exportToken();
 });
 
 const PORT = process.env.PORT || 3000;

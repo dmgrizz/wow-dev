@@ -32,58 +32,42 @@ $(document).click(function (e) {
     }
 })
 
-  let allPlayerRealms = {};
-function playerSearch() {
+
+let allPlayerRealms = {};
+
+function playerSearch(){
+
     let input = document.getElementById("playerName").value;
-    let allRealms = {};
     var name = input.toLowerCase();
     var newName = name.replace(/\s/g, '');
-    let anotherOne = "https://us.api.blizzard.com/data/wow/realm/index?namespace=dynamic-us&locale=en_US&access_token=USpTe5buDjWE1mW51FrZqOXqtWfLJO5fix";
+    var searching = "https://srv1.api.check-pvp.fr/v1/characters/search/"+ newName +"?region=us"
 
-      const getRealms = async anotherOne => {
-        try {
-            const response = await fetch(anotherOne);
-            const json = await response.json();
-            // console.log(json);
-            var realmArray = [];
-            let newPlayerUrls = [];
-            var realmList = json.realms;
-            var searching = "https://srv1.api.check-pvp.fr/v1/characters/search/"+ newName +"?region=us"
-            // console.log(searching)
-            // for (var i = 0; i < json.realms.length; i++) {
-            //   var realms = json.realms[i].slug;
-            //
-            //   realmArray.push(realms);
-            //   allRealms = realmArray;
-            //   // var lowerCaseRealms = allRealms[i].toLowerCase(); used these to get lower case and remove spaces before using .slug
-            //   // var newRealm = lowerCaseRealms.replace(/\s/g, '');
-            //
-            //
-            //   let realmUrls = "https://us.api.blizzard.com/profile/wow/character/"+allRealms[i]+"/"+newName+"?namespace=profile-us&locale=en_US&access_token=USMfqSFt6cD5w8tbqgo4czeSJTV2fdzj1K";
-            //   newPlayerUrls.push(realmUrls);
-            // }
-              newPlayerUrls.push(searching);
-              allPlayerRealms = newPlayerUrls;
+    const getPlayers = async searching => {
+      try {
+          const response = await fetch(searching);
+          const json = await response.json();
 
-        } catch (error) {
+          let newPlayerUrls = [];
+          newPlayerUrls.push(searching);
+          allPlayerRealms = newPlayerUrls;
 
-        }
-      };
-      getRealms(anotherOne);
 
-      let dropDownInfo = {};
-      const newRealmInfo = async () => {
-        await getRealms(anotherOne);
-        let requests = allPlayerRealms.map(allPlayerRealm => fetch(allPlayerRealm));
-        Promise.all(requests)
-        .then(responses => {
-          let input = document.getElementById("playerName").value;
-          let gRes = [];
-          let inner = [];
-          let nameArray = [];
-          let realmArrayName = [];
-          // console.log(responses);
-            for (var i = 0; i < responses.length; i++) {
+
+      } catch (error) {
+
+      }
+    };
+    getPlayers(searching);
+
+    let dropDownInfo = {};
+    const newRealmInfo = async () => {
+      await getPlayers(searching);
+      let requests = allPlayerRealms.map(allPlayerRealm => fetch(allPlayerRealm));
+      Promise.all(requests)
+      .then(responses => {
+        let input = document.getElementById("playerName").value;
+        let gRes = [];
+        for (var i = 0; i < responses.length; i++) {
               if(responses[i].ok === true){
                 // console.log(responses[i]);
                 let status = responses[i].status === 200;
@@ -91,35 +75,121 @@ function playerSearch() {
                   gRes = responses[i].url;
                 }
 
-                // console.log(status);
-                // console.log(gRes);
-                const getMoreRealms = async gRes => {
-                  try {
-                      var dropDown = [];
-                      const response = await fetch(gRes);
-                      const json = await response.json();
-                      console.log(json[i]);
-                        var playerObj = {
-                          name: json[i].name,
-                          realm: json[i].realm
-                        }
-                        var playerRegion = json[i].region;
-                        console.log(playerRegion);
-                         document.getElementById('playerObj').innerHTML += '<a href="#" id="playerA" class="dp-name">' +  playerObj.name + "-" + playerObj.realm + "-" + playerRegion + '</a>'
+              const getMoreRealms = async gRes => {
+                try {
+                    var dropDown = [];
+                    const response = await fetch(gRes);
+                    const json = await response.json();
+                    // console.log(json[i]);
+                      var playerObj = {
+                        name: json[i].name,
+                        realm: json[i].realm
+                      }
+                      console.log(playerObj);
+                      var playerRegion = json[i].region;
+                      console.log(playerRegion);
+                       document.getElementById('playerObj').innerHTML += '<a href="#" id="playerA" class="dp-name">' +  playerObj.name + "-" + playerObj.realm + "-" + playerRegion + '</a>'
 
 
-                  } catch (error) {
-                    // console.log(error);'<p class="dp">'  + '</p>'
-                  }
-                }; // getMoreRealms
-                getMoreRealms(gRes);
-              }
-            } //for loop
-
-          })// .then response
-        } // newRealInfo async
-      newRealmInfo();
-  } //playerSearch function
+                } catch (error) {
+                  // console.log(error);'<p class="dp">'  + '</p>'
+                }
+              }; // getMoreRealms
+              getMoreRealms(gRes);
+            }
+          }
+        })// .then response
+      } // newRealInfo async
+    newRealmInfo();
+  }
+// function playerSearch() {
+//
+//     let input = document.getElementById("playerName").value;
+//     let allRealms = {};
+//     var name = input.toLowerCase();
+//     var newName = name.replace(/\s/g, '');
+//     let anotherOne = "https://us.api.blizzard.com/data/wow/realm/index?namespace=dynamic-us&locale=en_US&access_token=USpTe5buDjWE1mW51FrZqOXqtWfLJO5fix";
+//
+//       const getRealms = async anotherOne => {
+//         try {
+//             const response = await fetch(anotherOne);
+//             const json = await response.json();
+//             // console.log(json);
+//             var realmArray = [];
+//             let newPlayerUrls = [];
+//             var realmList = json.realms;
+//             var searching = "https://srv1.api.check-pvp.fr/v1/characters/search/"+ newName +"?region=us"
+//             // console.log(searching)
+//             // for (var i = 0; i < json.realms.length; i++) {
+//             //   var realms = json.realms[i].slug;
+//             //
+//             //   realmArray.push(realms);
+//             //   allRealms = realmArray;
+//             //   // var lowerCaseRealms = allRealms[i].toLowerCase(); used these to get lower case and remove spaces before using .slug
+//             //   // var newRealm = lowerCaseRealms.replace(/\s/g, '');
+//             //
+//             //
+//             //   let realmUrls = "https://us.api.blizzard.com/profile/wow/character/"+allRealms[i]+"/"+newName+"?namespace=profile-us&locale=en_US&access_token=USMfqSFt6cD5w8tbqgo4czeSJTV2fdzj1K";
+//             //   newPlayerUrls.push(realmUrls);
+//             // }
+//               newPlayerUrls.push(searching);
+//               allPlayerRealms = newPlayerUrls;
+//
+//         } catch (error) {
+//
+//         }
+//       };
+//       getRealms(anotherOne);
+//
+//       let dropDownInfo = {};
+//       const newRealmInfo = async () => {
+//         await getRealms(anotherOne);
+//         let requests = allPlayerRealms.map(allPlayerRealm => fetch(allPlayerRealm));
+//         Promise.all(requests)
+//         .then(responses => {
+//           let input = document.getElementById("playerName").value;
+//           let gRes = [];
+//           let inner = [];
+//           let nameArray = [];
+//           let realmArrayName = [];
+//           // console.log(responses);
+//             for (var i = 0; i < responses.length; i++) {
+//               if(responses[i].ok === true){
+//                 // console.log(responses[i]);
+//                 let status = responses[i].status === 200;
+//                 if(status){
+//                   gRes = responses[i].url;
+//                 }
+//
+//                 // console.log(status);
+//                 // console.log(gRes);
+//                 const getMoreRealms = async gRes => {
+//                   try {
+//                       var dropDown = [];
+//                       const response = await fetch(gRes);
+//                       const json = await response.json();
+//                       console.log(json[i]);
+//                         var playerObj = {
+//                           name: json[i].name,
+//                           realm: json[i].realm
+//                         }
+//                         var playerRegion = json[i].region;
+//                         console.log(playerRegion);
+//                          document.getElementById('playerObj').innerHTML += '<a href="#" id="playerA" class="dp-name">' +  playerObj.name + "-" + playerObj.realm + "-" + playerRegion + '</a>'
+//
+//
+//                   } catch (error) {
+//                     // console.log(error);'<p class="dp">'  + '</p>'
+//                   }
+//                 }; // getMoreRealms
+//                 getMoreRealms(gRes);
+//               }
+//             } //for loop
+//
+//           })// .then response
+//         } // newRealInfo async
+//       newRealmInfo();
+//   } //playerSearch function
 
 var input, filter, ul, li, a, i, cName;
   function filterFunction() {
