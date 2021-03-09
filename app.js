@@ -12,6 +12,7 @@ const refresh = require('./routes/token');
 // const guildMod = require('./routes/guild');
 // const getToken = require('./routes/getToken');
 // const getData = require('./modules/fetchMod');
+const talentImgs = require('./routes/talentImgs');
 const app = express();
 
 app.use(express.static("public"));
@@ -52,11 +53,37 @@ try {
   }
 }
 getToken();
+// var token;
+// console.log(clientToken.access_token);
+// token = clientToken.access_token;
+// const realmSearch = "https://us.api.blizzard.com/data/wow/realm/index?namespace=dynamic-us&locale=en_US&access_token=" + token;
+// let allNames = [];
+// const getRealmNames = async realmSearch => {
+//   try {
+//     const response = await fetch(realmSearch);
+//     const realmJson = await response.json();
+//     for (var i = 0; i < realmJson.realms.length; i++) {
+//       // console.log(realmJson.realms[i].name);
+//       var allRnames = realmJson.realms[i].name;
+//       allNames.push(allRnames);
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
+
+// getRealmNames(realmSearch);
 app.get('/', function(req, res){
 
   var playerObj = '';
-  res.render("home", {playerObj: playerObj});
+  res.render("home", {
+    playerObj: playerObj,
+    // wowRealms: allNames
+  });
+});
+app.get('/profile', function(req, res){
+  res.render("profile");
 });
 
 app.get('/auth/bnet',
@@ -75,7 +102,7 @@ app.post("/auth/bnet/callback",
       res.redirect('/');
 });
 
-app.post ('/', function(req, res){
+app.post ('/wowSearch', function(req, res){
 
   let equipmentIds = {};
   let contextTalents = {};
@@ -87,34 +114,49 @@ app.post ('/', function(req, res){
   let equipmentSocket = {};
 
   var playerName = _.lowerCase(req.body.playerName);
-  var newS = playerName.split(' ');
-  var newName = newS[0];
-  var newRealm = newS[1];
+  var playerRealm = _.lowerCase(req.body.playerRealm);
+
+  var newName = playerName;
+  var newRealm = playerRealm.replace(/\s/g, '-');
+  // var playerNameParam = _.lowerCase(req.params.playerName)
+  // var newS = playerName.split(' ');
+  // var newName = newS[0];
+  // var newRealm = newS[1];
   // console.log(newS);
+  console.log(newName);
+  console.log(newRealm);
 
   const exportToken = async () => { // hopefully this is going to refresh my token each day for client
 
     await getToken();
     // not sure if i should put an if statement
     var token;
-    console.log(clientToken.access_token);
+    // console.log(clientToken.access_token);
     token = clientToken.access_token;
+
+
 
   Promise.all([
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/specializations?namespace=profile-us&locale=en_US&access_token=" + token), // TO GET PLAYER SPECILIZATION INFO TALENTS ETC.
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"?namespace=profile-us&locale=en_US&access_token=" + token), //TO GET PLAYER PROFILE INFO
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/equipment?namespace=profile-us&locale=en_US&access_token=" + token), // TO GET PLAYER EQUIPMENT INFO
     fetch("https://us.api.blizzard.com/data/wow/media/item/"+equipmentIds+"?namespace=static-us&locale=en_US&access_token=" + token), // FOR PLAYER EQUIPEMENT MEDIA PICTURES?? MIGHT NOT ACTUALLY BE USING THIS
-    fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/character-media?namespace=profile-us&locale=en_US&access_token=" + token) //THIS IS FOR PLAYER AVATAR PICTURE
+    fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/character-media?namespace=profile-us&locale=en_US&access_token=" + token), //THIS IS FOR PLAYER AVATAR PICTURE
+    fetch("https://us.api.blizzard.com/data/wow/talent/index?namespace=static-us&locale=en_US&access_token=" + token)
   ]).then(function(responses){
     return Promise.all(responses.map(function(response){
       return response.json();
     }));
   }).then(function(data){
     var playerName = _.lowerCase(req.body.playerName);
-    var newS = playerName.split(' ');
-    var newName = newS[0];
-    var newRealm = newS[1];
+    // // console.log(playerName);
+    // var newS = playerName.split(' ');
+    // var newName = newS[0];
+    // var newRealm = newS[1];
+    // console.log(newName);
+    var newName = playerName;
+    var newRealm = playerRealm.replace(/\s/g, '-');
+
 
     // PLAYER EQUIPMENT
     var equipment = data[2].equipped_items;
@@ -125,6 +167,8 @@ app.post ('/', function(req, res){
     var equipImages = [];
     var equipBonus = [];
     var playerAvatar = data[4].assets[0].value;
+    var playerMainAvatar = data[4].assets[2].value;
+    // console.log(playerMainAvatar);
 
     for (var i = 0; i < equipment.length; i++) {
       var slot = equipment[i].slot.name;
@@ -168,17 +212,35 @@ app.post ('/', function(req, res){
     wowHeadLinks = wowHeadEquip;
 
 //PLAYER TALENTS
-    var pickedTalents = [];
-
+    let pickedTalents = [];
+    let spellImgs = [];
+    let spellToolTips = [];
+    let pvpTalents = [];
     for (var i = 0; i < data[0].specializations.length; i++) {
+
       var specName = data[0].active_specialization.name;
       var character = data[0].character.name;
-      for (var x = 0; x < data[0].specializations[0].talents.length; x++) {
-            var picked = data[0].specializations[0].talents[x].talent.name;
-            pickedTalents.push(picked);
-      }
+
+          if(specName === data[0].specializations[i].specialization.name){
+            for (var x = 0; x < data[0].specializations[i].talents.length; x++) {
+                  var toolTips = data[0].specializations[i].talents[x].spell_tooltip.spell.id;
+                  var toolTipName = data[0].specializations[i].talents[x].spell_tooltip.spell.name;
+                  let picked = data[0].specializations[i].talents[x].talent.name;
+
+                  pickedTalents.push(toolTipName);
+                  spellToolTips.push(toolTips);
+            }
+
+            for (var z = 0; z < data[0].specializations[i].pvp_talent_slots.length; z++) {
+              console.log(data[0].specializations[i].pvp_talent_slots[z].selected.spell_tooltip.spell.id);
+              var pvpTal = data[0].specializations[i].pvp_talent_slots[z].selected.spell_tooltip.spell.id;
+              pvpTalents.push(pvpTal);
+            }
+        }
     }
+
     contextTalents = pickedTalents;
+    console.log(contextTalents);
 
     if(data[1].guild){
       var guild = data[1].guild.name;
@@ -218,11 +280,11 @@ app.post ('/', function(req, res){
     };
 
 //PLAYER PVP RATING API
-var twoRating = "https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/pvp-bracket/2v2?namespace=profile-us&locale=en_US&access_token=" + token;
-let ratingTwo;
-let rating;
-let ratingRbg;
-const getTwoRating = async twoRating => {
+  var twoRating = "https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/pvp-bracket/2v2?namespace=profile-us&locale=en_US&access_token=" + token;
+  let ratingTwo;
+  let rating;
+  let ratingRbg;
+  const getTwoRating = async twoRating => {
   try {
     const response = await fetch(twoRating);
     const json = await response.json();
@@ -232,7 +294,7 @@ const getTwoRating = async twoRating => {
     console.log(error);
   }
 };
-var pvpRating = "https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/pvp-bracket/3v3?namespace=profile-us&locale=en_US&access_token=" + token;
+  var pvpRating = "https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/pvp-bracket/3v3?namespace=profile-us&locale=en_US&access_token=" + token;
 
   const getRating = async pvpRating => {
     try {
@@ -270,7 +332,6 @@ var pvpRating = "https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/
       await getRbgRating(rbgRating);
       await getTwoRating(twoRating);
 
-      // console.log(guildShit);
       let roster = [];
       let guildMembers = guildShit.member_count;
       let guildPoints = guildShit.achievement_points;
@@ -282,36 +343,32 @@ var pvpRating = "https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/
             roster.push(memberNames);
           }
         }
-      newGuildRoster = roster;
-      // console.log(newGuildRoster);
+        newGuildRoster = roster;
 
       //PVP RATING WIN PERCENTAGE VARIABLES
       let threeRating = rating.rating;
       let twoCr = ratingTwo.rating;
       let rbgCr = ratingRbg.rating;
-      // console.log(twoCr);
+
       let twoMatches = ratingTwo.season_match_statistics.played;
       let twoWins = ratingTwo.season_match_statistics.won;
       let twoLost = ratingTwo.season_match_statistics.lost;
       let twoWinRate = (twoWins / twoMatches) * 100;
       let roundedTwos = _.round(twoWinRate, 1);
-      // console.log(roundedTwos);
 
       let threeMatches = rating.season_match_statistics.played;
       let threeWins = rating.season_match_statistics.won;
       let threeLost = rating.season_match_statistics.lost;
       let threeWinRate = (threeWins / threeMatches) * 100;
       let roundedThrees = _.round(threeWinRate, 1)
-      // console.log(roundedThrees);
 
       let rbgMatches = ratingRbg.season_match_statistics.played;
       let rbgWins = ratingRbg.season_match_statistics.won;
       let rbgLost = ratingRbg.season_match_statistics.lost;
       let rbgWinRate = (rbgWins / rbgMatches) * 100;
       let roundedRbgs = _.round(rbgWinRate, 1);
-      // console.log(roundedRbgs);
 
-      res.render("dashboard", {
+      res.render("profile", {
                 characterName: data[1].name,
                 faction: data[1].faction.name,
                 race: data[1].race.name,
@@ -330,6 +387,7 @@ var pvpRating = "https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/
                 itemRender: equipmentIds,
                 equipmentImages: wowHeadLinks,
                 avatar: playerAvatar,
+                avatarMain: playerMainAvatar,
                 guildMembers: guildMembers,
                 guildPoints: guildPoints,
                 guildRoster: newGuildRoster,
@@ -347,7 +405,9 @@ var pvpRating = "https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/
                 rbgLost: rbgLost,
                 twoWinRate: roundedTwos,
                 threeWinRate: roundedThrees,
-                rbgWinRate: roundedRbgs
+                rbgWinRate: roundedRbgs,
+                spellIds: spellToolTips,
+                pvpTal: pvpTalents
 
       });
     }

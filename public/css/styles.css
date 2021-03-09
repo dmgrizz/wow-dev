@@ -1,24 +1,40 @@
 .header {
-  margin-left: 20px;
   padding: 5px 5px 5px 8px;
-  background: url("https://assets.worldofwarcraft.com/static/components/SiteNav/sitenav-bar-bg.1fce1b9a3f4b7c90fb331726baa8c3ed.jpg");
-  box-shadow: 0px 2px 12px 5px #000000;
+  /* background: url("https://assets.worldofwarcraft.com/static/components/SiteNav/sitenav-bar-bg.1fce1b9a3f4b7c90fb331726baa8c3ed.jpg"); */
+  background: rgb(34, 40, 49, 0.8);
+  border-radius: 5px;
+  border: 2px solid;
+  border-color: #487e9599;
+  box-shadow: 0px 2px 10px 2px #00000025;
+  height: auto;
+  width: 100%;
+  margin-bottom: 5px;
+}
+.profile-body  {
+  height: auto;
+  /* padding: 2% 6%; */
 }
 body {
-  /* background-color: #1d2d50; */
-  background: url("https://assets.worldofwarcraft.com/static/components/Box/Box-leather-grey-dark.0477a49460ddf3f97294112a1b372a06.jpg");
-  /* background-color: #1b262c; */
-  /* background-color: #222831; */
+  background: #1e212d;
+  padding: 2% 6%;
+  /* background: url("https://assets.worldofwarcraft.com/static/components/Box/Box-leather-grey-dark.0477a49460ddf3f97294112a1b372a06.jpg"); */
   color: #f8f1f1;
   font-family: Open Sans,Arial,Helvetica,sans-serif;
+  /* font-family: Poppins,Open Sans,Questrial,Russo One,cursive; */
+}
+#inputGroupSelect01{
 
+}
+.custom-select {
+  /* background-color: #5b5b5b; */
+}
+.input-inline {
+  display: inline-flex;
 }
 .home-body {
   background-color: #20252c;
   padding: 10px 15px;
-}
-.dp {
-
+  height: auto;
 }
 .dp-list {
   display: inline-block;
@@ -35,16 +51,20 @@ body {
 
 /* HOME PAGE CSS */
 .sign-in {
-
  display: inline-block;
  padding: 10% 15%;
 }
 .login-labels {
   padding-bottom: 1px;
 }
+.custom {
+  border-radius: 5px;
+  background-color: white;
+  padding:2px;
+}
 .form-control {
   color: #ece2e1;
-  background-color: #5b5b5b;
+  /* background-color: #5b5b5b; */
   border: 0px;
   border-radius: 2px;
   margin-bottom: 2px;
@@ -53,8 +73,67 @@ input {
   background-color: #5b5b5b;
   border: 0px;
   border-radius: 2px;
-
 }
+/* NEW PAGE DESIGN CSS */
+.header-btns {
+  /* background-color: gray; */
+  float: right;
+  display: inline-block;
+  height: auto;
+  position: relative;
+  bottom: 2px;
+  font-size: 0;
+}
+.hd-btn-row {
+  color:rgb(255, 214, 51);
+  /* background: url("https://assets.worldofwarcraft.com/static/components/SiteNav/sitenav-bar-bg.1fce1b9a3f4b7c90fb331726baa8c3ed.jpg"); */
+  background: rgb(34, 40, 49, 0.8);
+  font-size: 1rem;
+  padding: 10px;
+  position: relative;
+  border: none;
+  border-radius: 1px;
+  box-shadow: 0px 0px 2px 1px #00000085;
+  margin-right: 1px;
+  cursor: pointer;
+}
+.hd-btn-row:focus{
+  outline: 0 !important;
+}
+button.hd-btn-row:hover {
+  color: white;
+  background: rgb(255, 250, 240, 0.2);
+}
+.talent-container {
+  display: block;
+}
+.tal-img-container{
+  margin-bottom: 5px;
+  background-color: rgb(56, 62, 86, 0.6);
+  width: 52%;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 2px 8px 2px #00000055;
+}
+.pvp-tal-img-container {
+  margin-bottom: 5px;
+  background-color: rgb(56, 62, 86, 0.6);
+  width: 30%;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 2px 8px 2px #00000055;
+}
+.tal-name {
+  display: block;
+  color: white;
+}
+.tal-inner {
+  display: block;
+}
+.iconlarge {
+  margin-right: 5px;
+}
+/* ------------- */
 
 /* PROFILE CSS  */
 #wow-title{
@@ -84,30 +163,78 @@ hr {
   margin: 12px 0px 12px 0;
 }
 .container-info {
-  padding: 15px;
-  margin-left:100px;
-  margin-right: 100px;
+  display: inline-flex;
+  /* margin-left: 20px; */
+  margin-right: 20px;
+  margin-bottom: 8px;
+  width: 100%;
+  height: auto;
 }
-section {
-  margin-left:100px;
-  margin-right: 100px;
-}
+
 .profile-info {
   display: inline-flex;
   height:auto;
-  padding: 2% 5%;
+  margin-top:  8px;
+  /* padding: 2% 5%; */
+}
+.player-info {
+  background: rgb(34, 40, 49, 0.8);
+  width: 30%;
+  padding: 15px;
+  margin-right: 5px;
+  border: 2px solid;
+  border-color: #487e9599;
+  border-radius: 5px;
+  box-shadow: 0px 2px 10px 2px #00000025;
+}
+
+.guild {
+  width:30%;
+  background: rgb(34, 40, 49, 0.8);
+  max-height: 700px;
+  margin-right: 5px;
+  padding: 15px;
+  align-items: flex-start;
+  overflow: auto;
+  border: 2px solid;
+  border-color: #487e9599;
+  border-radius: 5px;
+  box-shadow: 0px 2px 10px 2px #00000025;
+}
+.pvp-info {
+  background: rgb(34, 40, 49, 0.8);
+  height: auto;
+  padding: 15px;
+  width: 56%;
+  margin-right: 5px;
+  /* border: none; */
+  border: 2px solid;
+  border-color: #487e9599;
+  border-radius: 5px;
+  box-shadow: 0px 2px 10px 2px #00000025;
 
 }
+.talent-info {
+  background: rgb(34, 40, 49, 0.8);
+  width: 30%;
+  padding: 15px;
+  /* border: none; */
+  border: 2px solid;
+  border-color: #487e9599;
+  border-radius: 5px;
+  box-shadow: 0px 2px 10px 2px #00000025;
+}
 .equipment {
-  height:30%;
-  width:80%;
-  padding: 5px;
-  border:15px solid;
-  border-image: url("https://assets.worldofwarcraft.com/static/components/SiteNav/sitenav-bar-subscribe-bg.162c5eb038c3052183669edced8e349a.jpg");
-  border-image-slice: 21 52 47 78;
-  border-image-repeat: stretch;
-  box-shadow: 0px 2px 12px 5px #000000;
-  float: right;
+  width: 56%;
+  background: rgb(34, 40, 49, 0.8);
+  margin-right: 5px;
+  padding: 15px;
+  /* border: none; */
+  border: 2px solid;
+  border-color: #487e9599;
+  border-radius: 5px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 10px 2px #00000025;
 }
 .item-header {
   display: inline-flex;
@@ -115,42 +242,100 @@ section {
 .quality {
   margin-left: 5px;
 }
-.pvp {
-  display: inline-flex;
+.main-avatar {
+  /* Set rules to fill background */
+  z-index: -1;
+  min-height: 100%;
+  min-width: 1024px;
+  /* Set up proportionate scaling */
+  width: 100%;
+  height: auto;
+  /* Set up positioning */
+  position: fixed;
+  top: 0;
+  left: 0;
 }
-.pvp-titles{
-    margin-left: 50px;
-    margin-right: 50px;
-    text-decoration: underline;
+.pvp-titles {
+  text-align: center;
+  font-size: 1.3rem;
 }
-.scores {
-  display: inline-flex;
+.pvp-titles-small{
+  text-align: right;
 }
-.pvp-won{
+.pvp-type {
+  margin-bottom: 5px;
+  background-color: rgb(56, 62, 86, 0.8);
+  padding: 10px;
+  margin-left: 45px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 2px 8px 2px #00000055;
+}
+.pvp-won {
   display: inline-block;
+  margin-bottom: 5px;
+  background-color: rgb(56, 62, 86, 0.8);
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 2px 8px 2px #00000055;
 }
-.pvp-scores{
-  margin-left: 50px;
-  margin-right: 50px;
+.pvp-loss {
+  margin-bottom: 5px;
+  background-color: rgb(56, 62, 86, 0.8);
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 2px 8px 2px #00000055;
+}
+.pvp-matches {
+  margin-bottom: 5px;
+  background-color: rgb(56, 62, 86, 0.8);
+  padding: 10px;
+  margin-top: 30px;
+  margin-left: 45px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 2px 8px 2px #00000055;
+}
+.pvp-winrate {
+  margin-bottom: 5px;
+  background-color: rgb(56, 62, 86, 0.8);
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 2px 8px 2px #00000055;
+}
+.pvp-scores {
+  margin-left: 5px;
   text-align: center;
 }
+.pvp-games {
+text-align: right
 
-.guild {
-  width:30%;
-  max-height: 600px;
-  position: relative;
-  align-items: flex-start;
-  overflow: auto;
-  float:left;
-  margin-right:20px;
-  border: 15px solid;
-  border-image: url("https://assets.worldofwarcraft.com/static/components/SiteNav/sitenav-bar-subscribe-bg.162c5eb038c3052183669edced8e349a.jpg");
-  /* border-image: url("https://assets.worldofwarcraft.com/static/components/Box/Box-leather-grey-dark.0477a49460ddf3f97294112a1b372a06.jpg"); */
-  border-image-slice: 21 78 47 50;
-  border-image-repeat: stretch;
-  padding: 5px;
-  box-shadow: 0px 2px 12px 5px #000000;
-  margin-bottom:100px;
+}
+.game-won {
+  display: inline-flex;
+}
+.hide {
+  display: none;
+}
+.pvp-tool-tips{
+  position:absolute;
+  top:0px;
+  font-size: 14;
+  z-index: 1;
+  margin-bottom: 5px;
+  padding: 10px;
+  color: white;
+  background-color: rgb(26, 26, 26, 0.9);
+    /* background-color:#707070; */
+  margin-top: 30px;
+  margin-left: 45px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 2px 8px 2px #00000055;
+}
+.pvp-won-tp{
+  color: gray;
+  margin-left: 5px;
 }
 .guild::-webkit-scrollbar {
     display: none;
@@ -158,12 +343,6 @@ section {
 .guild-info {
   display: inline-flex;
 }
-.profile-body  {
-  height: auto;
-  margin-bottom: 100px;
-  padding: 2% 2%;
-}
-
 .avatar-container {
   display: inline-flex;
 }
@@ -183,32 +362,47 @@ section {
 .text-indent {
   margin-left: 12px;
 }
-.footer {
-  height: 20%;
-  background-color: gray;
+footer {
+  /* margin-left: 20px; */
+  /* margin-right: -20px; */
+  /* width: 100%;
+  padding: 5px 5px 5px 8px; */
+  background: rgb(34, 40, 49, 0.8);
+  border: 2px solid;
+  border-color: #487e9599;
+  border-radius: 5px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 10px 2px #00000025;
   text-align: center;
 }
+
 .container-fluid {
   padding: 7% 15%;
+
 }
-footer {
-  padding: 2%;
-  clear:both;
-}
+
 #scroll-arrow {
   visibility: hidden;
 }
-.arrow{
+.new-arrow {
   float: right;
-  width: 10%;
+  background-image: url("public/arrow-down-bold-box.png");
+  width: 15%;
   margin-right: 20px;
   position: -webkit-sticky;
   position: sticky;
-  top: 29rem;
-
-    /* transform: translate(-50%,-50%); */
+  top: 20rem;
 }
-.arrow span{
+.arrow {
+  float: right;
+  width: 15%;
+  margin-right: 20px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 1rem;
+}
+
+.arrow span {
     display: block;
     width: 30px;
     height: 30px;
@@ -283,7 +477,6 @@ footer {
 
 /* The search field when it gets focus/clicked on */
 #myInput:focus {outline: 3px solid #ddd;}
-
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
   position: relative;
@@ -313,8 +506,6 @@ footer {
 
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 .show {display:block;}
-
-
 /* special character */
 .long-press-popup li {
 	display:inline-block;
