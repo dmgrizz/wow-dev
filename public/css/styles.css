@@ -22,7 +22,23 @@ body {
   font-family: Open Sans,Arial,Helvetica,sans-serif;
   /* font-family: Poppins,Open Sans,Questrial,Russo One,cursive; */
 }
-#inputGroupSelect01{
+
+.card {
+  padding: 5px;
+  background: rgb(34, 40, 49, 0.6);
+}
+.bg-btn{
+  /* color: white; */
+  background: transparent;
+}
+.navbar {
+    float: left;
+    padding-bottom: 1.5px;
+}
+.navbar-toggler {
+  color: white;
+  margin-right: 5px;
+
 
 }
 .custom-select {
@@ -62,10 +78,13 @@ body {
   background-color: white;
   padding:2px;
 }
+.pos-f-t{
+  display: inline-block;
+}
 .form-control {
   color: #ece2e1;
   /* background-color: #5b5b5b; */
-  border: 0px;
+  border: 1px solid #ced4da;
   border-radius: 2px;
   margin-bottom: 2px;
 }
@@ -81,20 +100,22 @@ input {
   display: inline-block;
   height: auto;
   position: relative;
-  bottom: 2px;
+  bottom: 0;
   font-size: 0;
+
 }
 .hd-btn-row {
   color:rgb(255, 214, 51);
   /* background: url("https://assets.worldofwarcraft.com/static/components/SiteNav/sitenav-bar-bg.1fce1b9a3f4b7c90fb331726baa8c3ed.jpg"); */
-  background: rgb(34, 40, 49, 0.8);
+  background: rgb(34, 40, 49, 0.6);
   font-size: 1rem;
-  padding: 10px;
+  padding: 18px 22px;
   position: relative;
   border: none;
-  border-radius: 1px;
+  border-radius: 5px;
   box-shadow: 0px 0px 2px 1px #00000085;
   margin-right: 1px;
+
   cursor: pointer;
 }
 .hd-btn-row:focus{

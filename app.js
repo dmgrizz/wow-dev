@@ -72,7 +72,9 @@ getToken();
 //   }
 // }
 
-
+app.get("/dropdown", function(req, res){
+  res.render("dropdown");
+});
 // getRealmNames(realmSearch);
 app.get('/', function(req, res){
 
