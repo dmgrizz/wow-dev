@@ -2,18 +2,7 @@
     <img class="main-avatar" src="<%=avatarMain%>" alt="">
 <div class="profile-body">
   <div class="header">
-  <h1 id="wow-title">Wow Dashboard</h1>
-
-    <!-- <form class="" action="/wowSearch" method="post">
-    <input id="playerName" name="playerName" autocomplete="off" type="text" placeholder="Search.." oninput="myFunction()" onkeydown="filterFunction()" onkeyup="playerSearch()" >
-    <div  id="myDropdown" class="dropdown-content"> -->
-      <!-- <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()"> -->
-      <!-- <div class="dp-list">
-        <h6 id="playerObj"></h6>
-      </div>
-    </div>
-    <button class="btn btn-dark" type="submit" name="button">Go</button>
-    </form> -->
+  <h1 id="wow-title">Player Profile</h1>
     <div class="pos-f-t">
       <div class="collapse" id="navbarToggleExternalContent">
         <div class="bg-nav p-4">
@@ -599,11 +588,8 @@
           <h6 class="gold-text">Player Search</h6>
       </nav>
     </div>
-
     <div  id="collapseExample" class="collapse dropdown">
-
     </div>
-
   <div class="header-btns">
     <button class="hd-btn-row" type="button" name="button"><span class="">Articles</span></button>
     <button class="hd-btn-row" type="button" name="button"><span class="">Rankings</span></button>
@@ -638,32 +624,54 @@
         <!-- <img src="https://render-us.worldofwarcraft.com/icons/56/inv_sword_39.jpg" alt=""> -->
         <h4>Achievement Points: <%=points%></h4>
         <h4>Item Level: <%=itemLevel%></h4>
+        <h4>Covenant: <%=covenant%></h4>
+        <h4>Renown: <%=renown%></h4>
+        <h4>Crit: <%=crit%>%</h4>
+        <h4>Haste: <%=haste%>%</h4>
+        <h4>Mastery: <%=mastery%>%</h4>
+        <h4>Vers: <%=versatility%>%</h4>
     </div>
     <div class="pvp-info">
       <h2 class="gold-text">PVP Rating</h2>
       <div class="container">
         <div class="row">
           <div class="col-md-3 pvp-type">
-            <h5 class="pvp-titles">2v2 Arena Rating</h5>
-            <h4 class="pvp-scores"> <%=twoCr%> cr</h4>
+              <h5 class="pvp-titles">2v2 Arena Rating</h5>
+            <%if(twoCr > 0){%>
+              <h4 class="pvp-scores"> <%=twoCr%> cr</h4>
+            <%} else {%>
+              <h4 class="pvp-scores"> 0 cr</h4>
+            <%}%>
           </div>
           <div class="col-md-3 pvp-type">
-            <h5 class="pvp-titles">3v3 Arena Rating</h5>
-            <h4 class="pvp-scores"> <%=threeRating%> cr</h4>
+              <h5 class="pvp-titles">3v3 Arena Rating</h5>
+            <%if(threeRating > 0){%>
+              <h4 class="pvp-scores"> <%=threeRating%> cr</h4>
+            <%} else {%>
+              <h4 class="pvp-scores"> 0 cr</h4>
+            <%}%>
           </div>
           <div class="col-md-3 pvp-type">
-            <h5 class="pvp-titles">RBG Arena Rating</h5>
-            <h4 class="pvp-scores"><%=rbgCr%> cr</h4>
+              <h5 class="pvp-titles">RBG Arena Rating</h5>
+            <%if(rbgCr > 0){%>
+              <h4 class="pvp-scores"><%=rbgCr%> cr</h4>
+            <%} else {%>
+                <h4 class="pvp-scores"> 0 cr</h4>
+            <%}%>
           </div>
         </div>
         <div class="row">
           <div class="col-md-3 twos-pvp pvp-matches" onmouseover="showTwosGames()" onmouseout="hideTwosGames()">
             <div class="">
             <h6 class="pvp-titles">2v2 Win Rate %</h6>
-              <%if(twoWinRate >= 50){%>
-                <h5 class="pvp-scores" style="color:green"><%=twoWinRate%>%</h5>
+            <%if(twoCr > 0){%>
+                <%if(twoWinRate >= 50){%>
+                  <h5 class="pvp-scores" style="color:green"><%=twoWinRate%>%</h5>
+                <%} else {%>
+                  <h5 class="pvp-scores" style="color:red"><%=twoWinRate%>%</h5>
+                <%}%>
               <%} else {%>
-                <h5 class="pvp-scores" style="color:red"><%=twoWinRate%>%</h5>
+                  <h5 class="pvp-scores" >0%</h5>
               <%}%>
             </div>
             <div id="twos-tool" class="pvp-tool-tips hide">
@@ -690,10 +698,14 @@
           <div class="col-md-3 pvp-matches" onmouseover="showThreesGames()" onmouseout="hideThreesGames()">
             <div class="">
               <h6 class="pvp-titles">3v3 Win Rate %</h6>
-              <%if(threeWinRate >= 50){%>
-                <h4 class="pvp-scores" style="color:green"><%=threeWinRate%>%</h4>
-              <%} else  {%>
-                <h4 class="pvp-scores" style="color:red"><%=threeWinRate%>%</h4>
+              <%if(threeRating > 0){%>
+                <%if(threeWinRate >= 50){%>
+                  <h4 class="pvp-scores" style="color:green"><%=threeWinRate%>%</h4>
+                <%} else  {%>
+                  <h4 class="pvp-scores" style="color:red"><%=threeWinRate%>%</h4>
+                <%}%>
+              <%} else {%>
+                  <h5 class="pvp-scores" >0%</h5>
               <%}%>
               <div id="threes-tool" class="pvp-tool-tips hide">
                 <div class="pvp-games">
@@ -720,11 +732,16 @@
           <div class="col-md-3 pvp-matches" onmouseover="showRbgGames()" onmouseout="hideRbgGames()">
             <div class="">
               <h6 class="pvp-titles">BG Win Rate %</h6>
-              <%if(rbgWinRate >= 50){%>
-              <h4 class="pvp-scores" style="color:green"><%=rbgWinRate%>%</h4>
+              <%if(rbgCr > 0){%>
+                <%if(rbgWinRate >= 50){%>
+                  <h4 class="pvp-scores" style="color:green"><%=rbgWinRate%>%</h4>
+                <%} else {%>
+                  <h4 class="pvp-scores" style="color:red"><%=rbgWinRate%>%</h4>
+                <%}%>
               <%} else {%>
-                <h4 class="pvp-scores" style="color:red"><%=rbgWinRate%>%</h4>
+                  <h5 class="pvp-scores" >0%</h5>
               <%}%>
+
               <div id="rbg-tool" class="pvp-tool-tips hide">
                 <div class="pvp-games">
                   <div class="game-won">
@@ -799,8 +816,8 @@
   </div>
 
 <div class="container-info">
-  <%if(guild){%>
         <div onmouseover="onMouseOver()" onmouseout="onMouseOut()" class="guild">
+      <%if(guild){%>
         <h3 class="gold-text">Guild - <%=guild%> </h3>
           <div class="guild-info">
             <h6> Members: <%=guildMembers%> </h6>
@@ -820,8 +837,9 @@
         <h6> <%= guildRoster[i] %></h6>
         <%}%>
           </div>
+      <%}%>
         </div>
-    <%}%>
+
         <%for(var i=0; i < equipmentSlot.length; i++){%>
           <div class="equipment">
             <h4 class="gold-text">Equipment</h4>

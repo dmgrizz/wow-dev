@@ -1,3 +1,16 @@
+
+
+    <!-- <form class="" action="/wowSearch" method="post">
+    <input id="playerName" name="playerName" autocomplete="off" type="text" placeholder="Search.." oninput="myFunction()" onkeydown="filterFunction()" onkeyup="playerSearch()" >
+    <div  id="myDropdown" class="dropdown-content"> -->
+      <!-- <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()"> -->
+      <!-- <div class="dp-list">
+        <h6 id="playerObj"></h6>
+      </div>
+    </div>
+    <button class="btn btn-dark" type="submit" name="button">Go</button>
+    </form> -->
+
 app.post("/playerSearch", function(req, res){
 
   let allRealms = {};

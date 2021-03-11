@@ -9,9 +9,6 @@ var _ = require('lodash');
 const passport = require('passport');
 var BnetStrategy = require('passport-bnet').Strategy;
 const refresh = require('./routes/token');
-// const guildMod = require('./routes/guild');
-// const getToken = require('./routes/getToken');
-// const getData = require('./modules/fetchMod');
 const talentImgs = require('./routes/talentImgs');
 const app = express();
 
@@ -53,37 +50,20 @@ try {
   }
 }
 getToken();
-// var token;
-// console.log(clientToken.access_token);
-// token = clientToken.access_token;
-// const realmSearch = "https://us.api.blizzard.com/data/wow/realm/index?namespace=dynamic-us&locale=en_US&access_token=" + token;
-// let allNames = [];
-// const getRealmNames = async realmSearch => {
-//   try {
-//     const response = await fetch(realmSearch);
-//     const realmJson = await response.json();
-//     for (var i = 0; i < realmJson.realms.length; i++) {
-//       // console.log(realmJson.realms[i].name);
-//       var allRnames = realmJson.realms[i].name;
-//       allNames.push(allRnames);
-//     }
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
 
 app.get("/dropdown", function(req, res){
   res.render("dropdown");
 });
-// getRealmNames(realmSearch);
-app.get('/', function(req, res){
 
-  var playerObj = '';
-  res.render("home", {
-    playerObj: playerObj,
-    // wowRealms: allNames
-  });
+app.get('/', function(req, res){
+    var playerObj = '';
+    res.render("home", {playerObj: playerObj,});
 });
+
+app.get('/error', function(req, res){
+  res.render("error");
+});
+
 app.get('/profile', function(req, res){
   res.render("profile");
 });
@@ -115,16 +95,13 @@ app.post ('/wowSearch', function(req, res){
   let equipmentBonus = {};
   let equipmentSocket = {};
 
-  var playerName = _.lowerCase(req.body.playerName);
   var playerRealm = _.lowerCase(req.body.playerRealm);
-
-  var newName = playerName;
-  var newRealm = playerRealm.replace(/\s/g, '-');
-  // var playerNameParam = _.lowerCase(req.params.playerName)
+  var playerName = req.body.playerName;
+  var newName = playerName.toLowerCase().replace(/\s/g, '');
+  var newRealm = playerRealm.replace(/\s/g, '');
   // var newS = playerName.split(' ');
   // var newName = newS[0];
   // var newRealm = newS[1];
-  // console.log(newS);
   console.log(newName);
   console.log(newRealm);
 
@@ -136,13 +113,12 @@ app.post ('/wowSearch', function(req, res){
     // console.log(clientToken.access_token);
     token = clientToken.access_token;
 
-
-
   Promise.all([
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/specializations?namespace=profile-us&locale=en_US&access_token=" + token), // TO GET PLAYER SPECILIZATION INFO TALENTS ETC.
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"?namespace=profile-us&locale=en_US&access_token=" + token), //TO GET PLAYER PROFILE INFO
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/equipment?namespace=profile-us&locale=en_US&access_token=" + token), // TO GET PLAYER EQUIPMENT INFO
-    fetch("https://us.api.blizzard.com/data/wow/media/item/"+equipmentIds+"?namespace=static-us&locale=en_US&access_token=" + token), // FOR PLAYER EQUIPEMENT MEDIA PICTURES?? MIGHT NOT ACTUALLY BE USING THIS
+    // fetch("https://us.api.blizzard.com/data/wow/media/item/"+equipmentIds+"?namespace=static-us&locale=en_US&access_token=" + token), // FOR PLAYER EQUIPEMENT MEDIA PICTURES?? MIGHT NOT ACTUALLY BE USING THIS
+    fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/statistics?namespace=profile-us&locale=en_US&access_token=USejR1utDglx5RZyLF3O0MHhvBITrXwtHv"),
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/character-media?namespace=profile-us&locale=en_US&access_token=" + token), //THIS IS FOR PLAYER AVATAR PICTURE
     fetch("https://us.api.blizzard.com/data/wow/talent/index?namespace=static-us&locale=en_US&access_token=" + token)
   ]).then(function(responses){
@@ -150,15 +126,32 @@ app.post ('/wowSearch', function(req, res){
       return response.json();
     }));
   }).then(function(data){
-    var playerName = _.lowerCase(req.body.playerName);
-    // // console.log(playerName);
     // var newS = playerName.split(' ');
     // var newName = newS[0];
     // var newRealm = newS[1];
-    // console.log(newName);
-    var newName = playerName;
+
+    var playerName = req.body.playerName;
+    var newName = playerName.toLowerCase().replace(/\s/g, '');
     var newRealm = playerRealm.replace(/\s/g, '-');
 
+    //COVENANT
+    var covenant;
+    var renown;
+    if(data[1].covenant_progress){
+        covenant = data[1].covenant_progress.chosen_covenant.name;
+        renown = data[1].covenant_progress.renown_level;
+    }
+    //PLAYER STATS
+      console.log(data[3]);
+      var crit = Math.round((data[3].melee_crit.value + Number.EPSILON) * 100) / 100;
+      var haste = Math.round((data[3].melee_haste.value + Number.EPSILON) * 100) / 100;
+      var mastery = Math.round((data[3].mastery.value + Number.EPSILON) * 100) / 100;
+      var versatility = Math.round((data[3].versatility_damage_done_bonus + Number.EPSILON) * 100) / 100;
+
+      console.log(crit);
+      console.log(haste);
+      console.log(mastery);
+      console.log(versatility);
 
     // PLAYER EQUIPMENT
     var equipment = data[2].equipped_items;
@@ -170,7 +163,6 @@ app.post ('/wowSearch', function(req, res){
     var equipBonus = [];
     var playerAvatar = data[4].assets[0].value;
     var playerMainAvatar = data[4].assets[2].value;
-    // console.log(playerMainAvatar);
 
     for (var i = 0; i < equipment.length; i++) {
       var slot = equipment[i].slot.name;
@@ -200,7 +192,6 @@ app.post ('/wowSearch', function(req, res){
     equipmentIds = equipImages;
     equipmentBonus = equipBonus;
     equipmentSocket = socketEquip;
-
 
 //ITEM IMAGES
     wowHeadLinks = {}
@@ -242,7 +233,7 @@ app.post ('/wowSearch', function(req, res){
     }
 
     contextTalents = pickedTalents;
-    console.log(contextTalents);
+    // console.log(contextTalents);
 
     if(data[1].guild){
       var guild = data[1].guild.name;
@@ -250,6 +241,7 @@ app.post ('/wowSearch', function(req, res){
     if(guild){
       var guildName = _.lowerCase(data[1].guild.name);
       var guildLink = guildName.replace(/\s/g, '-');
+
     }
 
 //GUILD INFO
@@ -337,7 +329,7 @@ app.post ('/wowSearch', function(req, res){
       let roster = [];
       let guildMembers = guildShit.member_count;
       let guildPoints = guildShit.achievement_points;
-      // console.log(guildMembers);
+
         if(guildMembers > 1) {
           for (var i = 0, l = gRoster.members.length; i < l; i++) {
             var rosterNames = gRoster.members[i];
@@ -351,24 +343,44 @@ app.post ('/wowSearch', function(req, res){
       let threeRating = rating.rating;
       let twoCr = ratingTwo.rating;
       let rbgCr = ratingRbg.rating;
+      let twoMatches;
+      let twoWins;
+      let twoLost;
+      let twoWinRate;
+      let roundedTwos;
+      let threeMatches;
+      let threeWins;
+      let threeLost;
+      let threeWinRate;
+      let roundedThrees;
+      let rbgMatches;
+      let rbgWins;
+      let rbgLost;
+      let rbgWinRate;
+      let roundedRbgs;
 
-      let twoMatches = ratingTwo.season_match_statistics.played;
-      let twoWins = ratingTwo.season_match_statistics.won;
-      let twoLost = ratingTwo.season_match_statistics.lost;
-      let twoWinRate = (twoWins / twoMatches) * 100;
-      let roundedTwos = _.round(twoWinRate, 1);
+      if(twoCr > 0){
+            twoMatches = ratingTwo.season_match_statistics.played;
+            twoWins = ratingTwo.season_match_statistics.won;
+            twoLost = ratingTwo.season_match_statistics.lost;
+            twoWinRate = (twoWins / twoMatches) * 100;
+            roundedTwos = _.round(twoWinRate, 1);
+        }
+      if(threeRating > 0){
+         threeMatches  = rating.season_match_statistics.played;
+         threeWins     = rating.season_match_statistics.won;
+         threeLost     = rating.season_match_statistics.lost;
+         threeWinRate  = (threeWins / threeMatches) * 100;
+         roundedThrees = _.round(threeWinRate, 1)
+      }
+      if(rbgCr > 0 ){
+         rbgMatches   = ratingRbg.season_match_statistics.played;
+         rbgWins      = ratingRbg.season_match_statistics.won;
+         rbgLost      = ratingRbg.season_match_statistics.lost;
+         rbgWinRate   = (rbgWins / rbgMatches) * 100;
+         roundedRbgs  = _.round(rbgWinRate, 1);
+      }
 
-      let threeMatches = rating.season_match_statistics.played;
-      let threeWins = rating.season_match_statistics.won;
-      let threeLost = rating.season_match_statistics.lost;
-      let threeWinRate = (threeWins / threeMatches) * 100;
-      let roundedThrees = _.round(threeWinRate, 1)
-
-      let rbgMatches = ratingRbg.season_match_statistics.played;
-      let rbgWins = ratingRbg.season_match_statistics.won;
-      let rbgLost = ratingRbg.season_match_statistics.lost;
-      let rbgWinRate = (rbgWins / rbgMatches) * 100;
-      let roundedRbgs = _.round(rbgWinRate, 1);
 
       res.render("profile", {
                 characterName: data[1].name,
@@ -377,10 +389,16 @@ app.post ('/wowSearch', function(req, res){
                 characterClass: data[1].character_class.name,
                 spec: data[1].active_spec.name,
                 realm: data[1].realm.name,
+                covenant: covenant,
+                renown: renown,
                 guild: guild,
                 level: data[1].level,
                 points: data[1].achievement_points,
                 itemLevel: data[1].equipped_item_level,
+                crit: crit,
+                haste: haste,
+                mastery: mastery,
+                versatility: versatility,
                 talents: data[1].specializations,
                 contextTalents: contextTalents,
                 equipmentSlot: equipmentSlot,
@@ -418,7 +436,8 @@ app.post ('/wowSearch', function(req, res){
   })
   .catch(function(error){
       console.log(error);
-      res.send("<h2>Name is not found!! please check if the name is correct and the realm</h2>");
+      // res.send("<h2>Name is not found!! please check if the name is correct and the realm</h2>");
+      res.redirect("/error");
   });
 }
 exportToken();

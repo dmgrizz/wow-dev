@@ -38,8 +38,6 @@ body {
 .navbar-toggler {
   color: white;
   margin-right: 5px;
-
-
 }
 .custom-select {
   /* background-color: #5b5b5b; */
@@ -104,6 +102,16 @@ input {
   font-size: 0;
 
 }
+.error-btns {
+  display: inline-block;
+
+  height: auto;
+  position: relative;
+  bottom: 0;
+  font-size: 0;
+  margin-bottom: 5px;
+
+}
 .hd-btn-row {
   color:rgb(255, 214, 51);
   /* background: url("https://assets.worldofwarcraft.com/static/components/SiteNav/sitenav-bar-bg.1fce1b9a3f4b7c90fb331726baa8c3ed.jpg"); */
@@ -115,7 +123,18 @@ input {
   border-radius: 5px;
   box-shadow: 0px 0px 2px 1px #00000085;
   margin-right: 1px;
-
+  cursor: pointer;
+}
+.error-btn-row {
+  color:rgb(255, 214, 51);
+  background: rgb(34, 40, 49, 0.6);
+  font-size: 1rem;
+  padding: 10px 15px;
+  position: relative;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 0px 2px 1px #00000085;
+  margin-right: 1px;
   cursor: pointer;
 }
 .hd-btn-row:focus{
@@ -125,6 +144,15 @@ button.hd-btn-row:hover {
   color: white;
   background: rgb(255, 250, 240, 0.2);
 }
+.error--btn-row:focus{
+    outline: 0 !important;
+}
+button.error-btn-row:hover {
+  color: white;
+  background: rgb(255, 250, 240, 0.2);
+}
+
+
 .talent-container {
   display: block;
 }
