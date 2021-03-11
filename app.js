@@ -89,7 +89,7 @@ app.post ('/wowSearch', function(req, res){
   let equipmentIds = {};
   let contextTalents = {};
   let equipmentSlot = {};
-  let equipmentName = {};
+  // let equipmentName = {};
   let equipmentQuality = {};
   let equipmentImages = {};
   let equipmentBonus = {};
@@ -118,9 +118,13 @@ app.post ('/wowSearch', function(req, res){
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"?namespace=profile-us&locale=en_US&access_token=" + token), //TO GET PLAYER PROFILE INFO
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/equipment?namespace=profile-us&locale=en_US&access_token=" + token), // TO GET PLAYER EQUIPMENT INFO
     // fetch("https://us.api.blizzard.com/data/wow/media/item/"+equipmentIds+"?namespace=static-us&locale=en_US&access_token=" + token), // FOR PLAYER EQUIPEMENT MEDIA PICTURES?? MIGHT NOT ACTUALLY BE USING THIS
-    fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/statistics?namespace=profile-us&locale=en_US&access_token=USejR1utDglx5RZyLF3O0MHhvBITrXwtHv"),
+    fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/statistics?namespace=profile-us&locale=en_US&access_token=" + token),
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/character-media?namespace=profile-us&locale=en_US&access_token=" + token), //THIS IS FOR PLAYER AVATAR PICTURE
-    fetch("https://us.api.blizzard.com/data/wow/talent/index?namespace=static-us&locale=en_US&access_token=" + token)
+    // fetch("https://us.api.blizzard.com/data/wow/talent/index?namespace=static-us&locale=en_US&access_token=" + token)
+    fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/pvp-bracket/2v2?namespace=profile-us&locale=en_US&access_token=" + token),
+    fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/pvp-bracket/3v3?namespace=profile-us&locale=en_US&access_token=" + token),
+    fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/pvp-bracket/rbg?namespace=profile-us&locale=en_US&access_token=" + token)
+
   ]).then(function(responses){
     return Promise.all(responses.map(function(response){
       return response.json();
@@ -141,43 +145,41 @@ app.post ('/wowSearch', function(req, res){
         covenant = data[1].covenant_progress.chosen_covenant.name;
         renown = data[1].covenant_progress.renown_level;
     }
+
     //PLAYER STATS
-      console.log(data[3]);
       var crit = Math.round((data[3].melee_crit.value + Number.EPSILON) * 100) / 100;
       var haste = Math.round((data[3].melee_haste.value + Number.EPSILON) * 100) / 100;
       var mastery = Math.round((data[3].mastery.value + Number.EPSILON) * 100) / 100;
       var versatility = Math.round((data[3].versatility_damage_done_bonus + Number.EPSILON) * 100) / 100;
 
-      console.log(crit);
-      console.log(haste);
-      console.log(mastery);
-      console.log(versatility);
-
     // PLAYER EQUIPMENT
     var equipment = data[2].equipped_items;
     var equipSlot = [];
-    var equipName = [];
+    // var equipName = [];
     var equipQuality = [];
     var socketEquip = [];
     var equipImages = [];
     var equipBonus = [];
     var playerAvatar = data[4].assets[0].value;
     var playerMainAvatar = data[4].assets[2].value;
+    var socketArray = [];
 
+    // console.log(equipment);
     for (var i = 0; i < equipment.length; i++) {
       var slot = equipment[i].slot.name;
-      var itemName = equipment[i].name;
+      // var itemName = equipment[i].name;
       var quality = equipment[i].quality.name;
       var itemId = equipment[i].item.id;
       var itemBonus = equipment[i].bonus_list;
       var socket = equipment[i].sockets;
 
       if(socket){
-      var socketSlot = "&gems=" + socket[0].item.id;
-          socketEquip.push(socketSlot);
+        var socketSlot = socket[0].item.id;
+            socketEquip.push(socketSlot);
+              // console.log(socketEquip);
       }
-      equipSlot.push(slot);
-      equipName.push(itemName);
+
+      equipSlot.push(slot); //for equipement slot names Head, shoulders etc
       equipQuality.push(quality);
       equipImages.push(itemId);
 
@@ -187,7 +189,6 @@ app.post ('/wowSearch', function(req, res){
     }
 
     equipmentSlot = equipSlot;
-    equipmentName = equipName;
     equipmentQuality = equipQuality;
     equipmentIds = equipImages;
     equipmentBonus = equipBonus;
@@ -197,12 +198,17 @@ app.post ('/wowSearch', function(req, res){
     wowHeadLinks = {}
     wowHeadEquip = [];
 
-    for (var i = 0; i < equipmentIds.length; i++) {
-      // var wowHeadItems = "https://www.wowhead.com/item=" + equipmentIds[i] + "&gems=" + equipmentSocket[i] + "&bonus=" + equipmentBonus[i];
+    for (var i = 0; i < equipment.length; i++) {
+      // if(equipment[i].sockets){
+      //       var wowHeadItemsWithSock = "https://www.wowhead.com/item=" + equipmentIds[i] + "&gems=" + equipmentSocket[i] + "&bonus=" + equipmentBonus[i];
+      //           console.log(wowHeadItemsWithSock);
+      // }
+  // }
       var wowHeadItems = "https://www.wowhead.com/item=" + equipmentIds[i] + "&bonus=" + equipmentBonus[i];
       wowHeadEquip.push(wowHeadItems);
     }
     wowHeadLinks = wowHeadEquip;
+    console.log(wowHeadLinks);
 
 //PLAYER TALENTS
     let pickedTalents = [];
@@ -233,8 +239,8 @@ app.post ('/wowSearch', function(req, res){
     }
 
     contextTalents = pickedTalents;
-    // console.log(contextTalents);
 
+//GUILD INFO
     if(data[1].guild){
       var guild = data[1].guild.name;
     }
@@ -244,18 +250,18 @@ app.post ('/wowSearch', function(req, res){
 
     }
 
-//GUILD INFO
+
     var guildUrl  = "https://us.api.blizzard.com/data/wow/guild/"+newRealm+"/"+guildLink+"?namespace=profile-us&locale=en_US&access_token=" + token;
     var guildRoster = "https://us.api.blizzard.com/data/wow/guild/"+newRealm+"/"+guildLink+"/roster?namespace=profile-us&locale=en_US&access_token=" + token;
-    var guildShit;
+    var guildStuff;
 
 //GUILD PROFILE API
     const getData = async guildUrl => {
       try {
           const response = await fetch(guildUrl);
           const json = await response.json();
-          guildShit = json;
-          // console.log(guildShit);
+          guildStuff = json;
+          // console.log(guildStuff);
       } catch (error) {
         console.log(error);
       }
@@ -273,62 +279,24 @@ app.post ('/wowSearch', function(req, res){
       }
     };
 
+    // console.log(data[5].rating);
 //PLAYER PVP RATING API
-  var twoRating = "https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/pvp-bracket/2v2?namespace=profile-us&locale=en_US&access_token=" + token;
-  let ratingTwo;
-  let rating;
-  let ratingRbg;
-  const getTwoRating = async twoRating => {
-  try {
-    const response = await fetch(twoRating);
-    const json = await response.json();
-     ratingTwo = json;
-     // console.log(ratingTwo);
-  } catch(error) {
-    console.log(error);
-  }
-};
-  var pvpRating = "https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/pvp-bracket/3v3?namespace=profile-us&locale=en_US&access_token=" + token;
 
-  const getRating = async pvpRating => {
-    try {
-      const response = await fetch(pvpRating);
-      const json = await response.json();
-       rating = json;
-
-    } catch(error) {
-      console.log(error);
-    }
-  };
-  var rbgRating = "https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/pvp-bracket/rbg?namespace=profile-us&locale=en_US&access_token=" + token;
-  const getRbgRating = async rbgRating => {
-    try {
-      const response = await fetch(rbgRating);
-      const json = await response.json();
-       ratingRbg = json;
-
-    } catch(error) {
-      console.log(error);
-    }
-  };
+    let ratingTwo = data[5];
+    let rating = data[6];
+    let ratingRbg = data[7];
 
     getData(guildUrl);
     getGuildRoster(guildRoster);
-    getRating(pvpRating);
-    getRbgRating(rbgRating);
-    getTwoRating(twoRating);
 
 // waits for getData to finish before running
     const guildInfo = async () => {
       await getData(guildUrl);
       await getGuildRoster(guildRoster);
-      await getRating(pvpRating);
-      await getRbgRating(rbgRating);
-      await getTwoRating(twoRating);
 
       let roster = [];
-      let guildMembers = guildShit.member_count;
-      let guildPoints = guildShit.achievement_points;
+      let guildMembers = guildStuff.member_count;
+      let guildPoints = guildStuff.achievement_points;
 
         if(guildMembers > 1) {
           for (var i = 0, l = gRoster.members.length; i < l; i++) {
@@ -402,7 +370,6 @@ app.post ('/wowSearch', function(req, res){
                 talents: data[1].specializations,
                 contextTalents: contextTalents,
                 equipmentSlot: equipmentSlot,
-                equipmentName: equipmentName,
                 equipmentQuality: equipmentQuality,
                 itemRender: equipmentIds,
                 equipmentImages: wowHeadLinks,

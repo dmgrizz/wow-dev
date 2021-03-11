@@ -80,7 +80,7 @@ body {
   display: inline-block;
 }
 .form-control {
-  color: #ece2e1;
+  /* color: #ece2e1; */
   /* background-color: #5b5b5b; */
   border: 1px solid #ced4da;
   border-radius: 2px;
