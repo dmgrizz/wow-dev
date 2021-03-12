@@ -1,6 +1,8 @@
 require('dotenv').config();
 const express = require('express');
+const router = express.Router();
 const bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser')
 const ejs = require('ejs');
 const session = require('express-session');
 const request = require('request');
@@ -9,33 +11,54 @@ var _ = require('lodash');
 const passport = require('passport');
 var BnetStrategy = require('passport-bnet').Strategy;
 const refresh = require('./routes/token');
-const talentImgs = require('./routes/talentImgs');
-const app = express();
+// const talentImgs = require('./routes/talentImgs');
 
+const app = express();
 app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 
-
-// app.use(passport.initialize());
-// app.use(passport.session());
-// app.use(session({ }));
 const BNET_ID = process.env.CLIENT_ID;
 const BNET_SECRET = process.env.CLIENT_SECRET;
 // var token = process.env.TOKEN;
 var wcToken = process.env.WCLOG_TOKEN;
 
 
+app.use(cookieParser());
+app.use(session({ secret: BNET_SECRET,
+                  saveUninitialized: false,
+                  resave: false }));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
+
 passport.use(new BnetStrategy({
     clientID: BNET_ID,
     clientSecret: BNET_SECRET,
-    callbackURL: "https://localhost:3000/auth/bnet/callback",
+    callbackURL: "http://localhost:3000/auth/bnet/callback",
     region: "us"
 }, function(accessToken, refreshToken, profile, done) {
-
+    console.log(profile);
     return done(null, profile);
 }));
-// console.log(BnetStrategy);
+
+app.use(function (req, res, next) { // need this in order for the login in button to switch back and forth from logout this let the template access isAuthenticated
+ res.locals.isAuthenticated = req.isAuthenticated();
+ next();
+});
+app.use(function (req, res, next) { // need this in order for the login in button to switch back and forth from logout this let the template access isAuthenticated
+ res.locals.isAuthenticated = req.isAuthenticated();
+ next();
+});
 
 var clientToken = '';
 const getToken = async () => {
@@ -50,10 +73,28 @@ try {
   }
 }
 getToken();
+app.use('/', require('./config/router.js'));
 
-app.get("/dropdown", function(req, res){
-  res.render("dropdown");
-});
+function ensureAuthenticated(req, res, next) {
+  if(req.isAuthenticated()) { return next(); }
+  res.redirect("/");
+}
+
+app.get('/auth/bnet',
+    passport.authenticate('bnet'));
+
+app.get('/auth/bnet/callback',
+    passport.authenticate('bnet', { failureRedirect: '/' }),
+    function(req, res){
+      console.log(req.user.battletag);
+      var battletag = req.user.battletag;
+        if(req.isAuthenticated()){
+          res.redirect('/dropdown');
+        } else {
+          res.redirect("/");
+        }
+
+    });
 
 app.get('/', function(req, res){
     var playerObj = '';
@@ -67,22 +108,30 @@ app.get('/error', function(req, res){
 app.get('/profile', function(req, res){
   res.render("profile");
 });
+app.get('/dropdown', ensureAuthenticated,function(req, res){
 
-app.get('/auth/bnet',
-    passport.authenticate('bnet'));
-
-app.get('/auth/bnet/callback',
-    passport.authenticate('bnet', { failureRedirect: '/' }),
-    function(req, res){
-        console.log(accessToken);
-        res.redirect('/');
-    });
-
-app.post("/auth/bnet/callback",
-  passport.authenticate('bnet', { failureRedirect: '/' }),
-  function(req, res){
-      res.redirect('/');
+          if(req.isAuthenticated()){
+            console.log(req.user.battletag);
+            var battletag = req.user.battletag;
+            res.render('dropdown', {battletag: battletag });
+          } else {
+            res.redirect("/");
+          }
 });
+
+app.get('/logout', (req, res) => {
+
+  req.logout();
+  req.session.destroy();
+  // req.flash('success_msg', 'You are logged out');
+  res.redirect('/');
+});
+
+// app.post("/auth/bnet/callback",
+//   passport.authenticate('bnet', { failureRedirect: '/' }),
+//   function(req, res){
+//       res.redirect('/');
+// });
 
 app.post ('/wowSearch', function(req, res){
 
@@ -117,14 +166,11 @@ app.post ('/wowSearch', function(req, res){
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/specializations?namespace=profile-us&locale=en_US&access_token=" + token), // TO GET PLAYER SPECILIZATION INFO TALENTS ETC.
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"?namespace=profile-us&locale=en_US&access_token=" + token), //TO GET PLAYER PROFILE INFO
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/equipment?namespace=profile-us&locale=en_US&access_token=" + token), // TO GET PLAYER EQUIPMENT INFO
-    // fetch("https://us.api.blizzard.com/data/wow/media/item/"+equipmentIds+"?namespace=static-us&locale=en_US&access_token=" + token), // FOR PLAYER EQUIPEMENT MEDIA PICTURES?? MIGHT NOT ACTUALLY BE USING THIS
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/statistics?namespace=profile-us&locale=en_US&access_token=" + token),
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/character-media?namespace=profile-us&locale=en_US&access_token=" + token), //THIS IS FOR PLAYER AVATAR PICTURE
-    // fetch("https://us.api.blizzard.com/data/wow/talent/index?namespace=static-us&locale=en_US&access_token=" + token)
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/pvp-bracket/2v2?namespace=profile-us&locale=en_US&access_token=" + token),
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/pvp-bracket/3v3?namespace=profile-us&locale=en_US&access_token=" + token),
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/pvp-bracket/rbg?namespace=profile-us&locale=en_US&access_token=" + token)
-
   ]).then(function(responses){
     return Promise.all(responses.map(function(response){
       return response.json();
