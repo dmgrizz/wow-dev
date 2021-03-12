@@ -97,7 +97,7 @@ app.get('/auth/bnet/callback',
     passport.authenticate('bnet', { failureRedirect: '/' }),
     function(req, res){
       console.log(req.user.battletag);
-      var battletag = req.user.battletag;
+      // var battletag = req.user.battletag;
         if(req.isAuthenticated()){
           res.redirect('/dropdown');
         } else {
