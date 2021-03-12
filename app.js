@@ -4,7 +4,8 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser')
 const ejs = require('ejs');
-const session = require('express-session');
+const session = require('cookie-session');
+// const session = require('express-session');
 const request = require('request');
 const fetch = require('node-fetch');
 var _ = require('lodash');
@@ -122,7 +123,7 @@ app.get('/dropdown', ensureAuthenticated,function(req, res){
 app.get('/logout', (req, res) => {
 
   req.logout();
-  req.session.destroy();
+  // req.session.destroy();
   // req.flash('success_msg', 'You are logged out');
   res.redirect('/');
 });
