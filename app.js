@@ -54,7 +54,7 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new BnetStrategy({
     clientID: BNET_ID,
     clientSecret: BNET_SECRET,
-    callbackURL: "/auth/bnet/callback",
+    callbackURL: process.env.callbackURL,
     region: "us"
 }, function(accessToken, refreshToken, profile, done) {
     console.log(profile);
