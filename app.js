@@ -4,8 +4,8 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser')
 const ejs = require('ejs');
-const session = require('cookie-session');
-// const session = require('express-session');
+// const session = require('cookie-session');
+const session = require('express-session');
 const request = require('request');
 const fetch = require('node-fetch');
 var _ = require('lodash');
@@ -28,7 +28,7 @@ var wcToken = process.env.WCLOG_TOKEN;
 
 app.use(cookieParser());
 app.use(session({ secret: process.env.SECRET,
-                  saveUninitialized: false,
+                  saveUninitialized: true,
                   resave: false }));
 
 app.use(passport.initialize());
