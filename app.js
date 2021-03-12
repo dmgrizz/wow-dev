@@ -53,8 +53,8 @@ passport.deserializeUser(function(obj, done) {
 });
 
 passport.use(new BnetStrategy({
-    clientID: keys.CLIENT_ID,
-    clientSecret: keys.CLIENT_SECRET,
+    clientID: keys.BNET_ID,
+    clientSecret: keys.BNET_SECRET,
     callbackURL: '/auth/bnet/callback',
     region: "us"
 }, function(accessToken, refreshToken, profile, done) {
