@@ -55,7 +55,7 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new BnetStrategy({
     clientID: keys.BNET_ID,
     clientSecret: keys.BNET_SECRET,
-    callbackURL: '/auth/bnet/callback',
+    callbackURL: 'https://wow-dev.herokuapp.com/auth/bnet/callback/dropdown',
     region: "us"
 }, function(accessToken, refreshToken, profile, done) {
     console.log(profile);
