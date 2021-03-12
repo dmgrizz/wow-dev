@@ -1,35 +1,45 @@
 require('dotenv').config();
 const express = require('express');
+const mongoose = require('mongoose');
+const passport = require('passport');
 const router = express.Router();
 const bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser')
 const ejs = require('ejs');
 // const session = require('cookie-session');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const request = require('request');
 const fetch = require('node-fetch');
 var _ = require('lodash');
-const passport = require('passport');
+
 var BnetStrategy = require('passport-bnet').Strategy;
 const refresh = require('./routes/token');
-// const talentImgs = require('./routes/talentImgs');
+
+
+
+mongoose.connect(process.env.mongoUri, {useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.set("useCreateIndex", true);
+mongoose.set('useFindAndModify', false);
 
 const app = express();
 app.use(express.static("public"));
-app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({extended: true}));
 
 const BNET_ID = process.env.CLIENT_ID;
 const BNET_SECRET = process.env.CLIENT_SECRET;
-// var token = process.env.TOKEN;
-var wcToken = process.env.WCLOG_TOKEN;
-
 
 app.use(cookieParser());
 app.use(session({ secret: process.env.SECRET,
                   saveUninitialized: true,
-                  resave: false }));
+                  resave: false,
+                  store: MongoStore.create({
+                  mongoUrl: process.env.mongoUri,
+                  autoRemove: 'native' // Default
+                  })
+                 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -40,7 +50,6 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
-
 
 passport.use(new BnetStrategy({
     clientID: BNET_ID,
