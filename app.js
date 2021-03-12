@@ -27,7 +27,7 @@ var wcToken = process.env.WCLOG_TOKEN;
 
 
 app.use(cookieParser());
-app.use(session({ secret: BNET_SECRET,
+app.use(session({ secret: process.env.SECRET,
                   saveUninitialized: false,
                   resave: false }));
 
