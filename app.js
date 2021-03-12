@@ -15,10 +15,11 @@ var _ = require('lodash');
 
 var BnetStrategy = require('passport-bnet').Strategy;
 const refresh = require('./routes/token');
+const keys = require('./config/key');
 
 
 
-mongoose.connect(process.env.mongoUri, {useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(keys.mongoUri, {useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.set("useCreateIndex", true);
 mongoose.set('useFindAndModify', false);
 
@@ -28,15 +29,15 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({extended: true}));
 
-const BNET_ID = process.env.CLIENT_ID;
-const BNET_SECRET = process.env.CLIENT_SECRET;
+// const BNET_ID = process.env.CLIENT_ID;
+// const BNET_SECRET = process.env.CLIENT_SECRET;
 
 app.use(cookieParser());
-app.use(session({ secret: process.env.SECRET,
+app.use(session({ secret: keys.SECRET,
                   saveUninitialized: true,
                   resave: false,
                   store: MongoStore.create({
-                  mongoUrl: process.env.mongoUri,
+                  mongoUrl: keys.mongoUri,
                   autoRemove: 'native' // Default
                   })
                  }));
@@ -52,9 +53,9 @@ passport.deserializeUser(function(obj, done) {
 });
 
 passport.use(new BnetStrategy({
-    clientID: BNET_ID,
-    clientSecret: BNET_SECRET,
-    callbackURL: 'https://wow-dev.herokuapp.com/auth/bnet/callback',
+    clientID: keys.CLIENT_ID,
+    clientSecret: keys.CLIENT_SECRET,
+    callbackURL: '/auth/bnet/callback',
     region: "us"
 }, function(accessToken, refreshToken, profile, done) {
     console.log(profile);
