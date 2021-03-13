@@ -56,9 +56,10 @@ passport.use(new BnetStrategy({
     clientID: keys.BNET_ID,
     clientSecret: keys.BNET_SECRET,
     callbackURL: keys.callback_URL,
+    scope: "wow.profile",
     region: "us"
 }, function(accessToken, refreshToken, profile, done) {
-    console.log(profile);
+
     return done(null, profile);
 }));
 
@@ -97,8 +98,9 @@ app.get('/auth/bnet',
 app.get('/auth/bnet/callback',
     passport.authenticate('bnet', { failureRedirect: '/' }),
     function(req, res){
-      console.log(req.user.battletag);
-      // var battletag = req.user.battletag;
+      // console.log(req.user.battletag);
+      var battletag = req.user.battletag;
+      // var btParam = req.params.battletag
         if(req.isAuthenticated()){
           res.redirect('/dropdown');
         } else {
@@ -120,11 +122,54 @@ app.get('/profile', function(req, res){
   res.render("profile");
 });
 app.get('/dropdown', ensureAuthenticated,function(req, res){
-
+          // var battletag = req.query.battletag
           if(req.isAuthenticated()){
-            console.log(req.user.battletag);
+            // console.log(req);
             var battletag = req.user.battletag;
-            res.render('dropdown', {battletag: battletag });
+            var userToken = req.user.token;
+            var userInfo = 'https://us.api.blizzard.com/profile/user/wow?namespace=profile-us&locale=en_US&access_token=' + userToken;
+
+            var allCharNames = {};
+            const getUserInfo = async userInfo => {
+              try
+              {
+                  var wowCharNames = [];
+                  const response = await fetch(userInfo);
+                  const userJson = await response.json();
+                  // console.log(userJson.wow_accounts[0].characters);
+                  for (var i = 0; i < userJson.wow_accounts[0].characters.length; i++) {
+                    // console.log(userJson.wow_accounts[0].characters[i].name);
+                
+                    var charNames = {
+                      name: userJson.wow_accounts[0].characters[i].name,
+                      realm: userJson.wow_accounts[0].characters[i].realm.name,
+                      class: userJson.wow_accounts[0].characters[i].playable_class.name,
+                      race: userJson.wow_accounts[0].characters[i].playable_race.name,
+                      level: userJson.wow_accounts[0].characters[i].level,
+                      faction: userJson.wow_accounts[0].characters[i].faction.name,
+                      slug: userJson.wow_accounts[0].characters[i].realm.slug
+                    };
+                    var lowerCharNames = _.lowerCase(charNames.name);
+                    var characterAvatars = "https://us.api.blizzard.com/profile/wow/character/"+charNames.slug+"/"+lowerCharNames+"/character-media?namespace=profile-us&locale=en_US&access_token=" + userToken;
+                    // console.log(characterAvatars);
+                    wowCharNames.push(charNames);
+                  }
+                  allCharNames = wowCharNames;
+
+              } catch (error) {
+                  console.log(error);
+              }
+            };
+            getUserInfo(userInfo);
+                const profileInfo = async () => {
+                  await getUserInfo(userInfo);
+                  // console.log(allCharNames);
+                  res.render('dropdown', {
+                    battletag: battletag,
+                    wowChars: allCharNames
+                  });
+                }
+                profileInfo();
           } else {
             res.redirect("/");
           }
@@ -172,7 +217,7 @@ app.post ('/wowSearch', function(req, res){
     var token;
     // console.log(clientToken.access_token);
     token = clientToken.access_token;
-
+    console.log(token);
   Promise.all([
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/specializations?namespace=profile-us&locale=en_US&access_token=" + token), // TO GET PLAYER SPECILIZATION INFO TALENTS ETC.
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"?namespace=profile-us&locale=en_US&access_token=" + token), //TO GET PLAYER PROFILE INFO
@@ -190,7 +235,7 @@ app.post ('/wowSearch', function(req, res){
     // var newS = playerName.split(' ');
     // var newName = newS[0];
     // var newRealm = newS[1];
-
+    console.log(data[4]);
     var playerName = req.body.playerName;
     var newName = playerName.toLowerCase().replace(/\s/g, '');
     var newRealm = playerRealm.replace(/\s/g, '-');

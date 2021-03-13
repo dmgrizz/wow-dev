@@ -601,7 +601,22 @@
   </div>
 
 <div class="container-info">
-  <h1> <%= battletag%></h1>
+  <h1 name="battletag"> <%= battletag%></h1>
+</div>
+<div class="container-info">
+  <div class="char-info">
+    <%for (var i = 0; i < wowChars.length; i++) {%>
+      <div class="char-card">
+        <h5 class="char-titles"><%=wowChars[i].name%></h5> - <h5 class="char-titles"><%=wowChars[i].realm%></h5>
+        <br>
+        <h5 class="char-titles">lvl: <%=wowChars[i].level%></h5>,
+        <h5 class="char-titles"><%=wowChars[i].class%></h5>,
+        <h5 class="char-titles"><%=wowChars[i].race%></h5>,
+        <h5 class="char-titles"><%=wowChars[i].faction%></h5>
+      </div>
+
+    <%}%>
+    </div>
 </div>
 
 <%- include('partials/footer') %>

@@ -594,7 +594,11 @@
     <button class="hd-btn-row" type="button" name="button"><span class="">Articles</span></button>
     <button class="hd-btn-row" type="button" name="button"><span class="">Rankings</span></button>
     <a href="/dropdown"><button class="hd-btn-row" type="button" name="button"><span class="">Profile</span></button></a>
-    <a href="/"><button class="hd-btn-row" type="button" name="button"><span class="">Login</span></button></a>
+    <%if(isAuthenticated){%>
+      <a href="/logout"><button class="hd-btn-row" type="button" name="button"><span class="">Logout</span></button></a>
+    <%} else {%>
+        <a href="/"><button class="hd-btn-row" type="button" name="button"><span class="">Login</span></button></a>
+  <%}%>
   </div>
   </div>
   <div class="container-info">

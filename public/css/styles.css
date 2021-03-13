@@ -285,6 +285,34 @@ hr {
   border-radius: 5px;
   box-shadow: 0px 2px 10px 2px #00000025;
 }
+/* //WOW PLAYER PROFILE INFO  */
+.char-info {
+  background: rgb(34, 40, 49, 0.8);
+  height: auto;
+  padding: 15px;
+  width: 56%;
+  margin-right: 5px;
+  /* border: none; */
+  border: 2px solid;
+  border-color: #487e9599;
+  border-radius: 5px;
+  box-shadow: 0px 2px 10px 2px #00000025;
+}
+.char-titles {
+  display: inline;
+}
+.char-card {
+  margin-bottom: 5px;
+  background-color: rgb(56, 62, 86, 0.8);
+  width: 60%;
+  padding: 10px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 2px 8px 2px #00000055;
+}
+
+
 .item-header {
   display: inline-flex;
 }
