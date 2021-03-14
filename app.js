@@ -130,6 +130,7 @@ app.get('/dropdown', ensureAuthenticated,function(req, res){
             var userInfo = 'https://us.api.blizzard.com/profile/user/wow?namespace=profile-us&locale=en_US&access_token=' + userToken;
 
             var allCharNames = {};
+            var allCharPhotos = {};
             const getUserInfo = async userInfo => {
               try
               {
@@ -137,9 +138,11 @@ app.get('/dropdown', ensureAuthenticated,function(req, res){
                   const response = await fetch(userInfo);
                   const userJson = await response.json();
                   // console.log(userJson.wow_accounts[0].characters);
+                  console.log(userJson.wow_accounts[0]);
+                  var charPhotoArray = [];
                   for (var i = 0; i < userJson.wow_accounts[0].characters.length; i++) {
-                    // console.log(userJson.wow_accounts[0].characters[i].name);
-                
+                    // console.log(userJson.wow_accounts[0].characters[i]);
+                    if(userJson.wow_accounts[0].characters[i].level > 20){
                     var charNames = {
                       name: userJson.wow_accounts[0].characters[i].name,
                       realm: userJson.wow_accounts[0].characters[i].realm.name,
@@ -152,22 +155,52 @@ app.get('/dropdown', ensureAuthenticated,function(req, res){
                     var lowerCharNames = _.lowerCase(charNames.name);
                     var characterAvatars = "https://us.api.blizzard.com/profile/wow/character/"+charNames.slug+"/"+lowerCharNames+"/character-media?namespace=profile-us&locale=en_US&access_token=" + userToken;
                     // console.log(characterAvatars);
+                    var characterPhotos = "https://us.api.blizzard.com/profile/wow/character/"+charNames.slug+"/"+lowerCharNames+"/character-media?namespace=profile-us&locale=en_US&access_token=" + userToken;
+                    console.log(characterPhotos);
                     wowCharNames.push(charNames);
+                    charPhotoArray.push(characterPhotos);
+                  }
                   }
                   allCharNames = wowCharNames;
-
+                  allCharPhotos = charPhotoArray;
               } catch (error) {
                   console.log(error);
               }
             };
             getUserInfo(userInfo);
-                const profileInfo = async () => {
+
+          var avatarPhotos = {};
+
+          const profileInfo = async () => {
                   await getUserInfo(userInfo);
-                  // console.log(allCharNames);
-                  res.render('dropdown', {
-                    battletag: battletag,
-                    wowChars: allCharNames
-                  });
+                let avatarRequest = allCharPhotos.map(allCharPhoto => fetch(allCharPhoto));
+                Promise.all(avatarRequest)
+                .then(responses => {
+                  return Promise.all(responses.map(function(response){
+                    if(response.status === 200){
+                        return response.json();
+                    }
+                  }));
+                })
+                .then(function(photoData){
+                    var filtered = photoData.filter(function(x){
+                      return x !== undefined;
+                    });
+                    var applyValues = [];
+                    for (var i = 0; i < filtered.length; i++) {
+                          var assetValues = filtered[i].assets[0].value;
+                          applyValues.push(assetValues);
+                    }
+                    avatarPhotos = applyValues;
+                    res.render('dropdown', {
+                      battletag: battletag,
+                      wowChars: allCharNames,
+                      avatarPhotos: avatarPhotos
+                    });
+                })
+                .catch(function(error){
+                  console.log(error);
+                });
                 }
                 profileInfo();
           } else {
@@ -183,11 +216,6 @@ app.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
-// app.post("/auth/bnet/callback",
-//   passport.authenticate('bnet', { failureRedirect: '/' }),
-//   function(req, res){
-//       res.redirect('/');
-// });
 
 app.post ('/wowSearch', function(req, res){
 
@@ -207,8 +235,8 @@ app.post ('/wowSearch', function(req, res){
   // var newS = playerName.split(' ');
   // var newName = newS[0];
   // var newRealm = newS[1];
-  console.log(newName);
-  console.log(newRealm);
+  // console.log(newName);
+  // console.log(newRealm);
 
   const exportToken = async () => { // hopefully this is going to refresh my token each day for client
 
@@ -218,6 +246,7 @@ app.post ('/wowSearch', function(req, res){
     // console.log(clientToken.access_token);
     token = clientToken.access_token;
     console.log(token);
+
   Promise.all([
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"/specializations?namespace=profile-us&locale=en_US&access_token=" + token), // TO GET PLAYER SPECILIZATION INFO TALENTS ETC.
     fetch("https://us.api.blizzard.com/profile/wow/character/"+newRealm+"/"+newName+"?namespace=profile-us&locale=en_US&access_token=" + token), //TO GET PLAYER PROFILE INFO
@@ -318,7 +347,7 @@ app.post ('/wowSearch', function(req, res){
     let spellToolTips = [];
     let pvpTalents = [];
     for (var i = 0; i < data[0].specializations.length; i++) {
-
+      console.log(data[0].specializations.specialization);
       var specName = data[0].active_specialization.name;
       var character = data[0].character.name;
 

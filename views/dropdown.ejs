@@ -607,6 +607,9 @@
   <div class="char-info">
     <%for (var i = 0; i < wowChars.length; i++) {%>
       <div class="char-card">
+        <div class="">
+          <img src="<%=avatarPhotos[i] %>" alt="">
+        </div>
         <h5 class="char-titles"><%=wowChars[i].name%></h5> - <h5 class="char-titles"><%=wowChars[i].realm%></h5>
         <br>
         <h5 class="char-titles">lvl: <%=wowChars[i].level%></h5>,
