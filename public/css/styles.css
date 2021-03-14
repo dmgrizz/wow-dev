@@ -62,7 +62,9 @@ body {
 .char-class{
   margin-left: 5px;
 }
-
+.btn-text-w {
+  color: white;
+}
 /* HOME PAGE CSS */
 .sign-in {
  display: inline-block;

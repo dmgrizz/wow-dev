@@ -583,19 +583,23 @@
   </div>
 
   <div class="sign-in text-center">
-    <form class="form-signin" action="/auth/bnet/callback" method="post">
+    <div class="form-group">
+      <h2 class="gold-text">Sign In</h2>
+      <h5 class="gold-text" for="sign-up">Have a Blizzard Account?</h5>
+    </div>
+    <a class="btn btn-primary btn-lg btn-block btn-text-w" href="/auth/bnet">Login with blizzard</a>
+      <br>
+      <!-- <h5 class="gold-text">Or Sign up</h5>
+    <form class="form-signin" action="/auth/bnet" method="post">
       <div class="form-group">
-        <h2 class="gold-text">Sign In</h2>
-        <input class="form-control" type="text" name="email" placeholder="Email" value="">
 
+        <input class="form-control" type="text" name="email" placeholder="Email" value="">
         <input class="form-control" type="text" name="password" placeholder="Password" value="">
       </div>
-      <div class="form-group">
-        <h5 class="gold-text" for="sign-up">Have a Blizzard Account?</h5>
-      </div>
-      <button class="btn btn-dark btn-lg btn-block" type="submit" name="button">Sign in</button>
-    </form>
-    <a href="/auth/bnet">Login with blizzard</a>
+      <button class="btn btn-dark btn-md btn-block" type="submit" name="button">Sign in</button>
+
+
+    </form> -->
   </div>
 
 </div>
