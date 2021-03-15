@@ -16,6 +16,7 @@ var _ = require('lodash');
 
 var BnetStrategy = require('passport-bnet').Strategy;
 const Character = require('./models/Profile');
+const User = require('./models/User');
 const refresh = require('./routes/token');
 const keys = require('./config/key');
 
@@ -117,6 +118,10 @@ app.get('/auth/bnet/callback',
       var battletag = req.user.battletag;
       // var btParam = req.params.battletag
         if(req.isAuthenticated()){
+          const user = new User({
+            battletag: req.body.battletag
+          });
+          user.save();
           res.redirect('/dropdown');
         } else {
           res.redirect("/");
@@ -204,14 +209,18 @@ app.get('/dropdown', ensureAuthenticated,function(req, res){
                   }));
                 })
                 .then(function(photoData){
-                    var filtered = photoData.filter(function(x){
-                      return x !== undefined;
-                    });
+                    // var filtered = photoData.filter(function(x){
+                    //   return x !== undefined;
+                    // });
                     var applyValues = [];
-                    for (var i = 0; i < filtered.length; i++) {
-                          var assetValues = filtered[i].assets[0].value;
-                          applyValues.push(assetValues);
+                    for (var i = 0; i < photoData.length; i++) {
+                      var assetValues = photoData[i].assets[0].value;
+                      applyValues.push(assetValues);
                     }
+                    // for (var i = 0; i < filtered.length; i++) {
+                    //   var assetValues = filtered[i].assets[0].value;
+                    //   applyValues.push(assetValues);
+                    // }
                     avatarPhotos = applyValues;
                     res.render('dropdown', {
                       battletag: battletag,
@@ -257,6 +266,7 @@ app.post('/dropdown', function(req, res){
     }
 
   })
+
 
 
 });
