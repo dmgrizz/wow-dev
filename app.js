@@ -162,7 +162,8 @@ app.get('/dropdown', ensureAuthenticated,function(req, res){
                   var charPhotoArray = [];
                   for (var i = 0; i < userJson.wow_accounts[0].characters.length; i++) {
                     // console.log(userJson.wow_accounts[0].characters[i]);
-                    if(userJson.wow_accounts[0].characters[i].level > 20){
+                    if(userJson.wow_accounts[0].characters[i].level > 30){
+                      // console.log(userJson.wow_accounts[0].characters[i]);
                     var charNames = new Character({
                       name: userJson.wow_accounts[0].characters[i].name,
                       realm: userJson.wow_accounts[0].characters[i].realm.name,
@@ -173,18 +174,13 @@ app.get('/dropdown', ensureAuthenticated,function(req, res){
                       slug: userJson.wow_accounts[0].characters[i].realm.slug
                     });
                     var lowerCharNames = _.lowerCase(charNames.name);
-                    var characterAvatars = "https://us.api.blizzard.com/profile/wow/character/"+charNames.slug+"/"+lowerCharNames+"/character-media?namespace=profile-us&locale=en_US&access_token=" + userToken;
-                    // console.log(characterAvatars);
+
                     var characterPhotos = "https://us.api.blizzard.com/profile/wow/character/"+charNames.slug+"/"+lowerCharNames+"/character-media?namespace=profile-us&locale=en_US&access_token=" + userToken;
-                    // console.log(characterPhotos);
+
                     wowCharNames.push(charNames);
                     charPhotoArray.push(characterPhotos);
-                    // charNames.save(function(err){
-                    //   if(err){
-                    //     console.log(err);
-                    //   }
-                    // });
-                  }
+                    
+                    }
                   }
                   allCharNames = wowCharNames;
                   allCharPhotos = charPhotoArray;
@@ -196,31 +192,30 @@ app.get('/dropdown', ensureAuthenticated,function(req, res){
             getUserInfo(userInfo);
 
           var avatarPhotos = {};
-
+          let filtered;
           const profileInfo = async () => {
-                  await getUserInfo(userInfo);
-                let avatarRequest = allCharPhotos.map(allCharPhoto => fetch(allCharPhoto));
-                Promise.all(avatarRequest)
+                await getUserInfo(userInfo);
+              let avatarRequest = allCharPhotos.map(allCharPhoto => fetch(allCharPhoto));
+              Promise.all(avatarRequest)
                 .then(responses => {
                   return Promise.all(responses.map(function(response){
-                    if(response.status === 200){
+                      if(response.status === 200) {
+                        // console.log(response.json());
                         return response.json();
-                    }
+                      }
                   }));
                 })
                 .then(function(photoData){
-                    // var filtered = photoData.filter(function(x){
-                    //   return x !== undefined;
-                    // });
+                  filtered = photoData.filter(function(x){
+                      // console.log(x);
+                      return x !== undefined;
+                    });
                     var applyValues = [];
-                    for (var i = 0; i < photoData.length; i++) {
-                      var assetValues = photoData[i].assets[0].value;
-                      applyValues.push(assetValues);
+                  for (var i = 0; i < filtered.length; i++) {
+                        var assetValues = filtered[i].assets[0].value;
+                        // console.log(assetValues);
+                        applyValues.push(assetValues);
                     }
-                    // for (var i = 0; i < filtered.length; i++) {
-                    //   var assetValues = filtered[i].assets[0].value;
-                    //   applyValues.push(assetValues);
-                    // }
                     avatarPhotos = applyValues;
                     res.render('dropdown', {
                       battletag: battletag,
@@ -231,8 +226,8 @@ app.get('/dropdown', ensureAuthenticated,function(req, res){
                 .catch(function(error){
                   console.log(error);
                 });
-                }
-                profileInfo();
+              }
+              profileInfo();
           } else {
             res.redirect("/");
           }
