@@ -605,21 +605,43 @@
 </div>
 <div class="container-info">
   <div class="char-info">
-    <%for (var i = 0; i < wowChars.length; i++) {%>
-      <div class="char-card">
-        <div class="">
-          <img src="<%=avatarPhotos[i] %>" alt="">
-        </div>
-        <h5 class="char-titles"><%=wowChars[i].name%></h5> - <h5 class="char-titles"><%=wowChars[i].realm%></h5>
-        <br>
-        <h5 class="char-titles">lvl: <%=wowChars[i].level%></h5>,
-        <h5 class="char-titles"><%=wowChars[i].class%></h5>,
-        <h5 class="char-titles"><%=wowChars[i].race%></h5>,
-        <h5 class="char-titles"><%=wowChars[i].faction%></h5>
-      </div>
 
-    <%}%>
+    <%for (var i = 0; i < wowChars.length; i++) {%>
+      <form class="" action="/dropdown" method="post">
+      <div class="char-card" id="c-card">
+          <div class="">
+            <img value="avatarPhoto" src="<%=avatarPhotos[i] %>" alt="">
+          </div>
+        <label for=""><%=wowChars[i].name%></label>
+        <input class="char-in"type="checkbox" checked="checked" name="name" value="<%=wowChars[i].name%>" style="display:none" > - <label for=""><%=wowChars[i].realm%></label><input class="char-in" type="checkbox" checked="checked" name="realm" value="<%=wowChars[i].realm%>" style="display:none" >
+        <label for=""><%=wowChars[i].level%></label>
+        <input class="char-in"type="checkbox" checked="checked" name="level" value="<%=wowChars[i].level%>" style="display:none" >
+        <label for=""><%=wowChars[i].class%></label>
+        <input class="char-in" type="checkbox" checked="checked" name="class" value="<%=wowChars[i].class%>" style="display:none" >
+        <label for=""><%=wowChars[i].race%></label>
+        <input class="char-in" type="checkbox" checked="checked" name="race" value="<%=wowChars[i].race%>" style="display:none" >
+        <label for=""><%=wowChars[i].faction%></label>
+        <input class="char-in" type="checkbox" checked="checked" name="faction" value="<%=wowChars[i].faction%>" style="display:none" >
+
+          <!-- <input type="checkbox" onClick="toggle(this)" id="select" name="select" value=""> -->
+
+        <button class="btn btn-sm btn-white"type="submit" name="button">add</button>
     </div>
+    </form>
+  <%}%>
+  </div>     <!-- charInfo div -->
+
+</div><!-- contInfo div -->
 </div>
+<script type="text/javascript">
+//   <!-- function toggle(source) {
+//   checkboxes = document.getElementsByClassName('char-in');
+//   for(var i=0, n=checkboxes.length;i<n;i++) {
+//     checkboxes[i].checked = source.checked;
+//   }
+// } -->
+
+
+</script>
 
 <%- include('partials/footer') %>

@@ -6,6 +6,7 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser')
 const ejs = require('ejs');
+const flash = require('connect-flash');
 // const session = require('cookie-session');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
@@ -14,6 +15,7 @@ const fetch = require('node-fetch');
 var _ = require('lodash');
 
 var BnetStrategy = require('passport-bnet').Strategy;
+const Character = require('./models/Profile');
 const refresh = require('./routes/token');
 const keys = require('./config/key');
 
@@ -71,6 +73,19 @@ app.use(function (req, res, next) { // need this in order for the login in butto
  res.locals.isAuthenticated = req.isAuthenticated();
  next();
 });
+
+// Connect flash
+app.use(flash());
+
+// Global variables
+app.use(function(req, res, next) {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
+  next();
+});
+
+
 
 var clientToken = '';
 const getToken = async () => {
@@ -138,12 +153,12 @@ app.get('/dropdown', ensureAuthenticated,function(req, res){
                   const response = await fetch(userInfo);
                   const userJson = await response.json();
                   // console.log(userJson.wow_accounts[0].characters);
-                  console.log(userJson.wow_accounts[0]);
+                  // console.log(userJson.wow_accounts[0]);
                   var charPhotoArray = [];
                   for (var i = 0; i < userJson.wow_accounts[0].characters.length; i++) {
                     // console.log(userJson.wow_accounts[0].characters[i]);
                     if(userJson.wow_accounts[0].characters[i].level > 20){
-                    var charNames = {
+                    var charNames = new Character({
                       name: userJson.wow_accounts[0].characters[i].name,
                       realm: userJson.wow_accounts[0].characters[i].realm.name,
                       class: userJson.wow_accounts[0].characters[i].playable_class.name,
@@ -151,18 +166,24 @@ app.get('/dropdown', ensureAuthenticated,function(req, res){
                       level: userJson.wow_accounts[0].characters[i].level,
                       faction: userJson.wow_accounts[0].characters[i].faction.name,
                       slug: userJson.wow_accounts[0].characters[i].realm.slug
-                    };
+                    });
                     var lowerCharNames = _.lowerCase(charNames.name);
                     var characterAvatars = "https://us.api.blizzard.com/profile/wow/character/"+charNames.slug+"/"+lowerCharNames+"/character-media?namespace=profile-us&locale=en_US&access_token=" + userToken;
                     // console.log(characterAvatars);
                     var characterPhotos = "https://us.api.blizzard.com/profile/wow/character/"+charNames.slug+"/"+lowerCharNames+"/character-media?namespace=profile-us&locale=en_US&access_token=" + userToken;
-                    console.log(characterPhotos);
+                    // console.log(characterPhotos);
                     wowCharNames.push(charNames);
                     charPhotoArray.push(characterPhotos);
+                    // charNames.save(function(err){
+                    //   if(err){
+                    //     console.log(err);
+                    //   }
+                    // });
                   }
                   }
                   allCharNames = wowCharNames;
                   allCharPhotos = charPhotoArray;
+
               } catch (error) {
                   console.log(error);
               }
@@ -207,6 +228,42 @@ app.get('/dropdown', ensureAuthenticated,function(req, res){
             res.redirect("/");
           }
 });
+
+app.post('/dropdown', function(req, res){
+    let errors = [];
+  const character = new Character({
+    name: req.body.name,
+    realm: req.body.realm,
+    class: req.body.class,
+    level: req.body.level,
+    race: req.body.race,
+    faction: req.body.faction
+    // slug: req.body.slug,
+    // media: req.body.avatarPhoto
+  });
+  Character.findOne({name: req.body.name, realm: req.body.realm}).then(char => {
+    if(!char){
+      character.save(function(err){
+        if(err){
+          console.log(err)
+        } else {
+          res.redirect("/dropdown");
+        }
+      })
+    } else if(char) {
+      errors.push( {msg:"Character already added"});
+      console.log(errors);
+      res.redirect("/dropdown");
+    }
+
+  })
+
+
+});
+
+
+
+
 
 app.get('/logout', (req, res) => {
 
