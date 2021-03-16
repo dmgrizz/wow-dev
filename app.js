@@ -120,14 +120,24 @@ app.get('/auth/bnet/callback',
             battletag: battletag
 
           });
-          if(user){
-            console.log("user found");
-            res.redirect('/dropdown');
-          } else {
-            console.log("new user saved");
-            user.save();
-            res.redirect('/dropdown');
-          }
+          User.findOne({battletag: battletag}).then(function(userTag){
+            if(userTag) {
+              console.log("user found");
+              res.redirect('/dropdown');
+            } else {
+              console.log("new user saved");
+              user.save();
+              res.redirect('/dropdown');
+            }
+          })
+          // if(user){
+          //   console.log("user found");
+          //   res.redirect('/dropdown');
+          // } else {
+          //   console.log("new user saved");
+          //   user.save();
+          //   res.redirect('/dropdown');
+          // }
     });
 
 app.get('/', function(req, res){
@@ -255,7 +265,7 @@ app.post('/dropdown', function(req, res){
         }
         else {
           User.findOneAndUpdate(
-           { battletag: req.body.battletag },
+           { battletag: req.user.battletag },
            { $push: { characters: characterSchema  } },
           function (error, success) {
                 if (error) {
