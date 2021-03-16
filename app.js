@@ -117,11 +117,14 @@ app.get('/auth/bnet/callback',
       var battletag = req.user.battletag;
       console.log(battletag);
           const user = new User({
-            battletag: req.body.battletag
+            battletag: battletag
+
           });
           if(user){
+            console.log("user found");
             res.redirect('/dropdown');
           } else {
+            console.log("new user saved");
             user.save();
             res.redirect('/dropdown');
           }
@@ -259,6 +262,7 @@ app.post('/dropdown', function(req, res){
                     console.log(error);
                 } else {
                     console.log(success);
+
                       res.redirect("/dropdown");
                 }
             });
