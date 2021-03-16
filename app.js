@@ -114,19 +114,17 @@ app.get('/auth/bnet',
 app.get('/auth/bnet/callback',
     passport.authenticate('bnet', { failureRedirect: '/' }),
     function(req, res){
-      // console.log(req.user.battletag);
       var battletag = req.user.battletag;
-      // var btParam = req.params.battletag
-        if(req.isAuthenticated()){
+      console.log(battletag);
           const user = new User({
             battletag: req.body.battletag
           });
-          user.save();
-          res.redirect('/dropdown');
-        } else {
-          res.redirect("/");
-        }
-
+          if(user){
+            res.redirect('/dropdown');
+          } else {
+            user.save();
+            res.redirect('/dropdown');
+          }
     });
 
 app.get('/', function(req, res){
@@ -176,10 +174,8 @@ app.get('/dropdown', ensureAuthenticated,function(req, res){
                     var lowerCharNames = _.lowerCase(charNames.name);
 
                     var characterPhotos = "https://us.api.blizzard.com/profile/wow/character/"+charNames.slug+"/"+lowerCharNames+"/character-media?namespace=profile-us&locale=en_US&access_token=" + userToken;
-
                     wowCharNames.push(charNames);
                     charPhotoArray.push(characterPhotos);
-                    
                     }
                   }
                   allCharNames = wowCharNames;
@@ -190,7 +186,6 @@ app.get('/dropdown', ensureAuthenticated,function(req, res){
               }
             };
             getUserInfo(userInfo);
-
           var avatarPhotos = {};
           let filtered;
           const profileInfo = async () => {
@@ -200,14 +195,12 @@ app.get('/dropdown', ensureAuthenticated,function(req, res){
                 .then(responses => {
                   return Promise.all(responses.map(function(response){
                       if(response.status === 200) {
-                        // console.log(response.json());
                         return response.json();
                       }
                   }));
                 })
                 .then(function(photoData){
                   filtered = photoData.filter(function(x){
-                      // console.log(x);
                       return x !== undefined;
                     });
                     var applyValues = [];
@@ -233,25 +226,42 @@ app.get('/dropdown', ensureAuthenticated,function(req, res){
           }
 });
 
+
 app.post('/dropdown', function(req, res){
-    let errors = [];
-  const character = new Character({
-    name: req.body.name,
-    realm: req.body.realm,
-    class: req.body.class,
-    level: req.body.level,
-    race: req.body.race,
-    faction: req.body.faction
-    // slug: req.body.slug,
+  let errors = [];
+  const characterSchema = new Character({
+      name: req.body.name,
+      realm: req.body.realm,
+      class: req.body.class,
+      level: req.body.level,
+      race: req.body.race,
+      faction: req.body.faction
     // media: req.body.avatarPhoto
   });
-  Character.findOne({name: req.body.name, realm: req.body.realm}).then(char => {
+  const userSchema = new User({
+    battletag: req.body.battletag,
+    characters: [characterSchema]
+  });
+
+  Character.findOne({name: req.body.name, realm: req.body.realm}).then(function(char){
     if(!char){
-      character.save(function(err){
+      console.log(char);
+      characterSchema.save(function(err){
         if(err){
           console.log(err)
-        } else {
-          res.redirect("/dropdown");
+        }
+        else {
+          User.findOneAndUpdate(
+           { battletag: req.body.battletag },
+           { $push: { characters: characterSchema  } },
+          function (error, success) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log(success);
+                      res.redirect("/dropdown");
+                }
+            });
         }
       })
     } else if(char) {
@@ -259,16 +269,8 @@ app.post('/dropdown', function(req, res){
       console.log(errors);
       res.redirect("/dropdown");
     }
-
   })
-
-
-
 });
-
-
-
-
 
 app.get('/logout', (req, res) => {
 
