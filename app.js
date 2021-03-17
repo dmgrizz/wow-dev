@@ -173,7 +173,7 @@ app.get('/dropdown', ensureAuthenticated,function(req, res){
                   var charPhotoArray = [];
                   for (var i = 0; i < userJson.wow_accounts[0].characters.length; i++) {
                     // console.log(userJson.wow_accounts[0].characters[i]);
-                    if(userJson.wow_accounts[0].characters[i].level > 30){
+                    if(userJson.wow_accounts[0].characters[i].level === 60){
                       // console.log(userJson.wow_accounts[0].characters[i]);
                     var charNames = new Character({
                       name: userJson.wow_accounts[0].characters[i].name,
@@ -213,13 +213,15 @@ app.get('/dropdown', ensureAuthenticated,function(req, res){
                   }));
                 })
                 .then(function(photoData){
+                  console.log(photoData);
                   filtered = photoData.filter(function(x){
                       return x !== undefined;
                     });
+                    console.log(filtered);
                     var applyValues = [];
                   for (var i = 0; i < filtered.length; i++) {
                         var assetValues = filtered[i].assets[0].value;
-                        // console.log(assetValues);
+                        console.log(assetValues);
                         applyValues.push(assetValues);
                     }
                     avatarPhotos = applyValues;
@@ -272,7 +274,6 @@ app.post('/dropdown', function(req, res){
                     console.log(error);
                 } else {
                     console.log(success);
-
                       res.redirect("/dropdown");
                 }
             });
