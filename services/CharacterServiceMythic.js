@@ -14,7 +14,6 @@ class CharacterServiceMythic {
     const newName = encodeURIComponent(name);
     const newRealm = realm;
     const raiderIO = "https://raider.io/api/v1/characters/profile?region=us&realm="+newRealm+"&name="+ newName + "&fields=mythic_plus_scores_by_season:current,mythic_plus_recent_runs,mythic_plus_best_runs,mythic_plus_highest_level_runs";
-    console.log(raiderIO);
     const mythicResponse = await fetch(raiderIO)
       .catch(err => console.log(err));
     return mythicResponse.json();

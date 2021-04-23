@@ -21,13 +21,10 @@ module.exports = app => {
                     var wowCharNames = [];
                     const response = await fetch(userInfo);
                     const userJson = await response.json();
-                    // console.log(userJson.wow_accounts[0].characters);
-                    // console.log(userJson.wow_accounts[0]);
+
                     var charPhotoArray = [];
                     for (var i = 0; i < userJson.wow_accounts[0].characters.length; i++) {
-                      // console.log(userJson.wow_accounts[0].characters[i]);
                       if(userJson.wow_accounts[0].characters[i].level === 60){
-                        // console.log(userJson.wow_accounts[0].characters[i]);
                       var charNames = new Character({
                         name: userJson.wow_accounts[0].characters[i].name,
                         realm: userJson.wow_accounts[0].characters[i].realm.name,
@@ -38,7 +35,7 @@ module.exports = app => {
                         slug: userJson.wow_accounts[0].characters[i].realm.slug
                       });
                       var lowerCharNames = charNames.name.toLowerCase().replace(/\s/g, '');
-                      console.log(lowerCharNames);
+
                       var characterPhotos = "https://us.api.blizzard.com/profile/wow/character/"+charNames.slug+"/"+lowerCharNames+"/character-media?namespace=profile-us&locale=en_US&access_token=" + userToken;
                       wowCharNames.push(charNames);
                       charPhotoArray.push(characterPhotos);

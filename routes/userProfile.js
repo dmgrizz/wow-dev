@@ -43,7 +43,6 @@ module.exports = app => {
         let filterCharList = dropdownCharList.filter(function(ch) {
           return ch.name !== characterName;
         });
-        console.log(filterCharList);
         var playerRealm = _.lowerCase(realm);
         var playerName  = characterName;
         var newName     = playerName.toLowerCase().replace(/\s/g, '');
@@ -276,7 +275,6 @@ module.exports = app => {
         for (var i = 0; i < difficulty.length; i++) {
           if(difficulty[i].difficulty.name === "Normal") {
             for (var e = 0; e < difficulty[i].progress.encounters.length; e++) {
-              console.log(difficulty[i].progress.encounters);
                 var totalKills = difficulty[i].progress.encounters[e].completed_count;
                 var lastKill = new Date(difficulty[i].progress.encounters[e].last_kill_timestamp);
                 normalToolTip.push(lastKill);

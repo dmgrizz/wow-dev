@@ -32,7 +32,6 @@ module.exports = app => {
          filterCharList = dropdownCharList.filter(function(ch) {
            return ch.name !== characterName;
          });
-
     }
         var playerRealm = _.lowerCase(req.body.playerRealm);
         var playerName = req.body.playerName;
@@ -60,7 +59,6 @@ module.exports = app => {
             var renown      = character.covenant_progress.renown_level;
             var covenantId  = character.covenant_progress.chosen_covenant.id;
           }
-      // covenantPhoto:"https://us.api.blizzard.com/data/wow/media/covenant/"+ covenantId +"?namespace=static-us&locale=en_US&access_token=" + token,
 
         var charObject = {
           name: character.name,
@@ -149,8 +147,8 @@ module.exports = app => {
 
         for (var i = 0; i < spec.specializations.length; i++) {
           allSpecs = spec.specializations[i].specialization.name;
-          console.log(allSpecs);
           specNames.push(allSpecs);
+
             if(spec.specializations[i].talents) {
               for (var x = 0; x < spec.specializations[i].talents.length; x++) {
                 // console.log(spec.specializations[i].talents[x].spell_tooltip.spell.id);
@@ -256,7 +254,6 @@ for (var i = 0; i < expansions.length; i++) {
       for (var m = 0; m < expansions[i].instances[x].modes.length; m++) {
           if(expansions[i].instances[x].modes[m].difficulty.type !==  "LFR") {
             difficulty.push(expansions[i].instances[x].modes[m]);
-            console.log(difficulty);
           }
         }
       }
@@ -282,8 +279,6 @@ for (var i = 0; i < expansions.length; i++) {
           normalKillCount.push(totalKills);
           lastNormalKill.push(lastKill.toUTCString().slice(5,-12));
           normalBossesDefeated.push(difficulty[i].progress.encounters[e].encounter);
-          console.log(difficulty[i].progress.encounters[e]);
-
       }
     }
 
@@ -296,7 +291,6 @@ for (var i = 0; i < expansions.length; i++) {
           heroicKillCount.push(totalKills);
           lastHeroicKill.push(lastKill.toUTCString().slice(5,-12));
           heroicBossesDefeated.push(difficulty[i].progress.encounters[e].encounter);
-          console.log(heroicToolTip);
       }
     }
 

@@ -28,10 +28,7 @@ module.exports = {
             res.on('end', () => {
                 let data = JSON.parse(responseData);
                 resolve(data);
-                  // console.log(data.access_token);
-
             });
-
         }
 
         let request = require('https').request(requestOptions, requestHandler);

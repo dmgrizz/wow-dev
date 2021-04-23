@@ -24,7 +24,6 @@ module.exports = app => {
     const user = await User.findOne({battletag: battletag});
 
     var char = req.body.selectChar;
-    console.log(char);
     const findChar = await Character.findOne({name: char});
 
     var avatar = findChar.media;

@@ -44,10 +44,7 @@ module.exports = app => {
         const pvpTwosBracket = await characterServicePvp.getCharacterTwosPvpBracket(characterPvp);
         const pvpThreesBracket = await characterServicePvp.getCharacterThreesPvpBracket(characterPvp);
         const pvpBgBracket = await characterServicePvp.getCharacterBGPvpBracket(characterPvp);
-        // console.log(characterPvp);
-        console.log(pvpTwosBracket);
-        console.log(pvpThreesBracket);
-        console.log(pvpBgBracket);
+
         if(character.active_title){
           var activeTitle = character.active_title.name;
         }
@@ -257,11 +254,6 @@ module.exports = app => {
              weeklyRoundedRbgs  = _.round(weeklyRbgWinRate, 1);
            }
         }
-
-
-
-
-
 
         res.render("charPvp", {
           avatar,

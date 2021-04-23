@@ -26,7 +26,6 @@ module.exports = app => {
 
     Character.findOne({name: req.body.name, realm: req.body.realm}).then(function(char){
       if(char){
-        console.log(char);
         characterSchema.save(function(err){
           if(err){
             console.log(err)
