@@ -616,10 +616,10 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                 <%if(isAuthenticated){%>
                   <button class="dropdown-item" type="button"><%=battletag%></button>
-                  <button class="dropdown-item" type="button">Settings</button>
+                  <a href="/charPick"><button class="dropdown-item" type="button">Settings</button></a>
                   <a href="/logout"><button class="dropdown-item" type="button" name="button"><span class="">Logout</span></button></a>
                   <%} else {%>
-                      <a href="/"><button class="hd-btn-row" type="button" name="button"><span class="">Login</span></button></a>
+                      <a href="/"><button class="dropdown-item" type="button" name="button"><span class="">Login</span></button></a>
                 <%}%>
                 </div>
           </div>
