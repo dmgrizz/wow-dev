@@ -65,14 +65,14 @@ module.exports = app => {
           race: character.race.name,
           class: character.character_class.name,
           spec: character.active_spec.name,
-          temLvl: character.equipped_item_level,
+          itemLvl: character.equipped_item_level,
           faction: character.faction.name,
           realm: character.realm.name,
           guild: guild,
-          activeTitle: activeTitle,
-          covenant: covenant,
-          renown: renown,
-          covenantId: covenantId
+          activeTitle:  activeTitle,
+          covenant:     covenant,
+          renown:       renown,
+          covenantId:   covenantId
         }
         if(charObject.faction === "Horde") {
           factionPic = "https://assets.worldofwarcraft.com/static/components/Logo/Logo-horde.2a80e0466e51d85c8cf60336e16fe8b8.png";
@@ -143,7 +143,6 @@ module.exports = app => {
         let pvpTalents = [];
         var specNames = [];
         var spec = characterSpec;
-      // console.log(spec);
 
         for (var i = 0; i < spec.specializations.length; i++) {
           allSpecs = spec.specializations[i].specialization.name;
@@ -151,7 +150,6 @@ module.exports = app => {
 
             if(spec.specializations[i].talents) {
               for (var x = 0; x < spec.specializations[i].talents.length; x++) {
-                // console.log(spec.specializations[i].talents[x].spell_tooltip.spell.id);
                 var toolTips;
                 if(spec.specializations[0] && spec.specializations[0].talents) {
                   toolTips = spec.specializations[0].talents[x].spell_tooltip.spell.id;
@@ -163,7 +161,6 @@ module.exports = app => {
                 var toolTipsThree;
                   if(spec.specializations[2] && spec.specializations[2].talents) {
                      toolTipsThree = spec.specializations[2].talents[x].spell_tooltip.spell.id;
-                     console.log(toolTipsThree);
                   }
 
                 var toolTipName = spec.specializations[i].talents[x].spell_tooltip.spell.name;

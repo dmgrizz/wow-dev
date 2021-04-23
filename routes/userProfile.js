@@ -75,14 +75,14 @@ module.exports = app => {
           race: character.race.name,
           class: character.character_class.name,
           spec: character.active_spec.name,
-          guild: guild,
           itemLvl: character.equipped_item_level,
-          activeTitle: activeTitle,
-          covenant: character.covenant_progress.chosen_covenant.name,
-          renown: character.covenant_progress.renown_level,
-          covenantId: character.covenant_progress.chosen_covenant.id,
           faction: character.faction.name,
-          realm: character.realm.name
+          realm: character.realm.name,
+          guild: guild,
+          activeTitle:  activeTitle,
+          covenant:     covenant,
+          renown:       renown,
+          covenantId:   covenantId
         }
 // equipment info start
         let equipment = characterEquip.equipped_items;
