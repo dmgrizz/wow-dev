@@ -9,13 +9,15 @@ const characterSchema = new mongoose.Schema({
   level: String,
   faction: String,
   slug: String,
-  media: String
+  media: String,
+  main: String
 }
 );
 
 const userSchema = new mongoose.Schema({
   battletag: String,
   characters: [characterSchema]
+
 });
   // const Character = mongoose.model('Character', charSchema);
 const User = mongoose.model('User', userSchema);

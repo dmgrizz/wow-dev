@@ -1,0 +1,681 @@
+<%- include('partials/header') %>
+<div class="page-body">
+  <div class="bg-body">
+    <div class="header row">
+      <div class="col-xl-8 col-lg-8 col-md-7 col-sm-7 col-7  user-header">
+        <div class="pos-f-t">
+          <div class="collapse" id="navbarToggleExternalContent">
+            <div class="bg-nav p-4">
+              <form class="card" action="/newSearch" method="post">
+                <div class="input-inline input-group mb-3">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Name</label>
+                  </div>
+                    <input id="playerName" name="playerName" class="form-control" autocomplete="on" type="text" placeholder="Search.." oninput="myFunction()" onkeydown="filterFunction()" onkeyup="">
+                    <select id="specialChar" class="custom" onchange="PopulateUserName()">
+                      <option value="" selected>sc..</option>
+                      <option value="Ø"> Ø </option>
+                      <option value="Ù"> Ù </option>
+                      <option value="Ú"> Ú </option>
+                      <option value="Û"> Û </option>
+                      <option value="Ü"> Ü </option>
+                      <option value="Ý"> Ý </option>
+                      <option value="Þ"> Þ </option>
+                      <option value="ß"> ß </option>
+                      <option value="à"> à </option>
+                      <option value="á"> á </option>
+                      <option value="â"> â </option>
+                      <option value="ã"> ã </option>
+                      <option value="ä"> ä </option>
+                      <option value="å"> å </option>
+                      <option value="æ"> æ </option>
+                      <option value="ç"> ç </option>
+                      <option value="è"> è </option>
+                      <option value="é"> é </option>
+                      <option value="ê"> ê </option>
+                      <option value="ë"> ë </option>
+                      <option value="ì"> ì </option>
+                      <option value="í"> í </option>
+                      <option value="î"> î </option>
+                      <option value="ï"> ï </option>
+                      <option value="ð"> ð </option>
+                      <option value="ñ"> ñ </option>
+                      <option value="ò"> ò </option>
+                      <option value="ó"> ó </option>
+                      <option value="ô"> ô </option>
+                      <option value="õ"> õ </option>
+                      <option value="ö"> ö </option>
+                      <option value="ø"> ø </option>
+                      <option value="ù"> ù </option>
+                      <option value="ú"> ú </option>
+                      <option value="û"> û </option>
+                      <option value="ü"> ü </option>
+                      <option value="ý"> ý </option>
+                      <option value="þ"> þ </option>
+                      <option value="ÿ"> ÿ </option>
+                      <option value="Ā"> Ā </option>
+                      <option value="ā"> ā </option>
+                      <option value="Ă"> Ă </option>
+                      <option value="ă"> ă </option>
+                      <option value="Ą"> Ą </option>
+                      <option value="ą"> ą </option>
+                      <option value="Ć"> Ć </option>
+                      <option value="ć"> ć </option>
+                      <option value="Ĉ"> Ĉ </option>
+                      <option value="ĉ"> ĉ </option>
+                      <option value="Ċ"> Ċ </option>
+                      <option value="ċ"> ċ </option>
+                      <option value="Č"> Č </option>
+                      <option value="č"> č </option>
+                      <option value="Ď"> Ď </option>
+                      <option value="ď"> ď </option>
+                      <option value="Đ"> Đ </option>
+                      <option value="đ"> đ </option>
+                      <option value="Ē"> Ē </option>
+                      <option value="ē"> ē </option>
+                      <option value="Ĕ"> Ĕ </option>
+                      <option value="ĕ"> ĕ </option>
+                      <option value="Ė"> Ė </option>
+                      <option value="ė"> ė </option>
+                      <option value="Ę"> Ę </option>
+                      <option value="ę"> ę </option>
+                      <option value="Ě"> Ě </option>
+                      <option value="ě"> ě </option>
+                      <option value="Ĝ"> Ĝ </option>
+                      <option value="ĝ"> ĝ </option>
+                      <option value="Ğ"> Ğ </option>
+                      <option value="ğ"> ğ </option>
+                      <option value="Ġ"> Ġ </option>
+                      <option value="ġ"> ġ </option>
+                      <option value="Ģ"> Ģ </option>
+                      <option value="ģ"> ģ </option>
+                      <option value="Ĥ"> Ĥ </option>
+                      <option value="ĥ"> ĥ </option>
+                      <option value="Ħ"> Ħ </option>
+                      <option value="ħ"> ħ </option>
+                      <option value="Ĩ"> Ĩ </option>
+                      <option value="ĩ"> ĩ </option>
+                      <option value="Ī"> Ī </option>
+                      <option value="ī"> ī </option>
+                      <option value="Ĭ"> Ĭ </option>
+                      <option value="ĭ"> ĭ </option>
+                      <option value="Į"> Į </option>
+                      <option value="į"> į </option>
+                      <option value="İ"> İ </option>
+                      <option value="ı"> ı </option>
+                      <option value="Ĳ"> Ĳ </option>
+                      <option value="ĳ"> ĳ </option>
+                      <option value="Ĵ"> Ĵ </option>
+                      <option value="ĵ"> ĵ </option>
+                      <option value="Ķ"> Ķ </option>
+                      <option value="ķ"> ķ </option>
+                      <option value="ĸ"> ĸ </option>
+                      <option value="Ĺ"> Ĺ </option>
+                      <option value="ĺ"> ĺ </option>
+                      <option value="Ļ"> Ļ </option>
+                      <option value="ļ"> ļ </option>
+                      <option value="Ľ"> Ľ </option>
+                      <option value="ľ"> ľ </option>
+                      <option value="Ŀ"> Ŀ </option>
+                      <option value="ŀ"> ŀ </option>
+                      <option value="Ł"> Ł </option>
+                      <option value="ł"> ł </option>
+                      <option value="Ń"> Ń </option>
+                      <option value="ń"> ń </option>
+                      <option value="Ņ"> Ņ </option>
+                      <option value="ņ"> ņ </option>
+                      <option value="Ň"> Ň </option>
+                      <option value="ň"> ň </option>
+                      <option value="ŉ"> ŉ </option>
+                      <option value="Ŋ"> Ŋ </option>
+                      <option value="ŋ"> ŋ </option>
+                      <option value="Ō"> Ō </option>
+                      <option value="ō"> ō </option>
+                      <option value="Ŏ"> Ŏ </option>
+                      <option value="ŏ"> ŏ </option>
+                      <option value="Ő"> Ő </option>
+                      <option value="ő"> ő </option>
+                      <option value="Œ"> Œ </option>
+                      <option value="œ"> œ </option>
+                      <option value="Ŕ"> Ŕ </option>
+                      <option value="ŕ"> ŕ </option>
+                      <option value="Ŗ"> Ŗ </option>
+                      <option value="ŗ"> ŗ </option>
+                      <option value="Ř"> Ř </option>
+                      <option value="ř"> ř </option>
+                      <option value="Ś"> Ś </option>
+                      <option value="ś"> ś </option>
+                      <option value="Ŝ"> Ŝ </option>
+                      <option value="ŝ"> ŝ </option>
+                      <option value="Ş"> Ş </option>
+                      <option value="ş"> ş </option>
+                      <option value="Š"> Š </option>
+                      <option value="š"> š </option>
+                      <option value="Ţ"> Ţ </option>
+                      <option value="ţ"> ţ </option>
+                      <option value="Ť"> Ť </option>
+                      <option value="ť"> ť </option>
+                      <option value="Ŧ"> Ŧ </option>
+                      <option value="ŧ"> ŧ </option>
+                      <option value="Ũ"> Ũ </option>
+                      <option value="ũ"> ũ </option>
+                      <option value="Ū"> Ū </option>
+                      <option value="ū"> ū </option>
+                      <option value="Ŭ"> Ŭ </option>
+                      <option value="ŭ"> ŭ </option>
+                      <option value="Ů"> Ů </option>
+                      <option value="ů"> ů </option>
+                      <option value="Ű"> Ű </option>
+                      <option value="ű"> ű </option>
+                      <option value="Ų"> Ų </option>
+                      <option value="ų"> ų </option>
+                      <option value="Ŵ"> Ŵ </option>
+                      <option value="ŵ"> ŵ </option>
+                      <option value="Ŷ"> Ŷ </option>
+                      <option value="ŷ"> ŷ </option>
+                      <option value="Ÿ"> Ÿ </option>
+                      <option value="Ź"> Ź </option>
+                      <option value="ź"> ź </option>
+                      <option value="Ż"> Ż </option>
+                      <option value="ż"> ż </option>
+                      <option value="Ž"> Ž </option>
+                      <option value="ž"> ž </option>
+                      <option value="ƀ"> ƀ </option>
+                      <option value="Ɓ"> Ɓ </option>
+                      <option value="Ƃ"> Ƃ </option>
+                      <option value="ƃ"> ƃ </option>
+                      <option value="Ƅ"> Ƅ </option>
+                      <option value="ƅ"> ƅ </option>
+                      <option value="Ɔ"> Ɔ </option>
+                      <option value="Ƈ"> Ƈ </option>
+                      <option value="ƈ"> ƈ </option>
+                      <option value="Ɛ"> Ɛ </option>
+                      <option value="Ƒ"> Ƒ </option>
+                      <option value="ƒ"> ƒ </option>
+                      <option value="Ɠ"> Ɠ </option>
+                      <option value="Ɣ"> Ɣ </option>
+                      <option value="ƕ"> ƕ </option>
+                      <option value="Ɩ"> Ɩ </option>
+                      <option value="Ɨ"> Ɨ </option>
+                      <option value="Ƙ"> Ƙ </option>
+                      <option value="ǀ"> ǀ </option>
+                      <option value="ǁ"> ǁ </option>
+                      <option value="ǂ"> ǂ </option>
+                      <option value="ǃ"> ǃ </option>
+                      <option value="Ǆ"> Ǆ </option>
+                      <option value="ǅ"> ǅ </option>
+                      <option value="ǆ"> ǆ </option>
+                      <option value="Ǉ"> Ǉ </option>
+                      <option value="ǈ"> ǈ </option>
+                      <option value="ǉ"> ǉ </option>
+                      <option value="Ǌ"> Ǌ </option>
+                      <option value="ǋ"> ǋ </option>
+                      <option value="ǌ"> ǌ </option>
+                      <option value="Ǎ"> Ǎ </option>
+                      <option value="ǎ"> ǎ </option>
+                      <option value="Ǐ"> Ǐ </option>
+                      <option value="ǐ"> ǐ </option>
+                      <option value="Ǒ"> Ǒ </option>
+                      <option value="ǒ"> ǒ </option>
+                      <option value="Ǔ"> Ǔ </option>
+                      <option value="ǔ"> ǔ </option>
+                      <option value="Ǖ"> Ǖ </option>
+                      <option value="ǖ"> ǖ </option>
+                      <option value="Ǘ"> Ǘ </option>
+                      <option value="ǘ"> ǘ </option>
+                      <option value="Ǚ"> Ǚ </option>
+                      <option value="ǚ"> ǚ </option>
+                      <option value="Ǜ"> Ǜ </option>
+                      <option value="ǜ"> ǜ </option>
+                      <option value="ǝ"> ǝ </option>
+                      <option value="Ǟ"> Ǟ </option>
+                      <option value="ǟ"> ǟ </option>
+                      <option value="Ǡ"> Ǡ </option>
+                      <option value="ǡ"> ǡ </option>
+                      <option value="Ǣ"> Ǣ </option>
+                      <option value="ǣ"> ǣ </option>
+                      <option value="Ǥ"> Ǥ </option>
+                      <option value="ǥ"> ǥ </option>
+                      <option value="Ǧ"> Ǧ </option>
+                      <option value="ǧ"> ǧ </option>
+                      <option value="Ǩ"> Ǩ </option>
+                      <option value="ǩ"> ǩ </option>
+                      <option value="Ǫ"> Ǫ </option>
+                      <option value="ǫ"> ǫ </option>
+                      <option value="Ǭ"> Ǭ </option>
+                      <option value="ǭ"> ǭ </option>
+                      <option value="Ǯ"> Ǯ </option>
+                      <option value="ǯ"> ǯ </option>
+                      <option value="ǰ"> ǰ </option>
+                      <option value="Ǳ"> Ǳ </option>
+                      <option value="ǲ"> ǲ </option>
+                      <option value="ǳ"> ǳ </option>
+                      <option value="Ǵ"> Ǵ </option>
+                      <option value="ǵ"> ǵ </option>
+                      <option value="Ƕ"> Ƕ </option>
+                      <option value="Ƿ"> Ƿ </option>
+                      <option value="Ǹ"> Ǹ </option>
+                      <option value="ǹ"> ǹ </option>
+                      <option value="Ǻ"> Ǻ </option>
+                      <option value="ǻ"> ǻ </option>
+                      <option value="Ǽ"> Ǽ </option>
+                      <option value="ǽ"> ǽ </option>
+                      <option value="Ǿ"> Ǿ </option>
+                      <option value="ǿ"> ǿ </option>
+                      <option value="Ȁ"> Ȁ </option>
+                      <option value="ȁ"> ȁ </option>
+                      <option value="Ȃ"> Ȃ </option>
+                      <option value="ȃ"> ȃ </option>
+                      <option value="Ȅ"> Ȅ </option>
+                      <option value="ȅ"> ȅ </option>
+                      <option value="Ȇ"> Ȇ </option>
+                      <option value="ȇ"> ȇ </option>
+                      <option value="Ȉ"> Ȉ </option>
+                      <option value="ȉ"> ȉ </option>
+                      <option value="Ȋ"> Ȋ </option>
+                      <option value="ȋ"> ȋ </option>
+                      <option value="Ȍ"> Ȍ </option>
+                      <option value="ȍ"> ȍ </option>
+                      <option value="Ȏ"> Ȏ </option>
+                      <option value="ȏ"> ȏ </option>
+                      <option value="Ȑ"> Ȑ </option>
+                      <option value="ȑ"> ȑ </option>
+                      <option value="Ȓ"> Ȓ </option>
+                      <option value="ȓ"> ȓ </option>
+                      <option value="Ȕ"> Ȕ </option>
+                      <option value="ȕ"> ȕ </option>
+                      <option value="Ȗ"> Ȗ </option>
+                      <option value="ȗ"> ȗ </option>
+                      <option value="À"> À </option>
+                      <option value="Á"> Á </option>
+                      <option value="Â"> Â </option>
+                      <option value="Ã"> Ã </option>
+                      <option value="Ä"> Ä </option>
+                      <option value="Å"> Å </option>
+                      <option value="Æ"> Æ </option>
+                      <option value="Ç"> Ç </option>
+                      <option value="È"> È </option>
+                      <option value="É"> É </option>
+                      <option value="Ê"> Ê </option>
+                      <option value="Ë"> Ë </option>
+                      <option value="Ì"> Ì </option>
+                      <option value="Í"> Í </option>
+                      <option value="Î"> Î </option>
+                      <option value="Ï"> Ï </option>
+                      <option value="Ð"> Ð </option>
+                      <option value="Ñ"> Ñ </option>
+                      <option value="Ò"> Ò </option>
+                      <option value="Ó"> Ó </option>
+                      <option value="Ô"> Ô </option>
+                      <option value="Õ"> Õ </option>
+                      <option value="Ö"> Ö </option>
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Select</label>
+                  </div>
+                    <select name="playerRealm" class="custom-select" id="inputGroupSelect01">
+                      <option selected>Realm...</option>
+                      <option value="Aegwynn">Aegwynn</option>
+                      <option value="Aerie Peak">Aerie Peak</option>
+                      <option value="Agamaggan">Agamaggan</option>
+                      <option value="Aggramar">Aggramar</option>
+                      <option value="Akama">Akama</option>
+                      <option value="Alexstrasza">Alexstrasza</option>
+                      <option value="Alleria">Alleria</option>
+                      <option value="Altar of Storms">Altar of Storms</option>
+                      <option value="Alterac Mountains">Alterac Mountains</option>
+                      <option value="Aman'Thul">Aman'Thul</option>
+                      <option value="Andorhal">Andorhal</option>
+                      <option value="Anetheron">Anetheron</option>
+                      <option value="Antonidas">Antonidas</option>
+                      <option value="Anub'arak">Anub'arak</option>
+                      <option value="Anvilmar">Anvilmar</option>
+                      <option value="Arathor">Arathor</option>
+                      <option value="Archimonde">Archimonde</option>
+                      <option value="Area 52">Area 52</option>
+                      <option value="Argent Dawn">Argent Dawn</option>
+                      <option value="Arthas">Arthas</option>
+                      <option value="Arygos">Arygos</option>
+                      <option value="Auchindoun">Auchindoun</option>
+                      <option value="Azgalor">Azgalor</option>
+                      <option value="Azjol-Nerub">Azjol-Nerub</option>
+                      <option value="Azralon">Azralon</option>
+                      <option value="Azshara">Azshara</option>
+                      <option value="Azuremyst">Azuremyst</option>
+                      <option value="Baelgun">Baelgun</option>
+                      <option value="Balnazzar">Balnazzar</option>
+                      <option value="Barthilas">Barthilas</option>
+                      <option value="Black Dragonflight">Black Dragonflight</option>
+                      <option value="Blackhand">Blackhand</option>
+                      <option value="Blackrock">Blackrock</option>
+                      <option value="Blackwater Raiders">Blackwater Raiders</option>
+                      <option value="Blackwing Lair">Blackwing Lair</option>
+                      <option value="Blade's Edge">Blade's Edge</option>
+                      <option value="Bladefist">Bladefist</option>
+                      <option value="Bleeding Hollow">Bleeding Hollow</option>
+                      <option value="Blood Furnace">Blood Furnace</option>
+                      <option value="Bloodhoof">Bloodhoof</option>
+                      <option value="Bloodscalp">Bloodscalp</option>
+                      <option value="Bonechewer">Bonechewer</option>
+                      <option value="Borean Tundra">Borean Tundra</option>
+                      <option value="Boulderfist">Boulderfist</option>
+                      <option value="Bronzebeard">Bronzebeard</option>
+                      <option value="Burning Blade">Burning Blade</option>
+                      <option value="Burning Legion">Burning Legion</option>
+                      <option value="Caelestrasz">Caelestrasz</option>
+                      <option value="Cairne">Cairne</option>
+                      <option value="Cenarion Circle">Cenarion Circle</option>
+                      <option value="Cenarius">Cenarius</option>
+                      <option value="Cho'gall">Cho'gall</option>
+                      <option value="Chromaggus">Chromaggus</option>
+                      <option value="Coilfang">Coilfang</option>
+                      <option value="Crushridge">Crushridge</option>
+                      <option value="Daggerspine">Daggerspine</option>
+                      <option value="Dalaran">Dalaran</option>
+                      <option value="Dalvengyr">Dalvengyr</option>
+                      <option value="Dark Iron">Dark Iron</option>
+                      <option value="Darkspear">Darkspear</option>
+                      <option value="Darrowmere">Darrowmere</option>
+                      <option value="Dath'Remar">Dath'Remar</option>
+                      <option value="Dawnbringer">Dawnbringer</option>
+                      <option value="Deathwing">Deathwing</option>
+                      <option value="Demon Soul">Demon Soul</option>
+                      <option value="Dentarg">Dentarg</option>
+                      <option value="Destromath">Destromath</option>
+                      <option value="Dethecus">Dethecus</option>
+                      <option value="Detheroc">Detheroc</option>
+                      <option value="Doomhammer">Doomhammer</option>
+                      <option value="Draenor">Draenor</option>
+                      <option value="Dragonblight">Dragonblight</option>
+                      <option value="Dragonmaw">Dragonmaw</option>
+                      <option value="Drak'Tharon">Drak'Tharon</option>
+                      <option value="Drak'thul">Drak'thul</option>
+                      <option value="Draka">Draka</option>
+                      <option value="Drakkari">Drakkari</option>
+                      <option value="Dreadmaul">Dreadmaul</option>
+                      <option value="Drenden">Drenden</option>
+                      <option value="Dunemaul">Dunemaul</option>
+                      <option value="Durotan">Durotan</option>
+                      <option value="Duskwood">Duskwood</option>
+                      <option value="Earthen Ring">Earthen Ring</option>
+                      <option value="Echo Isles">Echo Isles</option>
+                      <option value="Eitrigg">Eitrigg</option>
+                      <option value="Eldre'Thalas">Eldre'Thalas</option>
+                      <option value="Elune">Elune</option>
+                      <option value="Emerald Dream">Emerald Dream</option>
+                      <option value="Eonar">Eonar</option>
+                      <option value="Eredar">Eredar</option>
+                      <option value="Executus">Executus</option>
+                      <option value="Exodar">Exodar</option>
+                      <option value="Farstriders">Farstriders</option>
+                      <option value="Feathermoon">Feathermoon</option>
+                      <option value="Fenris">Fenris</option>
+                      <option value="Firetree">Firetree</option>
+                      <option value="Fizzcrank">Fizzcrank</option>
+                      <option value="Frostmane">Frostmane</option>
+                      <option value="Frostmourne">Frostmourne</option>
+                      <option value="Frostwolf">Frostwolf</option>
+                      <option value="Galakrond">Galakrond</option>
+                      <option value="Gallywix">Gallywix</option>
+                      <option value="Garithos">Garithos</option>
+                      <option value="Garona">Garona</option>
+                      <option value="Garrosh">Garrosh</option>
+                      <option value="Ghostlands">Ghostlands</option>
+                      <option value="Gilneas">Gilneas</option>
+                      <option value="Gnomeregan">Gnomeregan</option>
+                      <option value="Goldrinn">Goldrinn</option>
+                      <option value="Gorefiend">Gorefiend</option>
+                      <option value="Gorgonnash">Gorgonnash</option>
+                      <option value="Greymane">Greymane</option>
+                      <option value="Grizzly Hills">Grizzly Hills</option>
+                      <option value="Gul'dan">Gul'dan</option>
+                      <option value="Gundrak">Gundrak</option>
+                      <option value="Gurubashi">Gurubashi</option>
+                      <option value="Hakkar">Hakkar</option>
+                      <option value="Haomarush">Haomarush</option>
+                      <option value="Hellscream">Hellscream</option>
+                      <option value="Hydraxis">Hydraxis</option>
+                      <option value="Hyjal">Hyjal</option>
+                      <option value="Icecrown">Icecrown</option>
+                      <option value="Illidan">Illidan</option>
+                      <option value="Jaedenar">Jaedenar</option>
+                      <option value="Jubei'Thos">Jubei'Thos</option>
+                      <option value="Kael'thas">Kael'thas</option>
+                      <option value="Kalecgos">Kalecgos</option>
+                      <option value="Kargath">Kargath</option>
+                      <option value="Kel'Thuzad">Kel'Thuzad</option>
+                      <option value="Khadgar">Khadgar</option>
+                      <option value="Khaz Modan">Khaz Modan</option>
+                      <option value="Khaz'goroth">Khaz'goroth</option>
+                      <option value="Kil'jaeden">Kil'jaeden</option>
+                      <option value="Kilrogg">Kilrogg</option>
+                      <option value="Kirin Tor">Kirin Tor</option>
+                      <option value="Korgath">Korgath</option>
+                      <option value="Korialstrasz">Korialstrasz</option>
+                      <option value="Kul Tiras">Kul Tiras</option>
+                      <option value="Laughing Skull">Laughing Skull</option>
+                      <option value="Lethon">Lethon</option>
+                      <option value="Lightbringer">Lightbringer</option>
+                      <option value="Lightning's Blade">Lightning's Blade</option>
+                      <option value="Lightninghoof">Lightninghoof</option>
+                      <option value="Llane">Llane</option>
+                      <option value="Lothar">Lothar</option>
+                      <option value="Madoran">Madoran</option>
+                      <option value="Maelstrom">Maelstrom</option>
+                      <option value="Magtheridon">Magtheridon</option>
+                      <option value="Maiev">Maiev</option>
+                      <option value="Mal'Ganis">Mal'Ganis</option>
+                      <option value="Malfurion">Malfurion</option>
+                      <option value="Malorne">Malorne</option>
+                      <option value="Malygos">Malygos</option>
+                      <option value="Mannoroth">Mannoroth</option>
+                      <option value="Medivh">Medivh</option>
+                      <option value="Misha">Misha</option>
+                      <option value="Mok'Nathal">Mok'Nathal</option>
+                      <option value="Moon Guard">Moon Guard</option>
+                      <option value="Moonrunner">Moonrunner</option>
+                      <option value="Mug'thol">Mug'thol</option>
+                      <option value="Muradin">Muradin</option>
+                      <option value="Nagrand">Nagrand</option>
+                      <option value="Nathrezim">Nathrezim</option>
+                      <option value="Nazgrel">Nazgrel</option>
+                      <option value="Nazjatar">Nazjatar</option>
+                      <option value="Nemesis">Nemesis</option>
+                      <option value="Ner'zhul">Ner'zhul</option>
+                      <option value="Nesingwary">Nesingwary</option>
+                      <option value="Nordrassil">Nordrassil</option>
+                      <option value="Norgannon">Norgannon</option>
+                      <option value="Onyxia">Onyxia</option>
+                      <option value="Perenolde">Perenolde</option>
+                      <option value="Proudmoore">Proudmoore</option>
+                      <option value="Quel'dorei">Quel'dorei</option>
+                      <option value="Quel'Thalas">Quel'Thalas</option>
+                      <option value="Ragnaros">Ragnaros</option>
+                      <option value="Ravencrest">Ravencrest</option>
+                      <option value="Ravenholdt">Ravenholdt</option>
+                      <option value="Rexxar">Rexxar</option>
+                      <option value="Rivendare">Rivendare</option>
+                      <option value="Runetotem">Runetotem</option>
+                      <option value="Sargeras">Sargeras</option>
+                      <option value="Saurfang">Saurfang</option>
+                      <option value="Scarlet Crusade">Scarlet Crusade</option>
+                      <option value="Scilla">Scilla</option>
+                      <option value="Sen'jin">Sen'jin</option>
+                      <option value="Sentinels">Sentinels</option>
+                      <option value="Shadow Council">Shadow Council</option>
+                      <option value="Shadowmoon">Shadowmoon</option>
+                      <option value="Shadowsong">Shadowsong</option>
+                      <option value="Shandris">Shandris</option>
+                      <option value="Shattered Halls">Shattered Halls</option>
+                      <option value="Shattered Hand">Shattered Hand</option>
+                      <option value="Shu'halo">Shu'halo</option>
+                      <option value="Silver Hand">Silver Hand</option>
+                      <option value="Silvermoon">Silvermoon</option>
+                      <option value="Sisters of Elune">Sisters of Elune</option>
+                      <option value="Skullcrusher">Skullcrusher</option>
+                      <option value="Skywall">Skywall</option>
+                      <option value="Smolderthorn">Smolderthorn</option>
+                      <option value="Spinebreaker">Spinebreaker</option>
+                      <option value="Spirestone">Spirestone</option>
+                      <option value="Staghelm">Staghelm</option>
+                      <option value="Steamwheedle Cartel">Steamwheedle Cartel</option>
+                      <option value="Stonemaul">Stonemaul</option>
+                      <option value="Stormrage">Stormrage</option>
+                      <option value="Stormreaver">Stormreaver</option>
+                      <option value="Stormscale">Stormscale</option>
+                      <option value="Suramar">Suramar</option>
+                      <option value="Tanaris">Tanaris</option>
+                      <option value="Terenas">Terenas</option>
+                      <option value="Terokkar">Terokkar</option>
+                      <option value="Thaurissan">Thaurissan</option>
+                      <option value="The Forgotten Coast">The Forgotten Coast</option>
+                      <option value="The Scryers">The Scryers</option>
+                      <option value="The Underbog">The Underbog</option>
+                      <option value="The Venture Co">The Venture Co</option>
+                      <option value="Thorium Brotherhood">Thorium Brotherhood</option>
+                      <option value="Thrall">Thrall</option>
+                      <option value="Thunderhorn">Thunderhorn</option>
+                      <option value="Thunderlord">Thunderlord</option>
+                      <option value="Tichondrius">Tichondrius</option>
+                      <option value="Tol Barad">Tol Barad</option>
+                      <option value="Tortheldrin">Tortheldrin</option>
+                      <option value="Trollbane">Trollbane</option>
+                      <option value="Turalyon">Turalyon</option>
+                      <option value="Twisting Nether">Twisting Nether</option>
+                      <option value="Uldaman">Uldaman</option>
+                      <option value="Uldum">Uldum</option>
+                      <option value="Undermine">Undermine</option>
+                      <option value="Ursin">Ursin</option>
+                      <option value="Uther">Uther</option>
+                      <option value="Vashj">Vashj</option>
+                      <option value="Vek'nilash">Vek'nilash</option>
+                      <option value="Velen">Velen</option>
+                      <option value="Warsong">Warsong</option>
+                      <option value="Whisperwind">Whisperwind</option>
+                      <option value="Wildhammer">Wildhammer</option>
+                      <option value="Windrunner">Windrunner</option>
+                      <option value="Winterhoof">Winterhoof</option>
+                      <option value="Wyrmrest Accord">Wyrmrest Accord</option>
+                      <option value="Ysera">Ysera</option>
+                      <option value="Ysondre">Ysondre</option>
+                      <option value="Zangarmarsh">Zangarmarsh</option>
+                      <option value="Zul'jin">Zul'jin</option>
+                      <option value="Zuluhed">Zuluhed</option>
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Select</label>
+                  </div>
+                  <select name="region" class="custom-select" id="inputGroupSelect01">
+                    <option selected>Region optional only us supported</option>
+                    <option value="us">us</option>
+                    <option value="eu">eu</option>
+                    <option value="kr">kr</option>
+                    <option value="tw">tw</option>
+                  </select>
+                </div>
+                <button class="btn btn-dark" type="submit" name="button">Go</button>
+              </form>
+            </div>
+          </div>
+          <nav class="navbar navbar-dark">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+              <i class="fas fa-search"></i>
+            </button>
+              <h2 class="battletag gold-text" name="battletag"> <%= battletag%></h2>
+          </nav>
+        </div>
+        <div  id="collapseExample" class="collapse dropdown">
+        </div>
+      </div>
+      <div class="col-xl-4 col-lg-4 col-md-5 col-sm-5 col-5 header-btns">
+          <div class="inner-hd-margin">
+            <div class="dpd-info-btn">
+              <div class="go-to-pro">
+                <form class="alt-form" action="/userProfile/<%=wowChars[0].name%>/<%=wowChars[0].realm%>" method="get">
+                  <button class="hd-char-btn btn-secondary gtp-btn" type="submit" >Go to Profile</button>
+                </form>
+              </div>
+              <div class="dropdown drop-cog">
+                    <button class="hd-char-btn btn-secondary" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-cog"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <%if(isAuthenticated){%>
+                      <button class="dropdown-item" type="button"><%=battletag%></button>
+                      <button class="dropdown-item" type="button">Settings</button>
+                      <a href="/logout"><button class="dropdown-item" type="button" name="button"><span class="">Logout</span></button></a>
+                      <%} else {%>
+                          <a href="/"><button class="hd-btn-row" type="button" name="button"><span class="">Login</span></button></a>
+                    <%}%>
+                    </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  <br>
+
+    <div class="row ">
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+      <h2 class="gold-text">Level 60 Characters</h2>
+      <%for (var i = 0; i < wowChars.length; i++) {%>
+          <form class="pick-char" action="/charPick" method="post">
+          <div class="char-card" id="c-card">
+              <div class="">
+                <input class="char-in"type="checkbox" checked="checked" name="avatarPhoto" value="<%=avatar[i] %>" style="display:none"><img name="avatarPhoto" value="avatarPhoto" src="<%=avatar[i] %>" alt=""/>
+              </div>
+            <label for=""><%=wowChars[i].name%></label>
+            <input class="char-in"type="checkbox" checked="checked" name="name" value="<%=wowChars[i].name%>" style="display:none" > - <label for=""><%=wowChars[i].realm%></label><input class="char-in" type="checkbox" checked="checked" name="realm" value="<%=wowChars[i].realm%>" style="display:none" >
+            <label for=""><%=wowChars[i].level%></label>
+            <input class="char-in"type="checkbox" checked="checked" name="level" value="<%=wowChars[i].level%>" style="display:none" >
+            <label for=""><%=wowChars[i].class%></label>
+            <input class="char-in" type="checkbox" checked="checked" name="class" value="<%=wowChars[i].class%>" style="display:none" >
+            <label for=""><%=wowChars[i].race%></label>
+            <input class="char-in" type="checkbox" checked="checked" name="race" value="<%=wowChars[i].race%>" style="display:none" >
+            <label for=""><%=wowChars[i].faction%></label>
+            <input class="char-in" type="checkbox" checked="checked" name="faction" value="<%=wowChars[i].faction%>" style="display:none" >
+            <br>
+            <label for="main">Main</label>
+            <input class="char-in" type="checkbox"  name="main" value="main" style="display:visible" >
+
+            <button class="btn btn-sm btn-white"type="submit" name="button">add</button>
+                <!-- <button class="btn btn-sm btn-white"type="" name="button"><i class="far fa-check-square"></i></button> -->
+        </div>
+        </form>
+      <%}%>
+           <!-- if characters have been saved -->
+      </div>     <!-- charInfo div -->
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+        <h2 class="gold-text">Added Characters</h2>
+      <%for (var i = 0; i < userSavedChars.length; i++) {%>
+          <form class="pick-char" action="" method="post">
+          <div class="char-card" id="c-card">
+              <div class="">
+                <input class="char-in"type="checkbox" checked="checked" name="avatarPhoto" value="<%=userSavedChars[i].media %>" style="display:none"><img name="avatarPhoto" value="avatarPhoto" src="<%=userSavedChars[i].media %>" alt=""/>
+              </div>
+            <label for=""><%=userSavedChars[i].name%></label>
+            <input class="char-in"type="checkbox" checked="checked" name="name" value="<%=userSavedChars[i].name%>" style="display:none" > - <label for=""><%=userSavedChars[i].realm%></label><input class="char-in" type="checkbox" checked="checked" name="realm" value="<%=userSavedChars[i].realm%>" style="display:none" >
+            <label for=""><%=userSavedChars[i].level%></label>
+            <input class="char-in"type="checkbox" checked="checked" name="level" value="<%=userSavedChars[i].level%>" style="display:none" >
+            <label for=""><%=userSavedChars[i].class%></label>
+            <input class="char-in" type="checkbox" checked="checked" name="class" value="<%=userSavedChars[i].class%>" style="display:none" >
+            <label for=""><%=userSavedChars[i].race%></label>
+            <input class="char-in" type="checkbox" checked="checked" name="race" value="<%=userSavedChars[i].race%>" style="display:none" >
+            <label for=""><%=userSavedChars[i].faction%></label>
+            <input class="char-in" type="checkbox" checked="checked" name="faction" value="<%=userSavedChars[i].faction%>" style="display:none" >
+            <br>
+            <label for="main">Remove</label>
+            <input class="char-in" type="checkbox"  name="main" value="main" style="display:visible" >
+            <button class="btn btn-sm btn-white"type="submit" name="button">Delete</button>
+        </div>
+        </form>
+        <% }%>
+        </div>   <!-- charinfo 2 -->
+    </div><!-- contInfo div -->
+  </div>
+<%- include('partials/footer') %>
+</div>

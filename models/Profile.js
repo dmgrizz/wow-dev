@@ -10,7 +10,8 @@ const characterSchema = new mongoose.Schema({
     level: String,
     faction: String,
     slug: String,
-    media: String
+    media: String,
+    main: String
 
 }
 );

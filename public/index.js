@@ -57,97 +57,55 @@ function hideRbgGames(){
   document.getElementById("rbg-tool").classList.add("hide");
 }
 
+function showNormalKillTime(){
+  document.getElementsByClassName("").classList.remove("hide");
+  document.getElementsByClassName("").classList.add("show");
+}
+function hideNormalKillTime(){
+  document.getElementsByClassName("").classList.add("hide");
+  document.getElementsByClassName("").classList.remove("show");
+}
+
+function showHeroicKillTime(){
+  var heroic = document.getElementsByClassName("heroic-time");
+  for (var i = 0; i < heroic.length; i++) {
+    if(heroic[i].classList.contains("hide"))
+    {
+      heroic[i].classList.remove("hide");
+      heroic[i].classList.add("show");
+    } else {
+      heroic[i].classList.remove("show");
+      heroic[i].classList.add("hide");
+    }
+
+  }
+}
+function hideHeroicKillTime(){
+  // document.getElementsByClassName("heroic-time").classList.add("hide");
+  // document.getElementsByClassName("heroic-time").classList.remove("show");
+}
+
+
+function showMythicKillTime(){
+  document.getElementById("mythic-tool").classList.remove("hide");
+  document.getElementById("mythic-tool").classList.add("show");
+}
+function hideMythicKillTime(){
+  document.getElementById("mythic-tool").classList.add("hide");
+  document.getElementById("mythic-tool").classList.remove("show");
+}
+
+
+
 let allPlayerRealms = {};
 
-function playerSearch(){
 
-    let input = document.getElementById("playerName").value;
-    var name = input.toLowerCase();
-    var newName = name.replace(/\s/g, '');
-    var searching = "https://srv1.api.check-pvp.fr/v1/characters/search/"+ newName +"?region=us"
-
-    const getPlayers = async searching => {
-      try {
-          const response = await fetch(searching);
-          const json = await response.json();
-
-          let newPlayerUrls = [];
-          newPlayerUrls.push(searching);
-          allPlayerRealms = newPlayerUrls;
-
-      } catch (error) {
-
-      }
-    };
-    getPlayers(searching);
-
-    let dropDownInfo = {};
-    const newRealmInfo = async () => {
-      await getPlayers(searching);
-      let requests = allPlayerRealms.map(allPlayerRealm => fetch(allPlayerRealm));
-      Promise.all(requests)
-      .then(responses => {
-        let input = document.getElementById("playerName").value;
-        let gRes = [];
-        for (var i = 0; i < responses.length; i++) {
-              if(responses[i].ok === true){
-                // console.log(responses[i]);
-                let status = responses[i].status === 200;
-                if(status){
-                  gRes = responses[i].url;
-                }
-
-              const getMoreRealms = async gRes => {
-                try {
-                    var dropDown = [];
-                    const response = await fetch(gRes);
-                    const json = await response.json();
-                    // console.log(json[i]);
-                      var playerObj = {
-                        name: json[i].name,
-                        realm: json[i].realm
-                      }
-                      console.log(playerObj);
-                      var playerRegion = json[i].region;
-                      console.log(playerRegion);
-
-                           document.getElementById('playerObj').innerHTML += '<a href="#" id="playerA" class="dp-name">' +  playerObj.name + "-" + playerObj.realm + "-" + playerRegion + '</a>'
-
-                } catch (error) {
-                  // console.log(error);'<p class="dp">'  + '</p>'
-                }
-              }; // getMoreRealms
-              getMoreRealms(gRes);
-            }
-          }
-        })// .then response
-      } // newRealInfo async
-    newRealmInfo();
-  }
-
-  // function insertIntoFormula(specialChar) {
-  //     const textarea = document.getElementById('playerName');
-  //     const insertStartPoint = textarea.selectionStart;
-  //     const insertEndPoint = textarea.selectionEnd;
-  //     let value = textarea.value;
-  //
-  //     // text before cursor/highlighted text + special character + text after cursor/highlighted text
-  //     value = value.slice(0, insertStartPoint) + specialChar + value.slice(insertEndPoint);
-  //     textarea.value = value;
-  // }
-
-    function PopulateUserName() {
+function PopulateUserName() {
         var drop = document.getElementById("specialChar");
         var field = document.getElementById("playerName");
         $(field).val($(field).val() + drop.value);
           console.log($(field.val));
     }
-//   function PopulateUserName() {
-//     var dropdown = document.getElementById("iSupervisor");
-//     var field = document.getElementById("iSupervisorUserName");
-//     $(field).val($(field).val() + dropdown.value);
-//
-// }
 
 
 var input, filter, ul, li, a, i, cName;
@@ -204,7 +162,7 @@ function characterColor(color){
     break;
 
     case "Hunter":
-    document.getElementById('char').style.color = "#cee397";
+    document.getElementById('char').style.color = "#9ede73";
     break;
 
     case "Warrior":
