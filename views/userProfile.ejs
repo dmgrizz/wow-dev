@@ -585,7 +585,11 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
               <i class="fas fa-search"></i>
             </button>
+            <% if(isAuthenticated) { %>
               <h2 class="battletag gold-text" name="battletag"> <%= battletag%></h2>
+            <% } else { %>
+                <h2 class="battletag gold-text" name="battletag">Search</h2>
+          <% } %>
           </nav>
         </div>
         <div  id="collapseExample" class="collapse dropdown">
