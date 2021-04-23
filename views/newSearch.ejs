@@ -595,6 +595,7 @@
   <div class="col-xl-4 col-lg-4 col-md-5 col-sm-5 col-5 header-btns">
       <div class="inner-hd-margin">
         <div class="dpd-info-btn">
+        <% if(isAuthenticated) { %>
           <form class="alt-form" name="getAlt" action="/userPro" method="post">
             <% if(avatar){%>
               <a onclick="getAlt.submit()"><img class="avatar-img-up" src="<%=avatar %>" alt=""></a>
@@ -608,23 +609,25 @@
               </select>
             </div>
           </form>
+          <% } %>
+
+          <%if (isAuthenticated){%>
           <div class="dropdown drop-cog">
                 <button class="hd-char-btn btn-secondary" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-cog"></i>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                <%if(isAuthenticated){%>
+
                   <button class="dropdown-item" type="button"><%=battletag%></button>
                   <button class="dropdown-item" type="button">Settings</button>
                   <a href="/logout"><button class="dropdown-item" type="button" name="button"><span class="">Logout</span></button></a>
-                  <%} else {%>
-                      <a href="/"><button class="hd-btn-row" type="button" name="button"><span class="">Login</span></button></a>
-                <%}%>
                 </div>
           </div>
+          <%} else {%>
+              <a href="/"><button class="hd-char-btn btn-secondary" type="button" name="button"><span class="">Login</span></button></a>
+        <%}%>
         </div>
       </div>
-
   </div>
   </div>
   <section class="top-section">

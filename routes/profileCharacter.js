@@ -15,7 +15,7 @@ const dungeons = require("../modules/dungeons");
 const raidBosses = require("../modules/raidBosses");
 
 module.exports = app => {
-  app.get('/profileCharacter/:charName/:realm', ensureAuthenticated, async (req, res, next) => {
+  app.get('/profileCharacter/:charName/:realm', async (req, res, next) => {
     var battletag;
     let filterCharList;
     if(req.isAuthenticated()){
@@ -69,14 +69,14 @@ module.exports = app => {
           race: character.race.name,
           class: character.character_class.name,
           spec: character.active_spec.name,
-          guild: character.guild.name,
           itemLvl: character.equipped_item_level,
-          activeTitle: activeTitle,
-          covenant: character.covenant_progress.chosen_covenant.name,
-          renown: character.covenant_progress.renown_level,
-          covenantId: character.covenant_progress.chosen_covenant.id,
           faction: character.faction.name,
-          realm: character.realm.name
+          realm: character.realm.name,
+          guild: guild,
+          activeTitle: activeTitle,
+          covenant: covenant,
+          renown: renown,
+          covenantId: covenantId
         }
         if(charObject.faction === "Horde") {
           factionPic = "https://assets.worldofwarcraft.com/static/components/Logo/Logo-horde.2a80e0466e51d85c8cf60336e16fe8b8.png";
@@ -115,7 +115,7 @@ module.exports = app => {
         equipmentLeft = equipSlot;
         equipmentBonus = equipBonus;
         equipmentLvl = equipLvl;
-        console.log(equipment);
+
     //ITEM IMAGES
         let wowHeadLinksLeft = {};
         var wowHeadEquip = [];
@@ -125,7 +125,7 @@ module.exports = app => {
           wowHeadEquip.push(wowHeadItems);
         }
           wowHeadLinksLeft = wowHeadEquip;
-          console.log(wowHeadLinksLeft);
+      
   // CHARACTER STATS
         var crit        = Math.round((stats.melee_crit.value + Number.EPSILON) * 100) / 100;
         var haste       = Math.round((stats.melee_haste.value + Number.EPSILON) * 100) / 100;

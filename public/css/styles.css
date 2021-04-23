@@ -458,6 +458,7 @@ a.nav-link:hover {
   background-repeat: no-repeat;
   background-size: 100% 100%;
   image-rendering: pixelated;
+  border: .5px solid #b8b0b055;
   border-radius: 3px;
   box-shadow: 0px 2px 10px 2px #00000025;
 }

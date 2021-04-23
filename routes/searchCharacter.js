@@ -15,7 +15,7 @@ const dungeons = require("../modules/dungeons");
 const raidBosses = require("../modules/raidBosses");
 
 module.exports = app => {
-  app.post('/newSearch', ensureAuthenticated, async (req, res, next) => {
+  app.post('/newSearch', async (req, res, next) => {
     var battletag;
     let filterCharList;
     if(req.isAuthenticated()){
@@ -65,14 +65,14 @@ module.exports = app => {
           race: character.race.name,
           class: character.character_class.name,
           spec: character.active_spec.name,
-          guild: character.guild.name,
-          itemLvl: character.equipped_item_level,
-          activeTitle: activeTitle,
-          covenant: character.covenant_progress.chosen_covenant.name,
-          renown: character.covenant_progress.renown_level,
-          covenantId: character.covenant_progress.chosen_covenant.id,
+          temLvl: character.equipped_item_level,
           faction: character.faction.name,
-          realm: character.realm.name
+          realm: character.realm.name,
+          guild: guild,
+          activeTitle: activeTitle,
+          covenant: covenant,
+          renown: renown,
+          covenantId: covenantId
         }
         if(charObject.faction === "Horde") {
           factionPic = "https://assets.worldofwarcraft.com/static/components/Logo/Logo-horde.2a80e0466e51d85c8cf60336e16fe8b8.png";
