@@ -33,18 +33,19 @@ module.exports = app => {
            return ch.name !== characterName;
          });
     }
-        var playerRealm = _.lowerCase(req.body.playerRealm);
+        var playerRealm = req.body.playerRealm;
         var playerName = req.body.playerName;
-        var newName = playerName.toLowerCase().replace(/\s/g, '');
-        var newRealm = playerRealm.replace(/\s/g, '');
+        var newName = playerName.toLowerCase().replace(/ +/g, '');
+        var spacedRealm  = playerRealm.toLowerCase().replace(/'/g, '');
+        var newRealm = spacedRealm.replace(/\s/g, '-');
 
-        const character       = await characterService.getCharacter(newRealm, newName);
-        const stats           = await characterService.getCharacterStats(character);
-        const characterEquip  = await characterService.getCharacterEquipment(character);
-        const characterSpec   = await characterService.getCharacterSpec(character);
-        const characterMythic = await characterServiceMythic.getMythicInfo(newRealm, newName);
-        const characterRaid = await characterServiceRaid.getRaidInfo(newRealm, newName);
-        const characterRaidWowInfo = await characterServiceRaid.getRaidSummary(newRealm, newName);
+        const character       = await characterService.getCharacter(newRealm, newName).catch(err => console.log(err));
+        const stats           = await characterService.getCharacterStats(character).catch(err => console.log(err));
+        const characterEquip  = await characterService.getCharacterEquipment(character).catch(err => console.log(err));
+        const characterSpec   = await characterService.getCharacterSpec(character).catch(err => console.log(err));
+        const characterMythic = await characterServiceMythic.getMythicInfo(newRealm, newName).catch(err => console.log(err));
+        const characterRaid = await characterServiceRaid.getRaidInfo(newRealm, newName).catch(err => console.log(err));
+        const characterRaidWowInfo = await characterServiceRaid.getRaidSummary(newRealm, newName).catch(err => console.log(err));
 
         var activeTitle;
         if(character.active_title){

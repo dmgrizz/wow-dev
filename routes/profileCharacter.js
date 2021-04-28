@@ -36,18 +36,19 @@ module.exports = app => {
     }
         var realm = req.params.realm;
         var charName = req.params.charName;
-        var playerRealm = _.lowerCase(realm);
+        var playerRealm = realm;
         var playerName = charName;
-        var newName = playerName.toLowerCase().replace(/\s/g, '');
-        var newRealm = playerRealm.replace(/\s/g, '');
-
-        const character       = await characterService.getCharacter(newRealm, newName);
-        const stats           = await characterService.getCharacterStats(character);
-        const characterEquip  = await characterService.getCharacterEquipment(character);
-        const characterSpec   = await characterService.getCharacterSpec(character);
-        const characterMythic = await characterServiceMythic.getMythicInfo(newRealm, newName);
-        const characterRaid = await characterServiceRaid.getRaidInfo(newRealm, newName);
-        const characterRaidWowInfo = await characterServiceRaid.getRaidSummary(newRealm, newName);
+        var newName = playerName.toLowerCase().replace(/ =/g, '');
+        var spacedRealm  = playerRealm.toLowerCase().replace(/'/g, '');
+        var newRealm = spacedRealm.replace(/\s/g, '-');
+      
+        const character       = await characterService.getCharacter(newRealm, newName).catch(err => console.log(err));
+        const stats           = await characterService.getCharacterStats(character).catch(err => console.log(err));
+        const characterEquip  = await characterService.getCharacterEquipment(character).catch(err => console.log(err));
+        const characterSpec   = await characterService.getCharacterSpec(character).catch(err => console.log(err));
+        const characterMythic = await characterServiceMythic.getMythicInfo(newRealm, newName).catch(err => console.log(err));
+        const characterRaid   = await characterServiceRaid.getRaidInfo(newRealm, newName).catch(err => console.log(err));
+        const characterRaidWowInfo = await characterServiceRaid.getRaidSummary(newRealm, newName).catch(err => console.log(err));
 
         var activeTitle;
         if(character.active_title){
@@ -125,7 +126,7 @@ module.exports = app => {
           wowHeadEquip.push(wowHeadItems);
         }
           wowHeadLinksLeft = wowHeadEquip;
-      
+
   // CHARACTER STATS
         var crit        = Math.round((stats.melee_crit.value + Number.EPSILON) * 100) / 100;
         var haste       = Math.round((stats.melee_haste.value + Number.EPSILON) * 100) / 100;

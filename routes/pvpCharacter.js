@@ -30,20 +30,22 @@ module.exports = app => {
          });
     }
 
-      var realm = req.params.realm;
-      var charName = req.params.charName;
-      var playerRealm = _.lowerCase(realm);
-      var playerName = charName;
-      var newName = playerName.toLowerCase().replace(/\s/g, '');
-      var newRealm = playerRealm.replace(/\s/g, '');
-
-        const character = await characterService.getCharacter(newRealm, newName);
-        const characterPvp = await characterServicePvp.getCharacterPvp(character);
-        const characterSpec  = await characterService.getCharacterSpec(character);
-
-        const pvpTwosBracket = await characterServicePvp.getCharacterTwosPvpBracket(characterPvp);
-        const pvpThreesBracket = await characterServicePvp.getCharacterThreesPvpBracket(characterPvp);
-        const pvpBgBracket = await characterServicePvp.getCharacterBGPvpBracket(characterPvp);
+        var realm = req.params.realm;
+        var charName = req.params.charName;
+        var playerRealm = realm;
+        var playerName = charName;
+        var newName = playerName.toLowerCase().replace(/ +/g, '');
+        var spacedRealm  = playerRealm.toLowerCase().replace(/'/g, '');
+        var newRealm = spacedRealm.replace(/\s/g, '-');
+        console.log(newName);
+        console.log(newRealm);
+        const character = await characterService.getCharacter(newRealm, newName).catch(err => console.log(err));
+        console.log(character);
+        const characterPvp = await characterServicePvp.getCharacterPvp(character).catch(err => console.log(err));
+        const characterSpec  = await characterService.getCharacterSpec(character).catch(err => console.log(err));
+        const pvpTwosBracket = await characterServicePvp.getCharacterTwosPvpBracket(characterPvp).catch(err => console.log(err));
+        const pvpThreesBracket = await characterServicePvp.getCharacterThreesPvpBracket(characterPvp).catch(err => console.log(err));
+        const pvpBgBracket = await characterServicePvp.getCharacterBGPvpBracket(characterPvp).catch(err => console.log(err));
 
         if(character.active_title){
           var activeTitle = character.active_title.name;
@@ -137,6 +139,7 @@ module.exports = app => {
         let threeWins;
         let threeLost;
         let threeWinRate;
+        let roundedThrees;
         let rbgMatches;
         let rbgWins;
         let rbgLost;
@@ -158,102 +161,102 @@ module.exports = app => {
         let weeklyRbgWinRate;
         let weeklyRoundedRbgs;
 
+        if(characterPvp.brackets) {
+          if(pvpTwosBracket && pvpTwosBracket.bracket.id === 0) {
+            twoCr = pvpTwosBracket.rating;
+            if(twoCr > 0){
+              twoMatches = pvpTwosBracket.season_match_statistics.played;
+              twoWins = pvpTwosBracket.season_match_statistics.won;
+              twoLost = pvpTwosBracket.season_match_statistics.lost;
+              twoWinRate  = (twoWins / twoMatches) * 100;
+              roundedTwos = _.round(twoWinRate, 1);
 
-        if(pvpTwosBracket.bracket.id === 0) {
-          twoCr = pvpTwosBracket.rating;
-          if(twoCr > 0){
-            twoMatches = pvpTwosBracket.season_match_statistics.played;
-            twoWins = pvpTwosBracket.season_match_statistics.won;
-            twoLost = pvpTwosBracket.season_match_statistics.lost;
-            twoWinRate  = (twoWins / twoMatches) * 100;
-            roundedTwos = _.round(twoWinRate, 1);
+              weeklyTwoMatches  = pvpTwosBracket.weekly_match_statistics.played;
+              weeklyTwoWins     = pvpTwosBracket.weekly_match_statistics.won;
+              weeklyTwoLost     = pvpTwosBracket.weekly_match_statistics.lost;
+              weeklyTwoWinRate  = (weeklyTwoWins  / weeklyTwoMatches ) * 100;
+              weeklyRoundedTwos = _.round(weeklyTwoWinRate, 1);
+            }
+          } else if(pvpTwosBracket.bracket.id === 1){ //if the bracket id = 1 then its 3v3 bracket rating means the player has not played 2s
+            threeRating = pvpTwosBracket.rating;
+            if(threeRating > 0){
+              threeMatches  = pvpTwosBracket.season_match_statistics.played;
+              threeWins     = pvpTwosBracket.season_match_statistics.won;
+              threeLost     = pvpTwosBracket.season_match_statistics.lost;
+              threeWinRate  = (threeWins / threeMatches) * 100;
+              roundedThrees = _.round(threeWinRate, 1);
 
-            weeklyTwoMatches  = pvpTwosBracket.weekly_match_statistics.played;
-            weeklyTwoWins     = pvpTwosBracket.weekly_match_statistics.won;
-            weeklyTwoLost     = pvpTwosBracket.weekly_match_statistics.lost;
-            weeklyTwoWinRate  = (weeklyTwoWins  / weeklyTwoMatches ) * 100;
-            weeklyRoundedTwos = _.round(weeklyTwoWinRate, 1);
+              weeklyThreeMatches  = pvpTwosBracket.weekly_match_statistics.played;
+              weeklyThreeWins     = pvpTwosBracket.weekly_match_statistics.won;
+              weeklyThreeLost     = pvpTwosBracket.weekly_match_statistics.lost;
+              weeklyThreeWinRate  = (weeklyThreeWins  / weeklyThreeMatches) * 100;
+              weeklyRoundedThrees = _.round(weeklyThreeWinRate, 1);
+            }
+          } else if(pvpTwosBracket.bracket.id === 3) {  //if the bracket id = 3 then its RBG bracket meaning the player has not played any 2s or 3s
+            rbgCr = pvpTwosBracket.rating;
+            if(rbgCr > 0){
+              rbgMatches   = pvpTwosBracket.season_match_statistics.played;
+              rbgWins      = pvpTwosBracket.season_match_statistics.won;
+              rbgLost      = pvpTwosBracket.season_match_statistics.lost;
+              rbgWinRate   = (rbgWins / rbgMatches) * 100;
+              roundedRbgs  = _.round(rbgWinRate, 1);
+
+              weeklyRbgMatches   = pvpTwosBracket.weekly_match_statistics.played;
+              weeklyRbgWins      = pvpTwosBracket.weekly_match_statistics.won;
+              weeklyRbgLost      = pvpTwosBracket.weekly_match_statistics.lost;
+              weeklyRbgWinRate   = (weeklyRbgWins  / weeklyRbgMatches) * 100;
+              weeklyRoundedRbgs  = _.round(weeklyRbgWinRate, 1);
+            }
           }
-        } else if(pvpTwosBracket.bracket.id === 1){ //if the bracket id = 1 then its 3v3 bracket rating means the player has not played 2s
-          threeRating = pvpTwosBracket.rating;
-          if(threeRating > 0){
-            threeMatches  = pvpTwosBracket.season_match_statistics.played;
-            threeWins     = pvpTwosBracket.season_match_statistics.won;
-            threeLost     = pvpTwosBracket.season_match_statistics.lost;
-            threeWinRate  = (threeWins / threeMatches) * 100;
-            roundedThrees = _.round(threeWinRate, 1);
 
-            weeklyThreeMatches  = pvpTwosBracket.weekly_match_statistics.played;
-            weeklyThreeWins     = pvpTwosBracket.weekly_match_statistics.won;
-            weeklyThreeLost     = pvpTwosBracket.weekly_match_statistics.lost;
-            weeklyThreeWinRate  = (weeklyThreeWins  / weeklyThreeMatches) * 100;
-            weeklyRoundedThrees = _.round(weeklyThreeWinRate, 1);
+          if(pvpThreesBracket !== 0 && pvpThreesBracket.bracket.id === 1) { // if someone has all 3 ranks this will be used
+            threeRating = pvpThreesBracket.rating;
+            if(threeRating > 0){
+              threeMatches  = pvpThreesBracket.season_match_statistics.played;
+              threeWins     = pvpThreesBracket.season_match_statistics.won;
+              threeLost     = pvpThreesBracket.season_match_statistics.lost;
+              threeWinRate  = (threeWins / threeMatches) * 100;
+              roundedThrees = _.round(threeWinRate, 1);
+
+              weeklyThreeMatches  = pvpThreesBracket.weekly_match_statistics.played;
+              weeklyThreeWins     = pvpThreesBracket.weekly_match_statistics.won;
+              weeklyThreeLost     = pvpThreesBracket.weekly_match_statistics.lost;
+              weeklyThreeWinRate  = (weeklyThreeWins  / weeklyThreeMatches) * 100;
+              weeklyRoundedThrees = _.round(weeklyThreeWinRate, 1);
+            }
+          } else if(pvpThreesBracket !== 0 && pvpThreesBracket.bracket.id === 3) { //incase someone only has 2v2 rank & BG rank
+            rbgCr = pvpThreesBracket.rating;
+            if(rbgCr > 0){
+              rbgMatches   = pvpThreesBracket.season_match_statistics.played;
+              rbgWins      = pvpThreesBracket.season_match_statistics.won;
+              rbgLost      = pvpThreesBracket.season_match_statistics.lost;
+              rbgWinRate   = (rbgWins / rbgMatches) * 100;
+              roundedRbgs  = _.round(rbgWinRate, 1);
+
+              weeklyThreeMatches  = pvpThreesBracket.weekly_match_statistics.played;
+              weeklyThreeWins     = pvpThreesBracket.weekly_match_statistics.won;
+              weeklyThreeLost     = pvpThreesBracket.weekly_match_statistics.lost;
+              weeklyThreeWinRate  = (weeklyThreeWins  / weeklyThreeMatches) * 100;
+              weeklyRoundedThrees = _.round(weeklyThreeWinRate, 1);
+            }
           }
-        } else if(pvpTwosBracket.bracket.id === 3) {  //if the bracket id = 3 then its RBG bracket meaning the player has not played any 2s or 3s
-          rbgCr = pvpTwosBracket.rating;
-          if(rbgCr > 0){
-            rbgMatches   = pvpTwosBracket.season_match_statistics.played;
-            rbgWins      = pvpTwosBracket.season_match_statistics.won;
-            rbgLost      = pvpTwosBracket.season_match_statistics.lost;
-            rbgWinRate   = (rbgWins / rbgMatches) * 100;
-            roundedRbgs  = _.round(rbgWinRate, 1);
+          if(pvpBgBracket !== 0  && pvpBgBracket.bracket.id === 3) { // if someone has all 3 ranks this will be used
+             rbgCr = pvpBgBracket.rating;
+             if(rbgCr > 0){
+               rbgMatches   = pvpBgBracket.season_match_statistics.played;
+               rbgWins      = pvpBgBracket.season_match_statistics.won;
+               rbgLost      = pvpBgBracket.season_match_statistics.lost;
+               rbgWinRate   = (rbgWins / rbgMatches) * 100;
+               roundedRbgs  = _.round(rbgWinRate, 1);
 
-            weeklyRbgMatches   = pvpTwosBracket.weekly_match_statistics.played;
-            weeklyRbgWins      = pvpTwosBracket.weekly_match_statistics.won;
-            weeklyRbgLost      = pvpTwosBracket.weekly_match_statistics.lost;
-            weeklyRbgWinRate   = (weeklyRbgWins  / weeklyRbgMatches) * 100;
-            weeklyRoundedRbgs  = _.round(weeklyRbgWinRate, 1);
+               weeklyRbgMatches   = pvpBgBracket.weekly_match_statistics.played;
+               weeklyRbgWins      = pvpBgBracket.weekly_match_statistics.won;
+               weeklyRbgLost      = pvpBgBracket.weekly_match_statistics.lost;
+               weeklyRbgWinRate   = (weeklyRbgWins  / weeklyRbgMatches) * 100;
+               weeklyRoundedRbgs  = _.round(weeklyRbgWinRate, 1);
+             }
           }
         }
-
-        if(pvpThreesBracket !== 0 && pvpThreesBracket.bracket.id === 1) { // if someone has all 3 ranks this will be used
-          threeRating = pvpThreesBracket.rating;
-          if(threeRating > 0){
-            threeMatches  = pvpThreesBracket.season_match_statistics.played;
-            threeWins     = pvpThreesBracket.season_match_statistics.won;
-            threeLost     = pvpThreesBracket.season_match_statistics.lost;
-            threeWinRate  = (threeWins / threeMatches) * 100;
-            roundedThrees = _.round(threeWinRate, 1);
-
-            weeklyThreeMatches  = pvpThreesBracket.weekly_match_statistics.played;
-            weeklyThreeWins     = pvpThreesBracket.weekly_match_statistics.won;
-            weeklyThreeLost     = pvpThreesBracket.weekly_match_statistics.lost;
-            weeklyThreeWinRate  = (weeklyThreeWins  / weeklyThreeMatches) * 100;
-            weeklyRoundedThrees = _.round(weeklyThreeWinRate, 1);
-          }
-        } else if(pvpThreesBracket !== 0 && pvpThreesBracket.bracket.id === 3) { //incase someone only has 2v2 rank & BG rank
-          rbgCr = pvpThreesBracket.rating;
-          if(rbgCr > 0){
-            rbgMatches   = pvpThreesBracket.season_match_statistics.played;
-            rbgWins      = pvpThreesBracket.season_match_statistics.won;
-            rbgLost      = pvpThreesBracket.season_match_statistics.lost;
-            rbgWinRate   = (rbgWins / rbgMatches) * 100;
-            roundedRbgs  = _.round(rbgWinRate, 1);
-
-            weeklyThreeMatches  = pvpThreesBracket.weekly_match_statistics.played;
-            weeklyThreeWins     = pvpThreesBracket.weekly_match_statistics.won;
-            weeklyThreeLost     = pvpThreesBracket.weekly_match_statistics.lost;
-            weeklyThreeWinRate  = (weeklyThreeWins  / weeklyThreeMatches) * 100;
-            weeklyRoundedThrees = _.round(weeklyThreeWinRate, 1);
-          }
-        }
-        if(pvpBgBracket !== 0  && pvpBgBracket.bracket.id === 3) { // if someone has all 3 ranks this will be used
-           rbgCr = pvpBgBracket.rating;
-           if(rbgCr > 0){
-             rbgMatches   = pvpBgBracket.season_match_statistics.played;
-             rbgWins      = pvpBgBracket.season_match_statistics.won;
-             rbgLost      = pvpBgBracket.season_match_statistics.lost;
-             rbgWinRate   = (rbgWins / rbgMatches) * 100;
-             roundedRbgs  = _.round(rbgWinRate, 1);
-
-             weeklyRbgMatches   = pvpBgBracket.weekly_match_statistics.played;
-             weeklyRbgWins      = pvpBgBracket.weekly_match_statistics.won;
-             weeklyRbgLost      = pvpBgBracket.weekly_match_statistics.lost;
-             weeklyRbgWinRate   = (weeklyRbgWins  / weeklyRbgMatches) * 100;
-             weeklyRoundedRbgs  = _.round(weeklyRbgWinRate, 1);
-           }
-        }
-
         res.render("charPvp", {
           avatar,
           battletag,
