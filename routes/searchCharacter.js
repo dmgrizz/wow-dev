@@ -16,6 +16,9 @@ const raidBosses = require("../modules/raidBosses");
 
 module.exports = app => {
   app.post('/newSearch', async (req, res, next) => {
+    try {
+
+
     var battletag;
     let filterCharList;
     if(req.isAuthenticated()){
@@ -379,7 +382,10 @@ for (var i = 0; i < expansions.length; i++) {
 
         });
 
-
+  } catch (error) {
+    console.log(error);
+    res.render("error");
+  }
 
 
 });
