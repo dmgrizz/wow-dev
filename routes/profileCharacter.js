@@ -41,7 +41,7 @@ module.exports = app => {
         var newName = playerName.toLowerCase().replace(/ =/g, '');
         var spacedRealm  = playerRealm.toLowerCase().replace(/'/g, '');
         var newRealm = spacedRealm.replace(/\s/g, '-');
-      
+
         const character       = await characterService.getCharacter(newRealm, newName).catch(err => console.log(err));
         const stats           = await characterService.getCharacterStats(character).catch(err => console.log(err));
         const characterEquip  = await characterService.getCharacterEquipment(character).catch(err => console.log(err));
@@ -236,33 +236,35 @@ module.exports = app => {
 
 // Raid Info
 
-var castleNathria = characterRaid.raid_progression["castle-nathria"];
-var raidProgress  = castleNathria.summary;
-var totalBosses   = castleNathria.total_bosses;
-var normalBosses  = castleNathria.normal_bosses_killed;
-var heroicBosses  = castleNathria.heroic_bosses_killed;
-var mythicBosses  = castleNathria.mythic_bosses_killed;
+  var castleNathria = characterRaid.raid_progression["castle-nathria"];
+  var raidProgress  = castleNathria.summary;
+  var totalBosses   = castleNathria.total_bosses;
+  var normalBosses  = castleNathria.normal_bosses_killed;
+  var heroicBosses  = castleNathria.heroic_bosses_killed;
+  var mythicBosses  = castleNathria.mythic_bosses_killed;
 
-// wow info raids
-const expansions = characterRaidWowInfo.expansions;
-var currentExpansion;
-var difficulty = [];
-var normalBossesDefeated = [];
-var heroicBossesDefeated = [];
-var mythicBossesDefeated = [];
+  // wow info raids
+  const expansions = characterRaidWowInfo.expansions;
+  var currentExpansion;
+  var difficulty = [];
+  var normalBossesDefeated = [];
+  var heroicBossesDefeated = [];
+  var mythicBossesDefeated = [];
 
-for (var i = 0; i < expansions.length; i++) {
-  if(expansions[i].expansion.name === "Shadowlands" || expansions[i].expansion.id === 499) {
-      currentExpansion = expansions[i].expansion.name;
+  if(expansions) {
+    for (var i = 0; i < expansions.length; i++) {
+      if(expansions[i].expansion.name === "Shadowlands" || expansions[i].expansion.id === 499) {
+          currentExpansion = expansions[i].expansion.name;
 
-    for (var x = 0; x < expansions[i].instances.length; x++) {
-      for (var m = 0; m < expansions[i].instances[x].modes.length; m++) {
-          if(expansions[i].instances[x].modes[m].difficulty.type !==  "LFR") {
-            difficulty.push(expansions[i].instances[x].modes[m]);
+        for (var x = 0; x < expansions[i].instances.length; x++) {
+          for (var m = 0; m < expansions[i].instances[x].modes.length; m++) {
+              if(expansions[i].instances[x].modes[m].difficulty.type !==  "LFR") {
+                difficulty.push(expansions[i].instances[x].modes[m]);
+              }
+            }
           }
         }
       }
-    }
   }
 
   var lastNormalKill = [];

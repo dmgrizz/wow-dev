@@ -249,6 +249,7 @@ module.exports = app => {
         var heroicBossesDefeated = [];
         var mythicBossesDefeated = [];
 
+      if(expansions) {
         for (var i = 0; i < expansions.length; i++) {
         if(expansions[i].expansion.name === "Shadowlands" || expansions[i].expansion.id === 499) {
             currentExpansion = expansions[i].expansion.name;
@@ -262,7 +263,8 @@ module.exports = app => {
             }
           }
         }
-
+      }
+      
         var lastNormalKill = [];
         var lastHeroicKill = [];
         var lastMythicKill = [];
