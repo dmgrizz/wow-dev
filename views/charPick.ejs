@@ -652,7 +652,7 @@
       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
         <h2 class="gold-text">Added Characters</h2>
       <%for (var i = 0; i < userSavedChars.length; i++) {%>
-          <form class="pick-char" action="" method="post">
+          <form class="pick-char" action="/charDelete" method="post">
           <div class="char-card" id="c-card">
               <div class="">
                 <input class="char-in"type="checkbox" checked="checked" name="avatarPhoto" value="<%=userSavedChars[i].media %>" style="display:none"><img name="avatarPhoto" value="avatarPhoto" src="<%=userSavedChars[i].media %>" alt=""/>

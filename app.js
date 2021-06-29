@@ -135,11 +135,10 @@ app.get('/profile', function(req, res){
 require('./routes/profileCharacter')(app);
 require('./routes/pvpCharacter')(app);
 require('./routes/addCharacter')(app);
+require('./routes/removeCharacter')(app);
 require('./routes/mainCharacter')(app);
 require('./routes/findCharacter')(app);
 require('./routes/searchCharacter')(app);
-// require('./routes/mythicCharacter')(app);
-// require('./routes/raidCharacter')(app);
 require('./routes/userCharacters')(app);
 require('./routes/userProfile')(app);
 
