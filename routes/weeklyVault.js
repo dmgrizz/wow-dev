@@ -15,7 +15,7 @@ const dungeons = require("../modules/dungeons");
 const raidBosses = require("../modules/raidBosses");
 
 module.exports = app => {
-  app.get('/profileCharacter/:charName/:realm', async (req, res, next) => {
+  app.get('/weeklyVault/:charName/:realm', async (req, res, next) => {
     var battletag;
     let filterCharList;
     if(req.isAuthenticated()){
@@ -46,10 +46,7 @@ module.exports = app => {
         const stats           = await characterService.getCharacterStats(character).catch(err => console.log(err));
         const characterEquip  = await characterService.getCharacterEquipment(character).catch(err => console.log(err));
         const characterSpec   = await characterService.getCharacterSpec(character).catch(err => console.log(err));
-        const previousMythicSeason = await characterServiceMythic.getMythicInfo(newRealm, newName).catch(err => console.log(err));
-        const currentMythicSeason = await characterServiceMythic.getCurrentMythicSeason(newRealm, newName).catch(err => console.log(err));
-        const getBestAndHighestDungeons = await characterServiceMythic.getBestAndHighestDungeons(newRealm, newName).catch(err => console.log(err));
-        const getRecentDungeons = await characterServiceMythic.getRecentDungeons(newRealm, newName).catch(err => console.log(err));
+        const characterMythic = await characterServiceMythic.getMythicInfo(newRealm, newName).catch(err => console.log(err));
         const characterRaid   = await characterServiceRaid.getRaidInfo(newRealm, newName).catch(err => console.log(err));
         const characterRaidWowInfo = await characterServiceRaid.getRaidSummary(newRealm, newName).catch(err => console.log(err));
 
@@ -153,6 +150,7 @@ module.exports = app => {
         let pvpTalents = [];
         var specNames = [];
         var spec = characterSpec;
+      // console.log(spec);
 
         for (var i = 0; i < spec.specializations.length; i++) {
           allSpecs = spec.specializations[i].specialization.name;
@@ -160,16 +158,17 @@ module.exports = app => {
             if(spec.specializations[i].talents) {
               for (var x = 0; x < spec.specializations[i].talents.length; x++) {
                 var toolTips;
-                  if(spec.specializations[0] && spec.specializations[0].talents) {
-                    toolTips = spec.specializations[0].talents[x].spell_tooltip.spell.id;
-                  }
+                if(spec.specializations[0] && spec.specializations[0].talents) {
+                  toolTips = spec.specializations[0].talents[x].spell_tooltip.spell.id;
+                }
                 var toolTipsTwo;
-                  if(spec.specializations[1] && spec.specializations[1].talents) {
-                    toolTipsTwo = spec.specializations[1].talents[x].spell_tooltip.spell.id;
-                  }
+                if(spec.specializations[1] && spec.specializations[1].talents) {
+                  toolTipsTwo = spec.specializations[1].talents[x].spell_tooltip.spell.id;
+                }
                 var toolTipsThree;
                   if(spec.specializations[2] && spec.specializations[2].talents) {
                      toolTipsThree = spec.specializations[2].talents[x].spell_tooltip.spell.id;
+                     console.log(toolTipsThree);
                   }
 
                 var toolTipName = spec.specializations[i].talents[x].spell_tooltip.spell.name;
@@ -191,76 +190,151 @@ module.exports = app => {
         splicedSpecThree.splice(0,14);
 //Mythic Plus Info
 
-    var mPlusRecent = [];
-    var mPlusBest = [];
-    var mPlusHighest = [];
-    var previousMPlusScoreOverall;
-    var previousMPlusScoreDPS;
-    var previousMPlusScoreHealer;
-    var previousMPlusScoreTank;
-    var currentMPlusScoreOverall
-    var currentMPlusScoreDPS;
-    var currentMPlusScoreHealer;
-    var currentMPlusScoreTank;
+  var mPlusScoreOverall = characterMythic.mythic_plus_scores_by_season[0].scores.all;
+  var mPlusScoreDPS     = characterMythic.mythic_plus_scores_by_season[0].scores.dps;
+  var mPlusScoreHealer  = characterMythic.mythic_plus_scores_by_season[0].scores.healer;
+  var mPlusScoreTank    = characterMythic.mythic_plus_scores_by_season[0].scores.tank;
 
-    if(previousMythicSeason.mythic_plus_scores_by_season) {
-        previousMPlusScoreOverall  = previousMythicSeason.mythic_plus_scores_by_season[0].scores.all;
-        previousMPlusScoreDPS      = previousMythicSeason.mythic_plus_scores_by_season[0].scores.dps;
-        previousMPlusScoreHealer   = previousMythicSeason.mythic_plus_scores_by_season[0].scores.healer;
-        previousMPlusScoreTank     = previousMythicSeason.mythic_plus_scores_by_season[0].scores.tank;
+  var mPlusRecent  = characterMythic.mythic_plus_recent_runs;
+  var mPlusBest    = characterMythic.mythic_plus_best_runs;
+  var mPlusHighest = characterMythic.mythic_plus_highest_level_runs;
+
+  var localDateRecent = [];
+  var vaultDateSlice = [];
+  var localDateBest = [];
+  var localDateHighest = [];
+  var recentTimes = [];
+  var bestTimes = [];
+  var highestTimes = [];
+  var month = new Date().getMonth();
+  var year = new Date().getFullYear();
+  let weekStart = [];
+  let weekEnd = [];
+  let allWeeks = [];
+  var weekOneEnd;
+  var weekTwoEnd;
+  var weekThreeEnd;
+  var weekFourEnd;
+
+function getDaysArray(year, month) {
+  var result = [];
+  var dateTop = new Date();
+
+
+  var monthIndex = dateTop.getMonth();
+  year = dateTop.getFullYear();
+
+  const names = Object.freeze([
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thurs",
+    "Fri",
+    "Sat"
+  ]);
+
+  const dateIndex = new Date(year, monthIndex, 1);
+
+  while (dateIndex.getMonth() === monthIndex) {
+    result.push({
+      number: `${dateIndex.getDate()}`,
+      day: `${names[dateIndex.getDay()]}`
+    });
+    dateIndex.setDate(dateIndex.getDate() + 1);
+  }
+  console.log(result);
+  for (var i = 0; i < result.length; i++) {
+
+    if (result[i].day === "Tue") {
+        weekStart.push(result[i].number);
       }
-      if(currentMythicSeason.mythic_plus_scores_by_season) {
+  }
+  console.log(weekStart);
+  var lastDate = new Date(year, monthIndex + 1, 0);
+  var numDays = lastDate.getDate();
+  for (var i = 0; i < weekStart.length; i++) {
+    weekOneEnd    = parseInt(weekStart[0]) + 7;
+    weekTwoEnd    = parseInt(weekStart[1]) + 7;
+    weekThreeEnd  = parseInt(weekStart[2]) + 7;
+    weekFourEnd   = parseInt(weekStart[3]) + 7;
+    weekFiveEnd   = (parseInt(weekStart[4]) + 7) - numDays;
+  }
+  console.log(weekOneEnd);
+  console.log(weekTwoEnd);
+  console.log(weekThreeEnd);
+  console.log(weekFourEnd);
+  console.log(weekFiveEnd);
+}
+getDaysArray(year, month);
 
-        currentMPlusScoreOverall   = currentMythicSeason.mythic_plus_scores_by_season[0].scores.all;
-        currentMPlusScoreDPS       = currentMythicSeason.mythic_plus_scores_by_season[0].scores.dps;
-        currentMPlusScoreHealer    = currentMythicSeason.mythic_plus_scores_by_season[0].scores.healer
-        currentMPlusScoreTank      = currentMythicSeason.mythic_plus_scores_by_season[0].scores.tank;
+  function getWeeksStartAndEndInMonth(month, year, start) {
+      let weeks = [],
+          firstDate = new Date(year, month, 1),
+          lastDate = new Date(year, month + 1, 0),
+          numDays = lastDate.getDate();
 
-        mPlusRecent.push(currentMythicSeason.mythic_plus_recent_runs);
-        mPlusBest = getBestAndHighestDungeons.mythic_plus_best_runs;
-        mPlusHighest = getBestAndHighestDungeons.mythic_plus_highest_level_runs;
+        start = 1;
+      let end = 7;
 
-    var localDateRecent = [];
-    var localDateBest = [];
-    var localDateHighest = [];
-    var recentTimes = [];
-    var bestTimes = [];
-    var highestTimes = [];
-
-      for (var i = 0; i < mPlusRecent.length; i++) {
-        if(mPlusRecent > 0) {
-          var date = new Date(mPlusRecent[i].completed_at);
-          localDateRecent.push(date.toUTCString().slice(5,-12));
-            var ms = mPlusRecent[i].clear_time_ms;
-            var mins = (ms / (1000 * 60)).toFixed(2);
-            var newMins = mins.replace(/\./g, ':');
-            recentTimes.push(newMins);
-        }
+      if (start === 'tuesday') {
+          if (firstDate.getDay() === 0) {
+              end = 1;
+          } else {
+              end = 7 - firstDate.getDay() + 1;
+          }
       }
-
-      for (var i = 0; i < mPlusBest.length; i++) {
-
-          var date = new Date(mPlusBest[i].completed_at);
-          localDateBest.push(date.toUTCString().slice(5,-12));
-            var ms = mPlusBest[i].clear_time_ms;
-            var mins = (ms / (1000 * 60)).toFixed(2);
-            var newMins = mins.replace(/\./g, ':');
-            bestTimes.push(newMins);
-
-
+      while (start <= numDays) {
+          weeks.push({start: start, end: end});
+          start = end + 1;
+          end = end + 7;
+          end = start === 1 && end === 8 ? 1 : end;
+          if (end > numDays) {
+              end = numDays;
+          }
       }
+      console.log(weeks);
+      return weeks;
+  }
+    getWeeksStartAndEndInMonth(month, year, 1);
 
-      for (var i = 0; i < mPlusHighest.length; i++) {
-        if(mPlusHighest > 0) {
-          var date = new Date(mPlusHighest[i].completed_at);
-          localDateHighest.push(date.toUTCString().slice(5,-12));
-            var ms = mPlusHighest[i].clear_time_ms;
-            var mins = (ms / (1000 * 60)).toFixed(2);
-            var newMins = mins.replace(/\./g, ':');
-            highestTimes.push(newMins);
-        }
+  for (var i = 0; i < mPlusRecent.length; i++) {
+    var date = new Date(mPlusRecent[i].completed_at);
+    localDateRecent.push(date.toUTCString().slice(5,-12));
+    vaultDateSlice.push(parseInt(date.toUTCString().slice(5,-12)));
+      console.log(date.toUTCString());
+      var ms = mPlusRecent[i].clear_time_ms;
+      var mins = (ms / (1000 * 60)).toFixed(2);
+      var newMins = mins.replace(/\./g, ':');
+      recentTimes.push(newMins);
+  }
+
+  for (var i = 0; i < vaultDateSlice.length; i++) {
+      if(vaultDateSlice[i] >= weekStart[0] && vaultDateSlice[i] < weekOneEnd)
+      {
+        console.log(vaultDateSlice[i]);
       }
-    }
+  }
+
+
+  for (var i = 0; i < mPlusBest.length; i++) {
+    var date = new Date(mPlusBest[i].completed_at);
+    localDateBest.push(date.toUTCString().slice(5,-12));
+      var ms = mPlusBest[i].clear_time_ms;
+      var mins = (ms / (1000 * 60)).toFixed(2);
+      var newMins = mins.replace(/\./g, ':');
+      bestTimes.push(newMins);
+  }
+
+  for (var i = 0; i < mPlusHighest.length; i++) {
+    var date = new Date(mPlusHighest[i].completed_at);
+    localDateHighest.push(date.toUTCString().slice(5,-12));
+      var ms = mPlusHighest[i].clear_time_ms;
+      var mins = (ms / (1000 * 60)).toFixed(2);
+      var newMins = mins.replace(/\./g, ':');
+      highestTimes.push(newMins);
+  }
+
 // Raid Info
 
   var castleNathria = characterRaid.raid_progression["castle-nathria"];
@@ -339,7 +413,7 @@ module.exports = app => {
     }
   }//difficulty for loop
 
-        res.render("userProfile", {
+        res.render("weeklyVault", {
           battletag,
           avatar,
           activeTitle,
@@ -374,14 +448,10 @@ module.exports = app => {
           pickedTalents,
           dungeons,
           raidBosses,
-          previousMPlusScoreOverall,
-          previousMPlusScoreDPS,
-          previousMPlusScoreHealer,
-          previousMPlusScoreTank,
-          currentMPlusScoreOverall,
-          currentMPlusScoreDPS,
-          currentMPlusScoreHealer,
-          currentMPlusScoreTank,
+          mPlusScoreOverall,
+          mPlusScoreDPS,
+          mPlusScoreHealer,
+          mPlusScoreTank,
           mPlusRecent,
           mPlusBest,
           mPlusHighest,

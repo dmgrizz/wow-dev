@@ -7,7 +7,7 @@ const ensureAuthenticated = require('../middlewares/authenticated');
 
 
 module.exports = app => {
-  app.post('/charDelete', function(req, res){
+  app.post('/charDelete', function(req, res) {
     let errors = [];
     const characterSchema = new Character({
         name: req.body.name,
@@ -19,10 +19,12 @@ module.exports = app => {
         media: req.body.avatarPhoto,
         main: req.body.main
     });
+
     const userSchema = new User({
       battletag: req.body.battletag,
       characters: [characterSchema]
     });
+
     User.findOneAndUpdate(
      { battletag: req.user.battletag },
      { $pull: { characters: { name: req.body.name } } },
@@ -31,10 +33,10 @@ module.exports = app => {
               console.log(error);
           } else {
               console.log(success);
-
-                res.redirect("/charPick");
+              res.redirect("/charPick");
           }
       });
+
     Character.findOne({name: req.body.name, realm: req.body.realm}).then(function(char){
       if(char){
         char.deleteOne(function(err){
@@ -48,8 +50,6 @@ module.exports = app => {
       } else if(!char) {
         errors.push( {msg:"No Character Found"});
         console.log(errors);
-
-
       }
     })
   });

@@ -131,7 +131,7 @@ app.get('/profile', function(req, res){
   res.render("profile");
 });
 
-
+require('./routes/weeklyVault')(app);
 require('./routes/profileCharacter')(app);
 require('./routes/pvpCharacter')(app);
 require('./routes/addCharacter')(app);

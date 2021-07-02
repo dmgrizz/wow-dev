@@ -17,8 +17,6 @@ const raidBosses = require("../modules/raidBosses");
 module.exports = app => {
   app.post('/newSearch', async (req, res, next) => {
     try {
-
-
     var battletag;
     let filterCharList;
     if(req.isAuthenticated()){
@@ -36,22 +34,25 @@ module.exports = app => {
            return ch.name !== characterName;
          });
     }
-        var playerRealm = req.body.playerRealm;
-        var playerName = req.body.playerName;
-        var newName = playerName.toLowerCase().replace(/ +/g, '');
-        var spacedRealm  = playerRealm.toLowerCase().replace(/'/g, '');
-        var newRealm = spacedRealm.replace(/\s/g, '-');
+    var playerRealm = req.body.playerRealm;
+    var playerName = req.body.playerName;
+    var newName = playerName.toLowerCase().replace(/ +/g, '');
+    var spacedRealm  = playerRealm.toLowerCase().replace(/'/g, '');
+    var newRealm = spacedRealm.replace(/\s/g, '-');
 
         const character       = await characterService.getCharacter(newRealm, newName).catch(err => console.log(err));
         const stats           = await characterService.getCharacterStats(character).catch(err => console.log(err));
         const characterEquip  = await characterService.getCharacterEquipment(character).catch(err => console.log(err));
         const characterSpec   = await characterService.getCharacterSpec(character).catch(err => console.log(err));
-        const characterMythic = await characterServiceMythic.getMythicInfo(newRealm, newName).catch(err => console.log(err));
+        const previousMythicSeason = await characterServiceMythic.getMythicInfo(newRealm, newName).catch(err => console.log(err));
+        const currentMythicSeason = await characterServiceMythic.getCurrentMythicSeason(newRealm, newName).catch(err => console.log(err));
+        const getBestAndHighestDungeons = await characterServiceMythic.getBestAndHighestDungeons(newRealm, newName).catch(err => console.log(err));
+        const getRecentDungeons = await characterServiceMythic.getRecentDungeons(newRealm, newName).catch(err => console.log(err));
         const characterRaid = await characterServiceRaid.getRaidInfo(newRealm, newName).catch(err => console.log(err));
         const characterRaidWowInfo = await characterServiceRaid.getRaidSummary(newRealm, newName).catch(err => console.log(err));
 
         var activeTitle;
-        if(character.active_title){
+        if(character.active_title) {
           activeTitle = character.active_title.name;
         }
         var guild;
@@ -85,16 +86,16 @@ module.exports = app => {
         }
         // equipment info start
 
-        let equipmentLeft = {};
-        let equipmentIds = {};
-        let equipmentBonus = {};
-        let equipmentLvl = {};
-        let equipment = characterEquip.equipped_items;
+    let equipmentLeft = {};
+    let equipmentIds = {};
+    let equipmentBonus = {};
+    let equipmentLvl = {};
+    let equipment = characterEquip.equipped_items;
 
-        var equipIds = [];
-        var equipBonus = [];
-        var equipSlot = [];
-        var equipLvl = [];
+    var equipIds = [];
+    var equipBonus = [];
+    var equipSlot = [];
+    var equipLvl = [];
 
         for (var i = 0; i < equipment.length; i++) {
           var slot = equipment[i].slot.name;
@@ -125,28 +126,28 @@ module.exports = app => {
         }
           wowHeadLinksLeft = wowHeadEquip;
   // CHARACTER STATS
-        var crit        = Math.round((stats.melee_crit.value + Number.EPSILON) * 100) / 100;
-        var haste       = Math.round((stats.melee_haste.value + Number.EPSILON) * 100) / 100;
-        var mastery     = Math.round((stats.mastery.value + Number.EPSILON) * 100) / 100;
-        var versatility = Math.round((stats.versatility_damage_done_bonus + Number.EPSILON) * 100) / 100;
-        var health      = stats.health;
-        var mana        = stats.power;
-        var strength    = stats.strength.effective;
-        var agility     = stats.agility.effective;
-        var intellect   = stats.intellect.effective;
-        var stamina     = stats.stamina.effective;
+    var crit        = Math.round((stats.melee_crit.value + Number.EPSILON) * 100) / 100;
+    var haste       = Math.round((stats.melee_haste.value + Number.EPSILON) * 100) / 100;
+    var mastery     = Math.round((stats.mastery.value + Number.EPSILON) * 100) / 100;
+    var versatility = Math.round((stats.versatility_damage_done_bonus + Number.EPSILON) * 100) / 100;
+    var health      = stats.health;
+    var mana        = stats.power;
+    var strength    = stats.strength.effective;
+    var agility     = stats.agility.effective;
+    var intellect   = stats.intellect.effective;
+    var stamina     = stats.stamina.effective;
 
   // TALENTS INFO
-        let splicedSpecOne = {};
-        let splicedSpecTwo = {};
-        let pickedTalents = [];
-        let spellImgs = [];
-        let spellToolTips = [];
-        let spellToolTipsTwo = [];
-        let spellToolTipsThree = [];
-        let pvpTalents = [];
-        var specNames = [];
-        var spec = characterSpec;
+    let splicedSpecOne = {};
+    let splicedSpecTwo = {};
+    let pickedTalents = [];
+    let spellImgs = [];
+    let spellToolTips = [];
+    let spellToolTipsTwo = [];
+    let spellToolTipsThree = [];
+    let pvpTalents = [];
+    var specNames = [];
+    var spec = characterSpec;
 
         for (var i = 0; i < spec.specializations.length; i++) {
           allSpecs = spec.specializations[i].specialization.name;
@@ -185,52 +186,79 @@ module.exports = app => {
         splicedSpecThree = spellToolTipsThree;
         splicedSpecThree.splice(0,14);
 //Mythic Plus Info
+    var mPlusRecent = [];
+    var mPlusBest = [];
+    var mPlusHighest = [];
+    var previousMPlusScoreOverall;
+    var previousMPlusScoreDPS;
+    var previousMPlusScoreHealer;
+    var previousMPlusScoreTank;
+    var currentMPlusScoreOverall
+    var currentMPlusScoreDPS;
+    var currentMPlusScoreHealer;
+    var currentMPlusScoreTank;
 
-  var mPlusScoreOverall = characterMythic.mythic_plus_scores_by_season[0].scores.all;
-  var mPlusScoreDPS     = characterMythic.mythic_plus_scores_by_season[0].scores.dps;
-  var mPlusScoreHealer  = characterMythic.mythic_plus_scores_by_season[0].scores.healer;
-  var mPlusScoreTank    = characterMythic.mythic_plus_scores_by_season[0].scores.tank;
+    if(previousMythicSeason.mythic_plus_scores_by_season) {
 
-  var mPlusRecent  = characterMythic.mythic_plus_recent_runs;
-  var mPlusBest    = characterMythic.mythic_plus_best_runs;
-  var mPlusHighest = characterMythic.mythic_plus_highest_level_runs;
+        previousMPlusScoreOverall  = previousMythicSeason.mythic_plus_scores_by_season[0].scores.all;
+        previousMPlusScoreDPS      = previousMythicSeason.mythic_plus_scores_by_season[0].scores.dps;
+        previousMPlusScoreHealer   = previousMythicSeason.mythic_plus_scores_by_season[0].scores.healer;
+        previousMPlusScoreTank     = previousMythicSeason.mythic_plus_scores_by_season[0].scores.tank;
+      }
 
-  var localDateRecent = [];
-  var localDateBest = [];
-  var localDateHighest = [];
-  var recentTimes = [];
-  var bestTimes = [];
-  var highestTimes = [];
-
-  for (var i = 0; i < mPlusRecent.length; i++) {
-    var date = new Date(mPlusRecent[i].completed_at);
-    localDateRecent.push(date.toUTCString().slice(5,-12));
-      var ms = mPlusRecent[i].clear_time_ms;
-      var mins = (ms / (1000 * 60)).toFixed(2);
-      var newMins = mins.replace(/\./g, ':');
-      recentTimes.push(newMins);
-  }
+    if(currentMythicSeason.mythic_plus_scores_by_season) {
+        currentMPlusScoreOverall   = currentMythicSeason.mythic_plus_scores_by_season[0].scores.all;
+        currentMPlusScoreDPS       = currentMythicSeason.mythic_plus_scores_by_season[0].scores.dps;
+        currentMPlusScoreHealer    = currentMythicSeason.mythic_plus_scores_by_season[0].scores.healer
+        currentMPlusScoreTank      = currentMythicSeason.mythic_plus_scores_by_season[0].scores.tank;
 
 
-  for (var i = 0; i < mPlusBest.length; i++) {
-    var date = new Date(mPlusBest[i].completed_at);
-    localDateBest.push(date.toUTCString().slice(5,-12));
-      var ms = mPlusBest[i].clear_time_ms;
-      var mins = (ms / (1000 * 60)).toFixed(2);
-      var newMins = mins.replace(/\./g, ':');
-      bestTimes.push(newMins);
-  }
+        mPlusRecent.push(currentMythicSeason.mythic_plus_recent_runs);
+        mPlusBest = getBestAndHighestDungeons.mythic_plus_best_runs;
+        mPlusHighest = getBestAndHighestDungeons.mythic_plus_highest_level_runs;
 
-  for (var i = 0; i < mPlusHighest.length; i++) {
-    var date = new Date(mPlusHighest[i].completed_at);
-    localDateHighest.push(date.toUTCString().slice(5,-12));
-      var ms = mPlusHighest[i].clear_time_ms;
-      var mins = (ms / (1000 * 60)).toFixed(2);
-      var newMins = mins.replace(/\./g, ':');
-      highestTimes.push(newMins);
-  }
+    var localDateRecent = [];
+    var localDateBest = [];
+    var localDateHighest = [];
+    var recentTimes = [];
+    var bestTimes = [];
+    var highestTimes = [];
 
-// Raid Info
+      for (var i = 0; i < mPlusRecent.length; i++) {
+        if(mPlusRecent > 0) {
+          var date = new Date(mPlusRecent[i].completed_at);
+          localDateRecent.push(date.toUTCString().slice(5,-12));
+            var ms = mPlusRecent[i].clear_time_ms;
+            var mins = (ms / (1000 * 60)).toFixed(2);
+            var newMins = mins.replace(/\./g, ':');
+            recentTimes.push(newMins);
+        }
+      }
+
+      for (var i = 0; i < mPlusBest.length; i++) {
+        if(mPlusBest > 0) {
+          var date = new Date(mPlusBest[i].completed_at);
+          localDateBest.push(date.toUTCString().slice(5,-12));
+            var ms = mPlusBest[i].clear_time_ms;
+            var mins = (ms / (1000 * 60)).toFixed(2);
+            var newMins = mins.replace(/\./g, ':');
+            bestTimes.push(newMins);
+        }
+      }
+
+      for (var i = 0; i < mPlusHighest.length; i++) {
+        if(mPlusHighest > 0) {
+          var date = new Date(mPlusHighest[i].completed_at);
+          localDateHighest.push(date.toUTCString().slice(5,-12));
+            var ms = mPlusHighest[i].clear_time_ms;
+            var mins = (ms / (1000 * 60)).toFixed(2);
+            var newMins = mins.replace(/\./g, ':');
+            highestTimes.push(newMins);
+        }
+      }
+    }
+//Mythic Plus Info END
+//#region Raid Info
 
   var castleNathria = characterRaid.raid_progression["castle-nathria"];
   var raidProgress  = castleNathria.summary;
@@ -240,28 +268,27 @@ module.exports = app => {
   var mythicBosses  = castleNathria.mythic_bosses_killed;
 
   // wow info raids
-  const expansions = characterRaidWowInfo.expansions;
+  var expansions = characterRaidWowInfo.expansions;
   var currentExpansion;
   var difficulty = [];
   var normalBossesDefeated = [];
   var heroicBossesDefeated = [];
   var mythicBossesDefeated = [];
 
-  if(expansions) {
-    for (var i = 0; i < expansions.length; i++) {
-      if(expansions[i].expansion.name === "Shadowlands" || expansions[i].expansion.id === 499) {
-          currentExpansion = expansions[i].expansion.name;
-
-        for (var x = 0; x < expansions[i].instances.length; x++) {
-          for (var m = 0; m < expansions[i].instances[x].modes.length; m++) {
-              if(expansions[i].instances[x].modes[m].difficulty.type !==  "LFR") {
-                difficulty.push(expansions[i].instances[x].modes[m]);
+      if(expansions) {
+        for (var i = 0; i < expansions.length; i++) {
+          if(expansions[i].expansion.name === "Shadowlands" || expansions[i].expansion.id === 499) {
+              currentExpansion = expansions[i].expansion.name;
+            for (var x = 0; x < expansions[i].instances.length; x++) {
+              for (var m = 0; m < expansions[i].instances[x].modes.length; m++) {
+                  if(expansions[i].instances[x].modes[m].difficulty.type !==  "LFR") {
+                    difficulty.push(expansions[i].instances[x].modes[m]);
+                  }
+                }
               }
             }
           }
         }
-      }
-    }
 
   var lastNormalKill = [];
   var lastHeroicKill = [];
@@ -273,42 +300,41 @@ module.exports = app => {
   var heroicToolTip = [];
   var mythicToolTip = [];
 
-  for (var i = 0; i < difficulty.length; i++) {
-    if(difficulty[i].difficulty.name === "Normal") {
-      for (var e = 0; e < difficulty[i].progress.encounters.length; e++) {
-          var totalKills = difficulty[i].progress.encounters[e].completed_count;
-          var lastKill = new Date(difficulty[i].progress.encounters[e].last_kill_timestamp);
-          normalToolTip.push(lastKill);
-          normalKillCount.push(totalKills);
-          lastNormalKill.push(lastKill.toUTCString().slice(5,-12));
-          normalBossesDefeated.push(difficulty[i].progress.encounters[e].encounter);
-      }
-    }
+      for (var i = 0; i < difficulty.length; i++) {
+        if(difficulty[i].difficulty.name === "Normal") {
+          for (var e = 0; e < difficulty[i].progress.encounters.length; e++) {
+              var totalKills = difficulty[i].progress.encounters[e].completed_count;
+              var lastKill = new Date(difficulty[i].progress.encounters[e].last_kill_timestamp);
+              normalToolTip.push(lastKill);
+              normalKillCount.push(totalKills);
+              lastNormalKill.push(lastKill.toUTCString().slice(5,-12));
+              normalBossesDefeated.push(difficulty[i].progress.encounters[e].encounter);
+          }
+        }
 
+        if(difficulty[i].difficulty.name === "Heroic") {
+          for (var e = 0; e < difficulty[i].progress.encounters.length; e++) {
+              var totalKills = difficulty[i].progress.encounters[e].completed_count;
+              var lastKill = new Date(difficulty[i].progress.encounters[e].last_kill_timestamp);
+              heroicToolTip.push(lastKill.toUTCString());
+              heroicKillCount.push(totalKills);
+              lastHeroicKill.push(lastKill.toUTCString().slice(5,-12));
+              heroicBossesDefeated.push(difficulty[i].progress.encounters[e].encounter);
+          }
+        }
 
-    if(difficulty[i].difficulty.name === "Heroic") {
-      for (var e = 0; e < difficulty[i].progress.encounters.length; e++) {
-          var totalKills = difficulty[i].progress.encounters[e].completed_count;
-          var lastKill = new Date(difficulty[i].progress.encounters[e].last_kill_timestamp);
-          heroicToolTip.push(lastKill.toUTCString());
-          heroicKillCount.push(totalKills);
-          lastHeroicKill.push(lastKill.toUTCString().slice(5,-12));
-          heroicBossesDefeated.push(difficulty[i].progress.encounters[e].encounter);
-      }
-    }
-
-    if(difficulty[i].difficulty.name === "Mythic") {
-      for (var e = 0; e < difficulty[i].progress.encounters.length; e++) {
-          var totalKills = difficulty[i].progress.encounters[e].completed_count;
-          var lastKill = new Date(difficulty[i].progress.encounters[e].last_kill_timestamp);
-          mythicToolTip.push(lastKill);
-          mythicKillCount.push(totalKills);
-          lastMythicKill.push(lastKill.toUTCString().slice(5,-12));
-          mythicBossesDefeated.push(difficulty[i].progress.encounters[e].encounter);
-      }
-    }
-  }//difficulty for loop
-
+        if(difficulty[i].difficulty.name === "Mythic") {
+          for (var e = 0; e < difficulty[i].progress.encounters.length; e++) {
+              var totalKills = difficulty[i].progress.encounters[e].completed_count;
+              var lastKill = new Date(difficulty[i].progress.encounters[e].last_kill_timestamp);
+              mythicToolTip.push(lastKill);
+              mythicKillCount.push(totalKills);
+              lastMythicKill.push(lastKill.toUTCString().slice(5,-12));
+              mythicBossesDefeated.push(difficulty[i].progress.encounters[e].encounter);
+          }
+        }
+      }//difficulty for loop
+//#endregion Raid Info
         res.render("userProfile", {
           battletag,
           avatar,
@@ -344,10 +370,14 @@ module.exports = app => {
           pickedTalents,
           dungeons,
           raidBosses,
-          mPlusScoreOverall,
-          mPlusScoreDPS,
-          mPlusScoreHealer,
-          mPlusScoreTank,
+          previousMPlusScoreOverall,
+          previousMPlusScoreDPS,
+          previousMPlusScoreHealer,
+          previousMPlusScoreTank,
+          currentMPlusScoreOverall,
+          currentMPlusScoreDPS,
+          currentMPlusScoreHealer,
+          currentMPlusScoreTank,
           mPlusRecent,
           mPlusBest,
           mPlusHighest,

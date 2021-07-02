@@ -60,7 +60,10 @@ module.exports = app => {
     const stats                = await characterService.getCharacterStats(character).catch(err => console.log(err));
     const characterEquip       = await characterService.getCharacterEquipment(character).catch(err => console.log(err));
     const characterSpec        = await characterService.getCharacterSpec(character).catch(err => console.log(err));
-    const characterMythic      = await characterServiceMythic.getMythicInfo(newRealm, newName).catch(err => console.log(err));
+    const previousMythicSeason = await characterServiceMythic.getMythicInfo(newRealm, newName).catch(err => console.log(err));
+    const currentMythicSeason = await characterServiceMythic.getCurrentMythicSeason(newRealm, newName).catch(err => console.log(err));
+    const getBestAndHighestDungeons = await characterServiceMythic.getBestAndHighestDungeons(newRealm, newName).catch(err => console.log(err));
+    const getRecentDungeons = await characterServiceMythic.getRecentDungeons(newRealm, newName).catch(err => console.log(err));
     const characterRaid        = await characterServiceRaid.getRaidInfo(newRealm, newName).catch(err => console.log(err));
     const characterRaidWowInfo = await characterServiceRaid.getRaidSummary(newRealm, newName).catch(err => console.log(err));
 
@@ -192,14 +195,35 @@ module.exports = app => {
     splicedSpecThree = spellToolTipsThree;
     splicedSpecThree.splice(0,14);
 
-    var mPlusScoreOverall = characterMythic.mythic_plus_scores_by_season[0].scores.all;
-    var mPlusScoreDPS     = characterMythic.mythic_plus_scores_by_season[0].scores.dps;
-    var mPlusScoreHealer  = characterMythic.mythic_plus_scores_by_season[0].scores.healer;
-    var mPlusScoreTank    = characterMythic.mythic_plus_scores_by_season[0].scores.tank;
+    var mPlusRecent = [];
+    var mPlusBest = [];
+    var mPlusHighest = [];
+    var previousMPlusScoreOverall;
+    var previousMPlusScoreDPS;
+    var previousMPlusScoreHealer;
+    var previousMPlusScoreTank;
+    var currentMPlusScoreOverall
+    var currentMPlusScoreDPS;
+    var currentMPlusScoreHealer;
+    var currentMPlusScoreTank;
 
-    var mPlusRecent  = characterMythic.mythic_plus_recent_runs;
-    var mPlusBest    = characterMythic.mythic_plus_best_runs;
-    var mPlusHighest = characterMythic.mythic_plus_highest_level_runs;
+  if(previousMythicSeason.mythic_plus_scores_by_season) {
+
+        previousMPlusScoreOverall  = previousMythicSeason.mythic_plus_scores_by_season[0].scores.all;
+        previousMPlusScoreDPS      = previousMythicSeason.mythic_plus_scores_by_season[0].scores.dps;
+        previousMPlusScoreHealer   = previousMythicSeason.mythic_plus_scores_by_season[0].scores.healer;
+        previousMPlusScoreTank     = previousMythicSeason.mythic_plus_scores_by_season[0].scores.tank;
+  }
+
+  if(currentMythicSeason.mythic_plus_scores_by_season) {
+        currentMPlusScoreOverall   = currentMythicSeason.mythic_plus_scores_by_season[0].scores.all;
+        currentMPlusScoreDPS       = currentMythicSeason.mythic_plus_scores_by_season[0].scores.dps;
+        currentMPlusScoreHealer    = currentMythicSeason.mythic_plus_scores_by_season[0].scores.healer
+        currentMPlusScoreTank      = currentMythicSeason.mythic_plus_scores_by_season[0].scores.tank;
+
+        mPlusRecent.push(currentMythicSeason.mythic_plus_recent_runs);
+        mPlusBest = getBestAndHighestDungeons.mythic_plus_best_runs;
+        mPlusHighest = getBestAndHighestDungeons.mythic_plus_highest_level_runs;
 
     var localDateRecent = [];
     var localDateBest = [];
@@ -207,37 +231,39 @@ module.exports = app => {
     var recentTimes = [];
     var bestTimes = [];
     var highestTimes = [];
-    var mapIdRecent = [];
-    var mapIdBest = [];
-    var mapIdHighest = [];
 
-    var recentImg = [];
-    for (var i = 0; i < mPlusRecent.length; i++) {
-      var date = new Date(mPlusRecent[i].completed_at);
-      localDateRecent.push(date.toUTCString().slice(5,-12));
-        var ms = mPlusRecent[i].clear_time_ms;
-        var mins = (ms / (1000 * 60)).toFixed(2);
-        var newMins = mins.replace(/\./g, ':');
-        recentTimes.push(newMins);
-    }
+      for (var i = 0; i < mPlusRecent.length; i++) {
+        if(mPlusRecent > 0) {
+          var date = new Date(mPlusRecent[i].completed_at);
+          localDateRecent.push(date.toUTCString().slice(5,-12));
+            var ms = mPlusRecent[i].clear_time_ms;
+            var mins = (ms / (1000 * 60)).toFixed(2);
+            var newMins = mins.replace(/\./g, ':');
+            recentTimes.push(newMins);
+        }
+      }
 
-    for (var i = 0; i < mPlusBest.length; i++) {
-      var date = new Date(mPlusBest[i].completed_at);
-      localDateBest.push(date.toUTCString().slice(5,-12));
-        var ms = mPlusBest[i].clear_time_ms;
-        var mins = (ms / (1000 * 60)).toFixed(2);
-        var newMins = mins.replace(/\./g, ':');
-        bestTimes.push(newMins);
+      for (var i = 0; i < mPlusBest.length; i++) {
+        if(mPlusBest > 0) {
+          var date = new Date(mPlusBest[i].completed_at);
+          localDateBest.push(date.toUTCString().slice(5,-12));
+            var ms = mPlusBest[i].clear_time_ms;
+            var mins = (ms / (1000 * 60)).toFixed(2);
+            var newMins = mins.replace(/\./g, ':');
+            bestTimes.push(newMins);
+        }
+      }
 
-    }
-
-    for (var i = 0; i < mPlusHighest.length; i++) {
-      var date = new Date(mPlusHighest[i].completed_at);
-      localDateHighest.push(date.toUTCString().slice(5,-12));
-        var ms = mPlusHighest[i].clear_time_ms;
-        var mins = (ms / (1000 * 60)).toFixed(2);
-        var newMins = mins.replace(/\./g, ':');
-        highestTimes.push(newMins);
+      for (var i = 0; i < mPlusHighest.length; i++) {
+        if(mPlusHighest > 0) {
+          var date = new Date(mPlusHighest[i].completed_at);
+          localDateHighest.push(date.toUTCString().slice(5,-12));
+            var ms = mPlusHighest[i].clear_time_ms;
+            var mins = (ms / (1000 * 60)).toFixed(2);
+            var newMins = mins.replace(/\./g, ':');
+            highestTimes.push(newMins);
+        }
+      }
     }
 
     // Raid Info
@@ -358,10 +384,14 @@ module.exports = app => {
       pickedTalents,
       dungeons,
       raidBosses,
-      mPlusScoreOverall,
-      mPlusScoreDPS,
-      mPlusScoreHealer,
-      mPlusScoreTank,
+      previousMPlusScoreOverall,
+      previousMPlusScoreDPS,
+      previousMPlusScoreHealer,
+      previousMPlusScoreTank,
+      currentMPlusScoreOverall,
+      currentMPlusScoreDPS,
+      currentMPlusScoreHealer,
+      currentMPlusScoreTank,
       mPlusRecent,
       mPlusBest,
       mPlusHighest,

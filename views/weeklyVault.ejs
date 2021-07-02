@@ -762,61 +762,7 @@
                     </div>
                   </div>
               </div>
-              <div class="col-xl-12 col-lg-12 col-md-6 col-sm-6 equip-box talents">
-                  <div class="info-title">
-                    <h3 class="gold-text">Talents</h3>
-                  </div>
-                  <div class="">
-                    <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
-                        <li class="nav-item">
-                           <a class="tab-title nav-link active" id="specOne-tab" data-toggle="tab" href="#specone" role="tab" aria-controls="specone" aria-selected="true"><%=specNames[0]%></a>
-                        </li>
-                        <li class="nav-item">
-                           <a class="tab-title nav-link" id="specTwo-tab" data-toggle="tab" href="#spectwo" role="tab" aria-controls="spectwo" aria-selected="false"><%=specNames[1]%></a>
-                        </li>
-                      <%  if(specNames[2] !== "Initial"){ %>
-                          <li class="nav-item">
-                            <a class="tab-title nav-link" id="specThree-tab" data-toggle="tab" href="#specthree" role="tab" aria-controls="specthree" aria-selected="false"><%=specNames[2]%></a>
-                          </li>
-                      <%   }%>
-                    </ul>
 
-                    <div class="tab-content">
-                      <div class="tab-pane active" id="specone" role="tabpanel" aria-labelledby="specOne-tab">
-                        <div class="talent-container">
-                            <%for (var i = 0; i < spellIds.length; i++) {%>
-                              <div class="equip-card">
-                                <div class="tal-inner">
-                                  <a class="tal-name" href="#" data-wowhead="spell=<%=spellIds[i]%>"></a>
-                                </div>
-                              </div>
-                            <%}%>
-                        </div>
-                      </div>
-                      <div class="tab-pane" id="spectwo" role="tabpanel" aria-labelledby="specTwo-tab">
-                        <div class="talent-container">
-                            <%for (var i = 0; i < spellIdsTwo.length; i++) {%>
-                              <div class="equip-card">
-                                <div class="tal-inner">
-                                  <a class="tal-name" href="#" data-wowhead="spell=<%=spellIdsTwo[i]%>"></a>
-                                </div>
-                              </div>
-                              <%}%>
-                        </div>
-                      </div>
-                      <div class="tab-pane" id="specthree" role="tabpanel" aria-labelledby="specThree-tab">
-                        <%for (var i = 0; i < spellIdsThree.length; i++) {%>
-                            <div class="equip-card">
-                              <div class="tal-inner">
-                                <a class="tal-name" href="#" data-wowhead="spell=<%=spellIdsThree[i]%>"></a>
-                              </div>
-                            </div>
-                          <%}%>
-                      </div>
-
-                    </div>
-                  </div>
-              </div>
             </div>
           </div>
           <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-xs-12  ">
@@ -942,272 +888,126 @@
       <div class="row">
         <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-xs-8 ">
           <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 text-center equip-box talents">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 text-center equip-box talents mplus ">
               <div class="info-title">
                 <h3 class="gold-text">M+ Scores</h3>
               </div>
-              <div id="accordion">
-                <div class="card">
-                  <div class="card-header" id="headingPrevious">
-                    <h5 class="mb-0">
-                      <button class="btn btn-link" data-toggle="collapse" onclick=""data-target="#collapseCurrentSeason" aria-expanded="true" aria-controls="collapseCurrent">
-                        Current Season <i id="previous-arrow"class="fa fa-caret-down"></i>
-                      </button>
-                    </h5>
-                  </div>
-                  <div id="collapseCurrentSeason" class="collapse show" aria-labelledby="headingCurrent" data-parent="#accordion">
-                    <div class="row mplus-card">
-                      <div class="col-md-auto mplus-space">
-                          <h6 class="mplus-titles">Overall</h6>
-                          <% if(currentMPlusScoreOverall < 400) { %>
-                          <h6 class="mplus-scores mplus-stat-card"> <%=currentMPlusScoreOverall%> </h6>
-                          <%}%>
-                          <% if(currentMPlusScoreOverall < 700 && currentMPlusScoreOverall >= 500) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#43ff2a"> <%=currentMPlusScoreOverall%> </h6>
-                          <%}%>
-                          <% if(currentMPlusScoreOverall >= 700 && currentMPlusScoreOverall < 1000) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#15b300"> <%=currentMPlusScoreOverall%> </h6>
-                          <%}%>
-                          <% if(currentMPlusScoreOverall >= 1000 && currentMPlusScoreOverall < 1300) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#5565e2"> <%=currentMPlusScoreOverall%> </h6>
-                          <%}%>
-                          <% if(currentMPlusScoreOverall >= 1300 && currentMPlusScoreOverall < 1500 ) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#884ee9"> <%=currentMPlusScoreOverall%> </h6>
-                          <%}%>
-                          <% if(currentMPlusScoreOverall >= 1500 && currentMPlusScoreOverall < 1800) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#aa37e7"> <%=currentMPlusScoreOverall%> </h6>
-                          <%}%>
-                          <% if(currentMPlusScoreOverall >= 1800 && currentMPlusScoreOverall < 2800) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#eb6275"> <%=currentMPlusScoreOverall%> </h6>
-                          <%}%>
-                          <% if(currentMPlusScoreOverall >= 2800) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#ff8000"> <%=currentMPlusScoreOverall%> </h6>
-                          <%}%>
+              <div class="row justify-content-center mplus-block">
+                <div class="col-md-auto">
+                  <h6 class="mplus-titles">Overall</h6>
+                  <% if(mPlusScoreOverall < 400) { %>
+                  <h6 class="mplus-scores mplus-stat-card"> <%=mPlusScoreOverall%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreOverall < 700 && mPlusScoreOverall >= 500) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#43ff2a"> <%=mPlusScoreOverall%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreOverall >= 700 && mPlusScoreOverall < 1000) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#15b300"> <%=mPlusScoreOverall%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreOverall >= 1000 && mPlusScoreOverall < 1300) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#5565e2"> <%=mPlusScoreOverall%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreOverall >= 1300 && mPlusScoreOverall < 1500 ) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#884ee9"> <%=mPlusScoreOverall%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreOverall >= 1500 && mPlusScoreOverall < 1800) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#aa37e7"> <%=mPlusScoreOverall%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreOverall >= 1800 && mPlusScoreOverall < 2800) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#eb6275"> <%=mPlusScoreOverall%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreOverall >= 2800) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#ff8000"> <%=mPlusScoreOverall%> </h6>
+                  <%}%>
 
-                        </div>
-                    <% if(currentMPlusScoreDPS >= 0) { %>
-                      <div class="col-md-auto mplus-space">
-                        <h6 class="mplus-titles">DPS</h6>
-                        <% if(currentMPlusScoreDPS < 500) { %>
-                        <h6 class="mplus-scores mplus-stat-card"> <%=currentMPlusScoreDPS%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreDPS < 700 && currentMPlusScoreDPS >= 500) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#43ff2a"> <%=currentMPlusScoreDPS%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreDPS >= 700 && currentMPlusScoreDPS < 1000) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#15b300"> <%=currentMPlusScoreDPS%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreDPS >= 1000 && currentMPlusScoreDPS < 1300) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#5565e2"> <%=currentMPlusScoreDPS%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreDPS >= 1300 && currentMPlusScoreDPS < 1500 ) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#884ee9"> <%=currentMPlusScoreDPS%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreDPS >= 1500 && currentMPlusScoreDPS < 1800) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#aa37e7"> <%=currentMPlusScoreDPS%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreDPS >= 1800 && currentMPlusScoreDPS < 2800) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#eb6275"> <%=currentMPlusScoreDPS%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreDPS >= 2800) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#ff8000"> <%=currentMPlusScoreDPS%> </h6>
-                        <%}%>
-                      </div>
-                      <%}%>
-                    <% if(currentMPlusScoreHealer >= 0) { %>
-                      <div class="col-md-auto mplus-space">
-                        <h6 class="mplus-titles">Healer</h6>
-                        <% if(currentMPlusScoreHealer < 400) { %>
-                        <h6 class="mplus-scores mplus-stat-card"> <%=currentMPlusScoreHealer%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreHealer < 700 && currentMPlusScoreHealer >= 500) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#43ff2a"> <%=currentMPlusScoreHealer%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreHealer >= 700 && currentMPlusScoreHealer < 1000) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#15b300"> <%=currentMPlusScoreHealer%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreHealer >= 1000 && currentMPlusScoreHealer < 1300) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#5565e2"> <%=currentMPlusScoreHealer%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreHealer >= 1300 && currentMPlusScoreHealer < 1500 ) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#884ee9"> <%=currentMPlusScoreHealer%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreHealer >= 1500 && currentMPlusScoreHealer < 1800) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#aa37e7"> <%=currentMPlusScoreHealer%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreHealer >= 1800 && currentMPlusScoreHealer < 2800) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#eb6275"> <%=currentMPlusScoreHealer%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreHealer >= 2800) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#ff8000"> <%=currentMPlusScoreHealer%> </h6>
-                        <%}%>
-                      </div>
-                    <%}%>
-                    <% if(currentMPlusScoreTank >= 0) { %>
-                      <div class="col-md-auto mplus-space">
-                        <h6 class="mplus-titles">Tank</h6>
-                        <% if(currentMPlusScoreTank < 400) { %>
-                        <h6 class="mplus-scores mplus-stat-card"> <%=currentMPlusScoreTank%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreTank < 700 && currentMPlusScoreTank >= 500) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#43ff2a"><%=currentMPlusScoreTank%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreTank >= 700 && currentMPlusScoreTank < 1000) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#15b300"> <%=currentMPlusScoreTank%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreTank >= 1000 && currentMPlusScoreTank < 1300) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#5565e2"> <%=currentMPlusScoreTank%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreTank >= 1300 && currentMPlusScoreTank < 1500 ) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#884ee9"> <%=currentMPlusScoreTank%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreTank >= 1500 && currentMPlusScoreTank < 1800) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#aa37e7"> <%=currentMPlusScoreTank%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreTank >= 1800 && currentMPlusScoreTank < 2800) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#eb6275"> <%=currentMPlusScoreTank%> </h6>
-                        <%}%>
-                        <% if(currentMPlusScoreTank >= 2800) { %>
-                        <h6 class="mplus-scores mplus-stat-card" style="color:#ff8000"> <%=currentMPlusScoreTank%> </h6>
-                        <%}%>
-                      </div>
-                      <%}%>
-                    </div>
-                    </div>
                 </div>
-              </div>
-
-              <div class="mplus-block">
-                <div id="accordion">
-                  <div class="card">
-                    <div class="card-header" id="headingPrevious">
-                      <h5 class="mb-0">
-                        <button class="btn btn-link" data-toggle="collapse" onclick=""data-target="#collapsePreviousSeason" aria-expanded="true" aria-controls="collapsePrevious">
-                          Previous Season <i id="previous-arrow"class="fa fa-caret-down"></i>
-                        </button>
-                      </h5>
-                    </div>
-                    <div id="collapsePreviousSeason" class="collapse " aria-labelledby="headingPrevious" data-parent="#accordion">
-                      <div class="row mplus-card">
-                        <div class="col-md-auto mplus-space">
-                            <h6 class="mplus-titles">Overall</h6>
-                            <% if(previousMPlusScoreOverall < 400) { %>
-                            <h6 class="mplus-scores mplus-stat-card"> <%=previousMPlusScoreOverall%> </h6>
-                            <%}%>
-                            <% if(previousMPlusScoreOverall < 700 && previousMPlusScoreOverall >= 500) { %>
-                            <h6 class="mplus-scores mplus-stat-card" style="color:#43ff2a"> <%=previousMPlusScoreOverall%> </h6>
-                            <%}%>
-                            <% if(previousMPlusScoreOverall >= 700 && previousMPlusScoreOverall < 1000) { %>
-                            <h6 class="mplus-scores mplus-stat-card" style="color:#15b300"> <%=previousMPlusScoreOverall%> </h6>
-                            <%}%>
-                            <% if(previousMPlusScoreOverall >= 1000 && previousMPlusScoreOverall < 1300) { %>
-                            <h6 class="mplus-scores mplus-stat-card" style="color:#5565e2"> <%=previousMPlusScoreOverall%> </h6>
-                            <%}%>
-                            <% if(previousMPlusScoreOverall >= 1300 && previousMPlusScoreOverall < 1500 ) { %>
-                            <h6 class="mplus-scores mplus-stat-card" style="color:#884ee9"> <%=previousMPlusScoreOverall%> </h6>
-                            <%}%>
-                            <% if(previousMPlusScoreOverall >= 1500 && previousMPlusScoreOverall < 1800) { %>
-                            <h6 class="mplus-scores mplus-stat-card" style="color:#aa37e7"> <%=previousMPlusScoreOverall%> </h6>
-                            <%}%>
-                            <% if(previousMPlusScoreOverall >= 1800 && previousMPlusScoreOverall < 2800) { %>
-                            <h6 class="mplus-scores mplus-stat-card" style="color:#eb6275"> <%=previousMPlusScoreOverall%> </h6>
-                            <%}%>
-                            <% if(previousMPlusScoreOverall >= 2800) { %>
-                            <h6 class="mplus-scores mplus-stat-card" style="color:#ff8000"> <%=previousMPlusScoreOverall%> </h6>
-                            <%}%>
-
-                          </div>
-                      <% if(previousMPlusScoreDPS >= 0) { %>
-                        <div class="col-md-auto mplus-space">
-                          <h6 class="mplus-titles">DPS</h6>
-                          <% if(previousMPlusScoreDPS < 400) { %>
-                          <h6 class="mplus-scores mplus-stat-card"> <%=previousMPlusScoreDPS%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreDPS < 700 && previousMPlusScoreDPS >= 500) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#43ff2a"> <%=previousMPlusScoreDPS%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreDPS >= 700 && previousMPlusScoreDPS < 1000) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#15b300"> <%=previousMPlusScoreDPS%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreDPS >= 1000 && previousMPlusScoreDPS < 1300) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#5565e2"> <%=previousMPlusScoreDPS%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreDPS >= 1300 && previousMPlusScoreDPS < 1500 ) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#884ee9"> <%=previousMPlusScoreDPS%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreDPS >= 1500 && previousMPlusScoreDPS < 1800) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#aa37e7"> <%=previousMPlusScoreDPS%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreDPS >= 1800 && previousMPlusScoreDPS < 2800) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#eb6275"> <%=previousMPlusScoreDPS%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreDPS >= 2800) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#ff8000"> <%=previousMPlusScoreDPS%> </h6>
-                          <%}%>
-                        </div>
-                        <%}%>
-                      <% if(previousMPlusScoreHealer >= 0) { %>
-                        <div class="col-md-auto mplus-space">
-                          <h6 class="mplus-titles">Healer</h6>
-                          <% if(previousMPlusScoreHealer < 400) { %>
-                          <h6 class="mplus-scores mplus-stat-card"> <%=previousMPlusScoreHealer%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreHealer < 700 && previousMPlusScoreHealer >= 500) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#43ff2a"> <%=previousMPlusScoreHealer%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreHealer >= 700 && previousMPlusScoreHealer < 1000) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#15b300"> <%=previousMPlusScoreHealer%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreHealer >= 1000 && previousMPlusScoreHealer < 1300) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#5565e2"> <%=previousMPlusScoreHealer%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreHealer >= 1300 && previousMPlusScoreHealer < 1500 ) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#884ee9"> <%=previousMPlusScoreHealer%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreHealer >= 1500 && previousMPlusScoreHealer < 1800) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#aa37e7"> <%=previousMPlusScoreHealer%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreHealer >= 1800 && previousMPlusScoreHealer < 2800) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#eb6275"> <%=previousMPlusScoreHealer%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreHealer >= 2800) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#ff8000"> <%=previousMPlusScoreHealer%> </h6>
-                          <%}%>
-                        </div>
-                      <%}%>
-                      <% if(previousMPlusScoreTank >= 0) { %>
-                        <div class="col-md-auto mplus-space">
-                          <h6 class="mplus-titles">Tank</h6>
-                          <% if(previousMPlusScoreTank < 400) { %>
-                          <h6 class="mplus-scores mplus-stat-card"> <%=previousMPlusScoreTank%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreTank < 700 && previousMPlusScoreTank >= 500) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#43ff2a"><%=previousMPlusScoreTank%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreTank >= 700 && previousMPlusScoreTank < 1000) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#15b300"> <%=previousMPlusScoreTank%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreTank >= 1000 && previousMPlusScoreTank < 1300) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#5565e2"> <%=previousMPlusScoreTank%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreTank >= 1300 && previousMPlusScoreTank < 1500 ) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#884ee9"> <%=previousMPlusScoreTank%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreTank >= 1500 && previousMPlusScoreTank < 1800) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#aa37e7"> <%=previousMPlusScoreTank%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreTank >= 1800 && previousMPlusScoreTank < 2800) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#eb6275"> <%=previousMPlusScoreTank%> </h6>
-                          <%}%>
-                          <% if(previousMPlusScoreTank >= 2800) { %>
-                          <h6 class="mplus-scores mplus-stat-card" style="color:#ff8000"> <%=previousMPlusScoreTank%> </h6>
-                          <%}%>
-                        </div>
-                        <%}%>
-                      </div>
-                      </div>
-                  </div>
+          <% if(mPlusScoreDPS >= 0) { %>
+                <div class="col-md-auto offset-md-1">
+                  <h6 class="mplus-titles">DPS</h6>
+                  <% if(mPlusScoreDPS < 400) { %>
+                  <h6 class="mplus-scores mplus-stat-card"> <%=mPlusScoreDPS%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreDPS < 700 && mPlusScoreDPS >= 500) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#43ff2a"> <%=mPlusScoreDPS%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreDPS >= 700 && mPlusScoreDPS < 1000) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#15b300"> <%=mPlusScoreDPS%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreDPS >= 1000 && mPlusScoreDPS < 1300) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#5565e2"> <%=mPlusScoreDPS%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreDPS >= 1300 && mPlusScoreDPS < 1500 ) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#884ee9"> <%=mPlusScoreDPS%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreDPS >= 1500 && mPlusScoreDPS < 1800) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#aa37e7"> <%=mPlusScoreDPS%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreDPS >= 1800 && mPlusScoreDPS < 2800) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#eb6275"> <%=mPlusScoreDPS%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreDPS >= 2800) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#ff8000"> <%=mPlusScoreDPS%> </h6>
+                  <%}%>
                 </div>
+                <%}%>
+              <% if(mPlusScoreHealer >= 0) { %>
+                <div class="col-md-auto offset-md-1">
+                  <h6 class="mplus-titles">Healer</h6>
+                  <% if(mPlusScoreHealer < 400) { %>
+                  <h6 class="mplus-scores mplus-stat-card"> <%=mPlusScoreHealer%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreHealer < 700 && mPlusScoreHealer >= 500) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#43ff2a"> <%=mPlusScoreHealer%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreHealer >= 700 && mPlusScoreHealer < 1000) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#15b300"> <%=mPlusScoreHealer%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreHealer >= 1000 && mPlusScoreHealer < 1300) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#5565e2"> <%=mPlusScoreHealer%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreHealer >= 1300 && mPlusScoreHealer < 1500 ) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#884ee9"> <%=mPlusScoreHealer%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreHealer >= 1500 && mPlusScoreHealer < 1800) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#aa37e7"> <%=mPlusScoreHealer%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreHealer >= 1800 && mPlusScoreHealer < 2800) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#eb6275"> <%=mPlusScoreHealer%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreHealer >= 2800) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#ff8000"> <%=mPlusScoreHealer%> </h6>
+                  <%}%>
+                </div>
+              <%}%>
+                <% if(mPlusScoreTank >= 0) { %>
+                <div class="col-md-auto offset-md-1">
+                  <h6 class="mplus-titles">Tank</h6>
+                  <% if(mPlusScoreTank < 400) { %>
+                  <h6 class="mplus-scores mplus-stat-card"> <%=mPlusScoreTank%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreTank < 700 && mPlusScoreTank >= 500) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#43ff2a"><%=mPlusScoreTank%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreTank >= 700 && mPlusScoreTank < 1000) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#15b300"> <%=mPlusScoreTank%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreTank >= 1000 && mPlusScoreTank < 1300) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#5565e2"> <%=mPlusScoreTank%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreTank >= 1300 && mPlusScoreTank < 1500 ) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#884ee9"> <%=mPlusScoreTank%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreTank >= 1500 && mPlusScoreTank < 1800) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#aa37e7"> <%=mPlusScoreTank%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreTank >= 1800 && mPlusScoreTank < 2800) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#eb6275"> <%=mPlusScoreTank%> </h6>
+                  <%}%>
+                  <% if(mPlusScoreTank >= 2800) { %>
+                  <h6 class="mplus-scores mplus-stat-card" style="color:#ff8000"> <%=mPlusScoreTank%> </h6>
+                  <%}%>
+                </div>
+                <%}%>
               </div>
             </div>
             <div class="recent-mythic col-xl-12 col-lg-12 col-md-6 col-sm-6 equip-box talents">
@@ -1230,7 +1030,6 @@
                  </thead>
                  <tbody>
                    <% for (var i = 0; i < mPlusRecent.length; i++) {%>
-                     <% if(mPlusRecent > 0) { %>
                    <tr>
                      <td class="hide text-left" scope="row"><%=mPlusRecent[i].short_name%></td>
                     <% for (var x = 0; x < dungeons.length; x++) {%>
@@ -1245,7 +1044,6 @@
                      <td class="dungeon-text"><%=recentTimes[i]%></td>
                      <td class="dungeon-text"><%=mPlusRecent[i].num_keystone_upgrades%></td>
                    </tr>
-                    <% } %>
                    <% } %>
                  </tbody>
                 </table>
@@ -1402,82 +1200,49 @@
         <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-xs-12 ">
           <div class="best-mplus col-xl-12 col-lg-12 col-md-12 col-sm-12 equip-box talents">
             <div class="info-title">
-              <h3 class="gold-text"> Best M+ Scores</h3>
+              <h3 class="gold-text"> Vault</h3>
             </div>
             <div class="table-responsive">
               <table class="table table-dark table-striped table-sm  table-hover">
                 <thead>
                  <tr>
-                   <th></th>
-                   <th class="text-left" scope="col">Dungeon</th>
-                   <th scope="col">Lvl</th>
-                   <th scope="col">Score</th>
-                   <th scope="col">Day</th>
-                   <th scope="col">Time</th>
-                   <th scope="col">Key+</th>
+                   <th scope="col" scope="row">Tier 1</th>
+                   <th scope="col">Tier 2</th>
+                   <th scope="col">Tier 3</th>
 
                  </tr>
                </thead>
                <tbody>
-                 <% for (var i = 0; i < mPlusBest.length; i++) {%>
                  <tr>
-                   <td class="hide text-left" scope="row"><%=mPlusBest[i].short_name%></td>
-                   <% for (var x = 0; x < dungeons.length; x++) {%>
-                   <%  if(dungeons[x].id === mPlusBest[i].map_challenge_mode_id){%>
-                        <td> <img class=dungeon-img src="<%=dungeons[x].img%>" alt=""> </td>
-                   <%  }%>
-                   <% }%>
-                   <td class="text-left dungeon-name" scope="row"><%=mPlusBest[i].dungeon%></td>
-                   <td class="dungeon-text"><%=mPlusBest[i].mythic_level%></td>
-                   <td class="dungeon-text"><%=mPlusBest[i].score%></td>
-                   <td class="dungeon-text"><%=localDateBest[i]%></td>
-                   <td class="dungeon-text"><%=bestTimes[i]%></td>
-                   <td class="dungeon-text"><%=mPlusBest[i].num_keystone_upgrades%></td>
+                   <td class="dungeon-text" scope="row">Complete 1 Mythic Key:
+                     <% if(mPlusRecent.length === 1) {%>
+                        1/1
+                     <%} else {%>
+                        0/1
+                     <%}%>
+                   </td>
+                   <td class="dungeon-text">Complete 4 Mythic Key:
+                     <% if(mPlusRecent.length === 4) {%>
+                        4/4
+                     <%} else {%>
+                        0/4
+                     <%}%>
+                   </td>
+                   <td class="dungeon-text">Complete 10 Mythic Key:
+                     <% if(mPlusRecent.length === 10) {%>
+                        1/10
+                     <%} else {%>
+                        0/10
+                     <%}%>
+                   </td>
+
                  </tr>
-                 <% } %>
                </tbody>
               </table>
             </div>
           </div>
 
-            <div class="highest-mplus col-xl-12 col-lg-12 col-md-12 col-sm-12 equip-box talents">
-              <div class="info-title">
-                <h3 class="gold-text"> Highest M+ Scores</h3>
-              </div>
-              <div class="table-responsive">
-                <table class="table table-dark table-striped table-sm  table-hover">
-                  <thead>
-                   <tr>
-                     <th></th>
-                     <th class="text-left"scope="col">Dungeon</th>
-                     <th scope="col">Lvl</th>
-                     <th scope="col">Score</th>
-                     <th scope="col">Day</th>
-                     <th scope="col">Time</th>
-                     <th scope="col">Key+</th>
-                   </tr>
-                 </thead>
-                 <tbody>
-                   <% for (var i = 0; i < mPlusHighest.length; i++) { %>
-                   <tr>
-                     <td class="hide text-left" scope="row"><%=mPlusHighest[i].short_name%></td>
-                     <% for (var x = 0; x < dungeons.length; x++) {%>
-                     <%  if(dungeons[x].id === mPlusHighest[i].map_challenge_mode_id){%>
-                          <td> <img class=dungeon-img src="<%=dungeons[x].img%>" alt=""> </td>
-                     <%  }%>
-                     <% }%>
-                     <td class="text-left dungeon-name"scope="row"><%=mPlusHighest[i].dungeon%></td>
-                     <td class="dungeon-text"><%=mPlusHighest[i].mythic_level%></td>
-                     <td class="dungeon-text"><%=mPlusHighest[i].score%></td>
-                     <td class="dungeon-text"><%=localDateHighest[i]%></td>
-                     <td class="dungeon-text"><%=highestTimes[i]%></td>
-                     <td class="dungeon-text"><%=mPlusHighest[i].num_keystone_upgrades%></td>
-                   </tr>
-                   <% } %>
-                 </tbody>
-                </table>
-            </div>
-          </div>
+
         </div>
       </div>
 </section>
