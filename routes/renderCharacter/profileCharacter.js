@@ -209,14 +209,14 @@ module.exports = app => {
         previousMPlusScoreHealer   = previousMythicSeason.mythic_plus_scores_by_season[0].scores.healer;
         previousMPlusScoreTank     = previousMythicSeason.mythic_plus_scores_by_season[0].scores.tank;
       }
-      if(currentMythicSeason.mythic_plus_scores_by_season) {
+    if(currentMythicSeason.mythic_plus_scores_by_season) {
 
         currentMPlusScoreOverall   = currentMythicSeason.mythic_plus_scores_by_season[0].scores.all;
         currentMPlusScoreDPS       = currentMythicSeason.mythic_plus_scores_by_season[0].scores.dps;
         currentMPlusScoreHealer    = currentMythicSeason.mythic_plus_scores_by_season[0].scores.healer
         currentMPlusScoreTank      = currentMythicSeason.mythic_plus_scores_by_season[0].scores.tank;
 
-        mPlusRecent.push(currentMythicSeason.mythic_plus_recent_runs);
+        mPlusRecent = getRecentDungeons.mythic_plus_recent_runs;
         mPlusBest = getBestAndHighestDungeons.mythic_plus_best_runs;
         mPlusHighest = getBestAndHighestDungeons.mythic_plus_highest_level_runs;
 
@@ -228,18 +228,15 @@ module.exports = app => {
     var highestTimes = [];
 
       for (var i = 0; i < mPlusRecent.length; i++) {
-        if(mPlusRecent > 0) {
           var date = new Date(mPlusRecent[i].completed_at);
           localDateRecent.push(date.toUTCString().slice(5,-12));
             var ms = mPlusRecent[i].clear_time_ms;
             var mins = (ms / (1000 * 60)).toFixed(2);
             var newMins = mins.replace(/\./g, ':');
             recentTimes.push(newMins);
-        }
       }
 
       for (var i = 0; i < mPlusBest.length; i++) {
-
           var date = new Date(mPlusBest[i].completed_at);
           localDateBest.push(date.toUTCString().slice(5,-12));
             var ms = mPlusBest[i].clear_time_ms;
@@ -249,17 +246,14 @@ module.exports = app => {
       }
 
       for (var i = 0; i < mPlusHighest.length; i++) {
-        if(mPlusHighest > 0) {
           var date = new Date(mPlusHighest[i].completed_at);
           localDateHighest.push(date.toUTCString().slice(5,-12));
             var ms = mPlusHighest[i].clear_time_ms;
             var mins = (ms / (1000 * 60)).toFixed(2);
             var newMins = mins.replace(/\./g, ':');
             highestTimes.push(newMins);
-        }
       }
-    }
-
+}
 // RAID INFO
 
   var castleNathria = characterRaid.raid_progression["castle-nathria"];

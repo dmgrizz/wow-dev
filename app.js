@@ -67,11 +67,12 @@ passport.use(new BnetStrategy({
     return done(null, profile);
 }));
 
-app.use(function (req, res, next) { // need this in order for the login in button to switch back and forth from logout this let the template access isAuthenticated
+app.use(function (req, res, next) { //use this to gain access to isAuthenticated function in templates. ex. using this to change login and logout buttons
  res.locals.isAuthenticated = req.isAuthenticated();
  next();
 });
-app.use(function (req, res, next) { // need this in order for the login in button to switch back and forth from logout this let the template access isAuthenticated
+
+app.use(function (req, res, next) {//use this to gain access to isAuthenticated function in templates. ex. using this to change login and logout buttons
  res.locals.isAuthenticated = req.isAuthenticated();
  next();
 });
@@ -79,7 +80,7 @@ app.use(function (req, res, next) { // need this in order for the login in butto
 // Connect flash
 app.use(flash());
 
-// Global variables
+// Global variables - for error messages will implement this later when I have enough players in db. When searching for characters name it will run a check if the name matches on in db
 app.use(function(req, res, next) {
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
@@ -115,22 +116,20 @@ app.get('/auth/bnet/callback',
           })
     });
 
+app.get('/', function(req, res){
+  res.render("home");
+});
+
 app.get('/error', function(req, res){
   res.render("error");
 });
+
 app.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/');
 });
 
-app.get('/', function(req, res){
-    var playerObj = '';
-    res.render("home", {playerObj: playerObj,});
-});
 
-app.get('/profile', function(req, res){
-  res.render("profile");
-});
 
 require('./routes/weeklyVault')(app);
 require('./routes/comingSoon')(app);
@@ -139,8 +138,8 @@ require('./routes/findUserCharacters/addCharacter')(app);
 require('./routes/findUserCharacters/removeCharacter')(app);
 require('./routes/findUserCharacters/mainCharacter')(app);
 require('./routes/findUserCharacters/findCharacter')(app);
-require('./routes/findUserCharacters/userCharacters')(app);
 
+require('./routes/renderCharacter/userCharacters')(app);
 require('./routes/renderCharacter/profileCharacter')(app);
 require('./routes/renderCharacter/pvpCharacter')(app);
 require('./routes/renderCharacter/searchCharacter')(app);

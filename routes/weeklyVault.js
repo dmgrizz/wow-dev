@@ -46,9 +46,10 @@ module.exports = app => {
         const stats           = await characterService.getCharacterStats(character).catch(err => console.log(err));
         const characterEquip  = await characterService.getCharacterEquipment(character).catch(err => console.log(err));
         const characterSpec   = await characterService.getCharacterSpec(character).catch(err => console.log(err));
-        const characterMythic = await characterServiceMythic.getMythicInfo(newRealm, newName).catch(err => console.log(err));
-        const characterRaid   = await characterServiceRaid.getRaidInfo(newRealm, newName).catch(err => console.log(err));
-        const characterRaidWowInfo = await characterServiceRaid.getRaidSummary(newRealm, newName).catch(err => console.log(err));
+        const previousMythicSeason = await characterServiceMythic.getMythicInfo(newRealm, newName).catch(err => console.log(err));
+        const currentMythicSeason = await characterServiceMythic.getCurrentMythicSeason(newRealm, newName).catch(err => console.log(err));
+        const getBestAndHighestDungeons = await characterServiceMythic.getBestAndHighestDungeons(newRealm, newName).catch(err => console.log(err));
+        const getRecentDungeons = await characterServiceMythic.getRecentDungeons(newRealm, newName).catch(err => console.log(err));
 
         var activeTitle;
         if(character.active_title){
@@ -63,7 +64,6 @@ module.exports = app => {
             var renown      = character.covenant_progress.renown_level;
             var covenantId  = character.covenant_progress.chosen_covenant.id;
           }
-      // covenantPhoto:"https://us.api.blizzard.com/data/wow/media/covenant/"+ covenantId +"?namespace=static-us&locale=en_US&access_token=" + token,
 
         var charObject = {
           name: character.name,
@@ -84,7 +84,7 @@ module.exports = app => {
         } else if(charObject.faction === "Alliance") {
           factionPic = "https://assets.worldofwarcraft.com/static/components/Logo/Logo-alliance.bb36e70f5f690a5fc510ed03e80aa259.png";
         }
-        // equipment info start
+//EQUIPMENT INFO
 
         let equipmentLeft = {};
         let equipmentIds = {};
@@ -117,7 +117,7 @@ module.exports = app => {
         equipmentBonus = equipBonus;
         equipmentLvl = equipLvl;
 
-    //ITEM IMAGES
+//ITEM IMAGES
         let wowHeadLinksLeft = {};
         var wowHeadEquip = [];
 
@@ -190,15 +190,40 @@ module.exports = app => {
         splicedSpecThree.splice(0,14);
 //Mythic Plus Info
 
-  var mPlusScoreOverall = characterMythic.mythic_plus_scores_by_season[0].scores.all;
-  var mPlusScoreDPS     = characterMythic.mythic_plus_scores_by_season[0].scores.dps;
-  var mPlusScoreHealer  = characterMythic.mythic_plus_scores_by_season[0].scores.healer;
-  var mPlusScoreTank    = characterMythic.mythic_plus_scores_by_season[0].scores.tank;
+var mPlusRecent = [];
+var mPlusBest = [];
+var mPlusHighest = [];
+var previousMPlusScoreOverall;
+var previousMPlusScoreDPS;
+var previousMPlusScoreHealer;
+var previousMPlusScoreTank;
+var currentMPlusScoreOverall
+var currentMPlusScoreDPS;
+var currentMPlusScoreHealer;
+var currentMPlusScoreTank;
+
+if(previousMythicSeason.mythic_plus_scores_by_season) {
+
+    previousMPlusScoreOverall  = previousMythicSeason.mythic_plus_scores_by_season[0].scores.all;
+    previousMPlusScoreDPS      = previousMythicSeason.mythic_plus_scores_by_season[0].scores.dps;
+    previousMPlusScoreHealer   = previousMythicSeason.mythic_plus_scores_by_season[0].scores.healer;
+    previousMPlusScoreTank     = previousMythicSeason.mythic_plus_scores_by_season[0].scores.tank;
+  }
+  if(currentMythicSeason.mythic_plus_scores_by_season) {
+      currentMPlusScoreOverall   = currentMythicSeason.mythic_plus_scores_by_season[0].scores.all;
+      currentMPlusScoreDPS       = currentMythicSeason.mythic_plus_scores_by_season[0].scores.dps;
+      currentMPlusScoreHealer    = currentMythicSeason.mythic_plus_scores_by_season[0].scores.healer
+      currentMPlusScoreTank      = currentMythicSeason.mythic_plus_scores_by_season[0].scores.tank;
+
+
+      mPlusRecent = getRecentDungeons.mythic_plus_recent_runs;
+      mPlusBest = getBestAndHighestDungeons.mythic_plus_best_runs;
+      mPlusHighest = getBestAndHighestDungeons.mythic_plus_highest_level_runs;
 
   var mPlusRecent  = characterMythic.mythic_plus_recent_runs;
   var mPlusBest    = characterMythic.mythic_plus_best_runs;
   var mPlusHighest = characterMythic.mythic_plus_highest_level_runs;
-
+}
   var localDateRecent = [];
   var vaultDateSlice = [];
   var localDateBest = [];

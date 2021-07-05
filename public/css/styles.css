@@ -124,7 +124,7 @@ body {
 /* HOME PAGE CSS */
 .sign-in {
  display: inline-block;
- padding: 10% 15%;
+ padding: 3% 10%;
 }
 .login-labels {padding-bottom: 1px;}
 .custom {
@@ -357,10 +357,32 @@ hr {
 
 .info-title {
   background-color: #5b5b5b;
-  /* background-color: #374045; */
-  /* background-color: #536162; */
-  /* background-color: #435560; */
   border-radius: 0px 0px 0px 0px;
+}
+.example-search {
+  background-color: rgb(21, 21, 21, 0.8);
+  border-radius: 5px;
+  padding:10px;
+  margin-bottom: 20px;
+}
+.example-text {
+  text-align: left;
+}
+.example-names {
+  font-style: italic;
+
+}
+.example-titles {
+  display: inline-flex;
+  margin-left: 2px;
+  color:#f8b700;
+  font-weight: bold;
+  background: -webkit-linear-gradient(top, #fbff2d 0%,#ffd015 77%);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
 }
 .equip-col-left {
   background: rgb(34, 40, 49, 0.8);

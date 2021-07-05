@@ -1229,7 +1229,6 @@
                  </thead>
                  <tbody>
                    <% for (var i = 0; i < mPlusRecent.length; i++) {%>
-                     <% if(mPlusRecent > 0) { %>
                    <tr>
                      <td class="hide text-left" scope="row"><%=mPlusRecent[i].short_name%></td>
                     <% for (var x = 0; x < dungeons.length; x++) {%>
@@ -1244,7 +1243,6 @@
                      <td class="dungeon-text"><%=recentTimes[i]%></td>
                      <td class="dungeon-text"><%=mPlusRecent[i].num_keystone_upgrades%></td>
                    </tr>
-                    <% } %>
                    <% } %>
                  </tbody>
                 </table>
