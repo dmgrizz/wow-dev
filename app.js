@@ -30,6 +30,7 @@ mongoose.set('useFindAndModify', false);
 const characterService = new CharacterService(getToken);
 
 const app = express();
+
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));

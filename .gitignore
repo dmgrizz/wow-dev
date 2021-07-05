@@ -1,5 +1,4 @@
 node_modules
-
-.env
-dev.js
-junk.js
+/*.env
+/config/dev.js
+/*.gitignore
