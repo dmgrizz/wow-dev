@@ -1,18 +1,18 @@
 const fetch = require('node-fetch');
 var _ = require('lodash');
-const getToken = require('../routes/getToken');
-const User = require('../models/User');
-const Character = require('../models/Profile');
-const CharacterService = require("../services/CharacterService");
-const CharacterServiceMythic = require("../services/CharacterServiceMythic");
-const CharacterServiceRaid = require("../services/CharacterServiceRaid");
-const ensureAuthenticated = require('../middlewares/authenticated');
+const getToken = require('../../routes/getToken');
+const User = require('../../models/User');
+const Character = require('../../models/Profile');
+const CharacterService = require("../../services/CharacterService");
+const CharacterServiceMythic = require("../../services/CharacterServiceMythic");
+const CharacterServiceRaid = require("../../services/CharacterServiceRaid");
+const ensureAuthenticated = require('../../middlewares/authenticated');
 
 const characterService = new CharacterService(getToken);
 const characterServiceMythic = new CharacterServiceMythic(getToken);
 const characterServiceRaid = new CharacterServiceRaid(getToken);
-const dungeons = require("../modules/dungeons");
-const raidBosses = require("../modules/raidBosses");
+const dungeons = require("../../modules/dungeons");
+const raidBosses = require("../../modules/raidBosses");
 
 module.exports = app => {
   app.get('/userProfile/:charName/:charRealm', ensureAuthenticated, async (req, res, next) => {
@@ -88,7 +88,7 @@ module.exports = app => {
           renown:       renown,
           covenantId:   covenantId
         }
-// equipment info start
+//EQUIPMENT INFO
         let equipment = characterEquip.equipped_items;
         let equipmentLeft   = {};
         let equipmentIds    = {};
@@ -119,7 +119,8 @@ module.exports = app => {
         equipmentLeft = equipSlot;
         equipmentBonus = equipBonus;
         equipmentLvl = equipLvl;
-    //ITEM IMAGES
+
+//ITEM IMAGES
         let wowHeadLinksLeft = {};
         var wowHeadEquip = [];
 
@@ -128,7 +129,7 @@ module.exports = app => {
           wowHeadEquip.push(wowHeadItems);
         }
           wowHeadLinksLeft = wowHeadEquip;
-  // CHARACTER STATS
+// CHARACTER STATS
         var crit        = Math.round((stats.melee_crit.value + Number.EPSILON) * 100) / 100;
         var haste       = Math.round((stats.melee_haste.value + Number.EPSILON) * 100) / 100;
         var mastery     = Math.round((stats.mastery.value + Number.EPSILON) * 100) / 100;
@@ -259,7 +260,7 @@ module.exports = app => {
           }
         }
 
-        // Raid Info
+// rAID INFO
         var castleNathria = characterRaid.raid_progression["castle-nathria"];
         var raidProgress  = castleNathria.summary;
         var totalBosses   = castleNathria.total_bosses;
@@ -267,7 +268,6 @@ module.exports = app => {
         var heroicBosses  = castleNathria.heroic_bosses_killed;
         var mythicBosses  = castleNathria.mythic_bosses_killed;
 
-        // wow info raids
         const expansions = characterRaidWowInfo.expansions;
         var currentExpansion;
         var difficulty = [];
@@ -321,7 +321,6 @@ module.exports = app => {
                 heroicKillCount.push(totalKills);
                 lastHeroicKill.push(lastKill.toUTCString().slice(5,-12));
                 heroicBossesDefeated.push(difficulty[i].progress.encounters[e].encounter);
-
             }
           }
 

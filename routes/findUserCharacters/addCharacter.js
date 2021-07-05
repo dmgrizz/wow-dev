@@ -1,14 +1,16 @@
 const fetch = require('node-fetch');
 var _ = require('lodash');
-const getToken = require('../routes/getToken');
-const User = require('../models/User');
-const Character = require('../models/Profile');
-const ensureAuthenticated = require('../middlewares/authenticated');
+const getToken = require('../../routes/getToken');
+const User = require('../../models/User');
+const Character = require('../../models/Profile');
+const ensureAuthenticated = require('../../middlewares/authenticated');
 
 
 module.exports = app => {
-  app.post('/charPick', function(req, res){
+  app.post('/charPick', function(req, res) {
+
     let errors = [];
+
     const characterSchema = new Character({
         name: req.body.name,
         realm: req.body.realm,
@@ -19,6 +21,7 @@ module.exports = app => {
         media: req.body.avatarPhoto,
         main: req.body.main
     });
+
     const userSchema = new User({
       battletag: req.body.battletag,
       characters: [characterSchema]

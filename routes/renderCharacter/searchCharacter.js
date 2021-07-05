@@ -1,18 +1,18 @@
 const fetch = require('node-fetch');
 var _ = require('lodash');
-const getToken = require('../routes/getToken');
-const User = require('../models/User');
-const Character = require('../models/Profile');
-const CharacterService = require("../services/CharacterService");
-const CharacterServiceMythic = require("../services/CharacterServiceMythic");
-const CharacterServiceRaid = require("../services/CharacterServiceRaid");
-const ensureAuthenticated = require('../middlewares/authenticated');
+const getToken = require('../../routes/getToken');
+const User = require('../../models/User');
+const Character = require('../../models/Profile');
+const CharacterService = require("../../services/CharacterService");
+const CharacterServiceMythic = require("../../services/CharacterServiceMythic");
+const CharacterServiceRaid = require("../../services/CharacterServiceRaid");
+const ensureAuthenticated = require('../../middlewares/authenticated');
 
 const characterService = new CharacterService(getToken);
 const characterServiceMythic = new CharacterServiceMythic(getToken);
 const characterServiceRaid = new CharacterServiceRaid(getToken);
-const dungeons = require("../modules/dungeons");
-const raidBosses = require("../modules/raidBosses");
+const dungeons = require("../../modules/dungeons");
+const raidBosses = require("../../modules/raidBosses");
 
 module.exports = app => {
   app.post('/newSearch', async (req, res, next) => {

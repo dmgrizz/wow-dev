@@ -1,9 +1,9 @@
 const fetch = require('node-fetch');
 var _ = require('lodash');
-const getToken = require('../routes/getToken');
-const User = require('../models/User');
-const Character = require('../models/Profile');
-const ensureAuthenticated = require('../middlewares/authenticated');
+const getToken = require('../../routes/getToken');
+const User = require('../../models/User');
+const Character = require('../../models/Profile');
+const ensureAuthenticated = require('../../middlewares/authenticated');
 
 module.exports = app => {
   app.post("/userMain", function(req, res){''

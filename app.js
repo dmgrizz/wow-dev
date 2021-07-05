@@ -133,15 +133,18 @@ app.get('/profile', function(req, res){
 });
 
 require('./routes/weeklyVault')(app);
-require('./routes/profileCharacter')(app);
-require('./routes/pvpCharacter')(app);
-require('./routes/addCharacter')(app);
-require('./routes/removeCharacter')(app);
-require('./routes/mainCharacter')(app);
-require('./routes/findCharacter')(app);
-require('./routes/searchCharacter')(app);
-require('./routes/userCharacters')(app);
-require('./routes/userProfile')(app);
+require('./routes/comingSoon')(app);
+
+require('./routes/findUserCharacters/addCharacter')(app);
+require('./routes/findUserCharacters/removeCharacter')(app);
+require('./routes/findUserCharacters/mainCharacter')(app);
+require('./routes/findUserCharacters/findCharacter')(app);
+require('./routes/findUserCharacters/userCharacters')(app);
+
+require('./routes/renderCharacter/profileCharacter')(app);
+require('./routes/renderCharacter/pvpCharacter')(app);
+require('./routes/renderCharacter/searchCharacter')(app);
+require('./routes/renderCharacter/userProfile')(app);
 
 
 const PORT = process.env.PORT || 3000;

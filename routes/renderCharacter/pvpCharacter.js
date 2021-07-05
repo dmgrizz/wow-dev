@@ -1,11 +1,11 @@
 const fetch = require('node-fetch');
 var _ = require('lodash');
-const getToken = require('../routes/getToken');
-const User = require('../models/User');
-const Character = require('../models/Profile');
-const CharacterService = require("../services/CharacterService");
-const CharacterServicePvp = require("../services/CharacterServicePvp");
-const ensureAuthenticated = require('../middlewares/authenticated');
+const getToken = require('../../routes/getToken');
+const User = require('../../models/User');
+const Character = require('../../models/Profile');
+const CharacterService = require("../../services/CharacterService");
+const CharacterServicePvp = require("../../services/CharacterServicePvp");
+const ensureAuthenticated = require('../../middlewares/authenticated');
 
 const characterService = new CharacterService(getToken);
 const characterServicePvp = new CharacterServicePvp(getToken);
@@ -14,7 +14,7 @@ module.exports = app => {
   app.get('/pvpInfo/:charName/:realm', async (req, res, next) => {
     var battletag;
     let filterCharList;
-    if(req.isAuthenticated()){
+    if(req.isAuthenticated()) {
        battletag = req.user.battletag;
        const user = await User.findOne({battletag: battletag});
          var avatar = user.characters[0].media;
@@ -27,7 +27,7 @@ module.exports = app => {
 
          filterCharList = dropdownCharList.filter(function(ch) {
            return ch !== characterName;
-         });
+      });
     }
 
         var realm = req.params.realm;
@@ -37,27 +37,28 @@ module.exports = app => {
         var newName = playerName.toLowerCase().replace(/ +/g, '');
         var spacedRealm  = playerRealm.toLowerCase().replace(/'/g, '');
         var newRealm = spacedRealm.replace(/\s/g, '-');
-        console.log(newName);
-        console.log(newRealm);
+
         const character = await characterService.getCharacter(newRealm, newName).catch(err => console.log(err));
-        console.log(character);
         const characterPvp = await characterServicePvp.getCharacterPvp(character).catch(err => console.log(err));
         const characterSpec  = await characterService.getCharacterSpec(character).catch(err => console.log(err));
         const pvpTwosBracket = await characterServicePvp.getCharacterTwosPvpBracket(characterPvp).catch(err => console.log(err));
         const pvpThreesBracket = await characterServicePvp.getCharacterThreesPvpBracket(characterPvp).catch(err => console.log(err));
         const pvpBgBracket = await characterServicePvp.getCharacterBGPvpBracket(characterPvp).catch(err => console.log(err));
 
-        if(character.active_title){
+        if(character.active_title) {
           var activeTitle = character.active_title.name;
         }
-        if(character.guild){
+
+        if(character.guild) {
             var guild = character.guild.name;
-          }
-          if(character.covenant_progress){
+        }
+
+        if(character.covenant_progress) {
             var covenant    = character.covenant_progress.chosen_covenant.name;
             var renown      = character.covenant_progress.renown_level;
             var covenantId  = character.covenant_progress.chosen_covenant.id;
-          }
+        }
+
         var charObject = {
           name: character.name,
           race: character.race.name,
@@ -72,11 +73,13 @@ module.exports = app => {
           renown:       renown,
           covenantId:   covenantId
         }
+
         if(charObject.faction === "Horde") {
           factionPic = "https://assets.worldofwarcraft.com/static/components/Logo/Logo-horde.2a80e0466e51d85c8cf60336e16fe8b8.png";
         } else if(charObject.faction === "Alliance") {
           factionPic = "https://assets.worldofwarcraft.com/static/components/Logo/Logo-alliance.bb36e70f5f690a5fc510ed03e80aa259.png";
         }
+
 //PVP TALENT INFO
       let splicedPvpSpecOne = {};
       let splicedPvpSpecTwo = {};
@@ -114,8 +117,8 @@ module.exports = app => {
               spellPvpToolTipsTwo.push(toolTipsTwo);
               spellPvpToolTipsThree.push(toolTipsThree);
 
-            }
           }
+        }
       }
       splicedPvpSpecOne = spellPvpToolTips;
       splicedPvpSpecOne.splice(3,6);
